@@ -11,7 +11,7 @@ class UI_Group:
 		self.elements = []
 	
 	def create_element(self,sprite,x=0,y=0):
-		_element = UI_Element(self.somber,sprite,x=x,y=0,z=self.z)
+		_element = UI_Element(self.somber,sprite,x=x,y=y,z=self.z)
 		
 		self.elements.append(_element)
 

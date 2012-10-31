@@ -6,7 +6,7 @@ import level
 import ui
 import os
 
-win_size = (640,480)
+win_size = (800,600)
 
 somber = somber_engine.Somber(name='Zombie Sunday',win_size=win_size)
 somber.resource_dir = os.path.join('sprites')
@@ -28,6 +28,6 @@ level.Level(somber)
 
 #UI setup
 main_ui = ui.UI_Group(somber,5)
-main_ui.create_element('zombie_sunday_logo.png')
+main_ui.create_element('zombie_sunday_logo.png',x=55,y=20)
 
 somber.run(callback)
