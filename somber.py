@@ -83,8 +83,10 @@ class Somber:
 		pygame.display.set_caption(self.name)
 		
 		#Create our sprite groups
-		self.background_objects = ActiveGroup()
-		self.foreground_objects = ActiveGroup()
+		self.sprite_groups = []
+		
+		self.background_objects = self.create_group()
+		self.foreground_objects = self.create_group()
 		self.active_objects = ActiveGroup()
 	
 	def get_all_resources(self):
@@ -99,8 +101,18 @@ class Somber:
 		
 		return _ret
 	
-	def create_group(self):
-		return pygame.sprite.RenderUpdates()
+	def create_group(self,z=-1):
+		if z == -1:
+			z = len(self.sprite_groups)
+		
+		_group = ActiveGroup()
+		
+		self.sprite_groups.insert(z,_group)
+		
+		return _group
+	
+	def add_object(self,object,z):
+		self.sprite_groups[z].add(object)
 	
 	def bind_key(self,key,callback):
 		self.keybinds.append({'key':key,'callback':callback})
@@ -235,9 +247,11 @@ class Somber:
 			callback()
 			
 			#Draw all groups
-			#self.dirty_rects.extend(self.static_objects.draw(self.window))
-			self.dirty_rects.extend(self.background_objects.draw(self.window))
-			self.dirty_rects.extend(self.foreground_objects.draw(self.window))
+			
+			for group in self.sprite_groups:
+				self.dirty_rects.extend(group.draw(self.window))
+			#self.dirty_rects.extend(self.background_objects.draw(self.window))
+			#self.dirty_rects.extend(self.foreground_objects.draw(self.window))
 			
 			#Update the screen
 			pygame.display.update(self.dirty_rects)
