@@ -112,7 +112,10 @@ class Somber:
 		return _group
 	
 	def add_object(self,object,z):
-		self.sprite_groups[z].add(object)
+		try:
+			self.sprite_groups[z].add(object)
+		except IndexError:
+			raise Exception('Sprite layer %s does not exist!' % z)
 	
 	def bind_key(self,key,callback):
 		self.keybinds.append({'key':key,'callback':callback})
@@ -274,8 +277,8 @@ class general(pygame.sprite.Sprite):
 		
 		self.image = self.sprite
 		self.rect = self.image.get_bounding_rect()
-		#self.rect.x = self.pos[0]-self.rect.width/2
 		self.image.blit(self.image,(0,0))
+		self.rect.topleft = self.pos
 
 		pygame.sprite.Sprite.__init__(self)
 	
