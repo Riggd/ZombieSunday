@@ -7,12 +7,23 @@ class Level:
 	def __init__(self,somber):
 		self.somber = somber
 		
-		Background(self.somber,'background_sky.png',0)
-		Background(self.somber,'background_trees_back.png',1,y=235)
-		Background(self.somber,'background_trees_fore.png',2,y=288)
-
-class Background(somber_engine.active):
-	def __init__(self,somber,sprite,z,x=0,y=0):
-		somber_engine.active.__init__(self,sprite,somber=somber,pos=(x,y))
+		self.level = somber_engine.Level('Title Screen')
+		self.level.create_sprite_group('background_0')
+		self.level.create_sprite_group('background_1')
+		self.level.create_sprite_group('background_2')
+		self.level.create_sprite_group('ui')
 		
-		somber.add_object(self,z)
+		Background(self.somber,self.level,'background_sky.png','background_0')
+		Background(self.somber,self.level,'background_trees_back.png',
+											'background_1',y=235)
+		Background(self.somber,self.level,'background_trees_fore.png',
+											'background_2',y=288)
+	
+	def add_object(self,object,group_name):
+		self.level.add_object(object,group_name)
+
+class Background(somber_engine.Active):
+	def __init__(self,somber,level,sprite,z,x=0,y=0):
+		somber_engine.Active.__init__(self,sprite,somber=somber,pos=(x,y))
+		
+		level.add_object(self,z)

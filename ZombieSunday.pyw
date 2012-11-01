@@ -15,19 +15,12 @@ somber.resource_dir = os.path.join('sprites')
 def callback():
 	pass
 
-#Somber setup
-#Somber creates two sprite groups by default (0 and 1)
-somber.create_group() #Layer 2 - Additional background layer (hills)
-somber.create_group() #Layer 3 - Clouds
-somber.create_group() #Layer 4 - Player
-somber.create_group() #Layer 5 - UI
-
 #Level setup
 somber.set_background_color((150,150,150))
-level.Level(somber)
+_title_screen = level.Level(somber)
 
 #UI setup
-main_ui = ui.UI_Group(somber,5)
+main_ui = ui.UI_Group(somber,_title_screen.level,'ui')
 main_ui.create_element('zombie_sunday_logo.png',x=55,y=20)
 
 somber.run(callback)

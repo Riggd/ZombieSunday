@@ -82,12 +82,25 @@ class Somber:
 		#Set caption
 		pygame.display.set_caption(self.name)
 		
-		#Create our sprite groups
-		self.sprite_groups = []
+		#Levels
+		self.levels = []
+		self.current_level = None
+	
+	def create_level(self,name='Untitled'):
+		_level = Level(name)
 		
-		self.background_objects = self.create_group()
-		self.foreground_objects = self.create_group()
-		self.active_objects = ActiveGroup()
+		self.levels.append({'name': name, 'level': _level})
+		
+		return _level
+	
+	def change_to_level(name):
+		for level in self.levels:
+			if level['name'] == name:
+				self.current_level = level['level']
+				
+				return True
+		
+		raise Exception('Level \'%s\' does not exist.' % name)
 	
 	def get_all_resources(self):
 		_ret = []
@@ -100,22 +113,6 @@ class Somber:
 					_ret.append(_fname.replace(self.resource_dir+os.sep,''))
 		
 		return _ret
-	
-	def create_group(self,z=-1):
-		if z == -1:
-			z = len(self.sprite_groups)
-		
-		_group = ActiveGroup()
-		
-		self.sprite_groups.insert(z,_group)
-		
-		return _group
-	
-	def add_object(self,object,z):
-		try:
-			self.sprite_groups[z].add(object)
-		except IndexError:
-			raise Exception('Sprite layer %s does not exist!' % z)
 	
 	def bind_key(self,key,callback):
 		self.keybinds.append({'key':key,'callback':callback})
@@ -242,19 +239,20 @@ class Somber:
 			#Grab input
 			self.get_input()
 			
+			if not self.current_level:
+				continue
+			
 			#Update all groups
-			self.active_objects.update()
-			self.background_objects.clear(self.window,self.background)
-			self.foreground_objects.clear(self.window,self.background)
+			for group in self.current_level.sprite_groups:
+				#Update all, then clear?
+				group['group'].update()
+				group['group'].clear(self.window,self.background)
 			
 			callback()
 			
 			#Draw all groups
-			
-			for group in self.sprite_groups:
-				self.dirty_rects.extend(group.draw(self.window))
-			#self.dirty_rects.extend(self.background_objects.draw(self.window))
-			#self.dirty_rects.extend(self.foreground_objects.draw(self.window))
+			for group in self.current_level.sprite_groups:
+				self.dirty_rects.extend(group['group'].draw(self.window))
 			
 			#Update the screen
 			pygame.display.update(self.dirty_rects)
@@ -262,7 +260,7 @@ class Somber:
 			
 			self.dirty_rects = []
 
-class general(pygame.sprite.Sprite):
+class General(pygame.sprite.Sprite):
 	def __init__(self,sprite,pos=None):
 		self.sprite = sprite
 		
@@ -301,14 +299,14 @@ class general(pygame.sprite.Sprite):
 	def destroy(self):
 		pass
 
-class static(general):
+class Static(General):
 	def __init__(self,sprite=None,pos=(0,0),somber=None):		
-		general.__init__(self,sprite=sprite,pos=pos)
+		General.__init__(self,sprite=sprite,pos=pos)
 		
 		if not somber:
 			raise Exception('No somber callback set!')
 
-class active(general):
+class Active(General):
 	def __init__(self,sprite,pos=(0,0),somber=None):
 		if not somber:
 			raise Exception('No somber callback set!')
@@ -316,7 +314,7 @@ class active(general):
 		self.somber = somber
 		self.sprite = somber.get_sprite(sprite)
 		
-		general.__init__(self,sprite=self.sprite,pos=pos)
+		General.__init__(self,sprite=self.sprite,pos=pos)
 		
 		self.hspeed = 0
 		self.hspeed_max = 0
@@ -423,7 +421,7 @@ class active(general):
 		
 		general.destroy(self)
 
-class particle(active):
+class Particle(Active):
 	def __init__(self,sprite=None,pos=(0,0),gravity=0.05,alpha=255,velocity=(0,0)):
 		active.__init__(self,sprite=sprite,pos=pos)
 		
@@ -443,6 +441,30 @@ class particle(active):
 			self.destroy()
 		
 		active.update(self)
+
+class Level:
+	def __init__(self,name):
+		self.name = name
+		
+		self.sprite_groups = []
+	
+	def create_sprite_group(self,name,z=-1):
+		if z == -1:
+			z = len(self.sprite_groups)
+		
+		_group = ActiveGroup()
+		
+		self.sprite_groups.insert(z,{'name': name, 'group': _group})
+		
+		return _group
+	
+	def add_object(self,object,group_name):
+		for _group in self.sprite_groups:
+			if _group['name'] == group_name:
+				_group['group'].add(object)
+				return True
+		
+		raise Exception('Sprite group %s does not exist!' % group_name)	
 
 def load_image(name):
 	try:
