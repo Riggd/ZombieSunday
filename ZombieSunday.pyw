@@ -20,7 +20,7 @@ TITLE_SCREEN = level.create_title_screen(somber)
 
 #UI setup
 main_ui = ui.UI_Group(somber,TITLE_SCREEN,'ui')
-main_ui.create_element('zombie_sunday_logo.png',x=55,y=20)
+main_ui.create_element('logo_zombie_sunday.png',x=55,y=20)
 
 somber.change_level('Title Screen')
 somber.run(callback)

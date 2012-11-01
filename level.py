@@ -22,6 +22,6 @@ class Background(somber_engine.Active):
 	def __init__(self,somber,level,sprite,sprite_group,x=0,y=0):
 		somber_engine.Active.__init__(self,sprite,somber=somber,pos=(x,y))
 		
-		self.hspeed = 1
+		self.hspeed = -level.get_sprite_group_z_level(sprite_group)
 		
 		level.add_object(self,sprite_group)

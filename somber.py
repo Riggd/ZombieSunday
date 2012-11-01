@@ -450,10 +450,10 @@ class Level:
 		
 		self.sprite_groups = []
 	
-	def get_sprite_group_z_level(self,name):
+	def get_sprite_group_z_level(self,group_name):
 		for _group in self.sprite_groups:
 			if _group['name'] == group_name:
-				return self.
+				return self.sprite_groups.index(_group)
 		
 		raise Exception('Sprite group %s does not exist!' % group_name)
 	
