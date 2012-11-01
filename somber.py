@@ -93,8 +93,9 @@ class Somber:
 		
 		return _level
 	
-	def change_to_level(name):
+	def change_level(self,name):
 		for level in self.levels:
+			print level['name'],name
 			if level['name'] == name:
 				self.current_level = level['level']
 				
@@ -244,7 +245,7 @@ class Somber:
 			
 			#Update all groups
 			for group in self.current_level.sprite_groups:
-				#Update all, then clear?
+				#TODO: Update all, then clear?
 				group['group'].update()
 				group['group'].clear(self.window,self.background)
 			
@@ -462,9 +463,10 @@ class Level:
 		for _group in self.sprite_groups:
 			if _group['name'] == group_name:
 				_group['group'].add(object)
+				
 				return True
 		
-		raise Exception('Sprite group %s does not exist!' % group_name)	
+		raise Exception('Sprite group %s does not exist!' % group_name)
 
 def load_image(name):
 	try:
