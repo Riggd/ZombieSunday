@@ -51,6 +51,7 @@ class Somber:
 		self.name = name
 		self.win_size = win_size
 		self.fps = fps
+		self.current_fps = fps
 		self.state = 'running'
 		
 		#Various
@@ -95,7 +96,6 @@ class Somber:
 	
 	def change_level(self,name):
 		for level in self.levels:
-			print level['name'],name
 			if level['name'] == name:
 				self.current_level = level['level']
 				
@@ -110,7 +110,7 @@ class Somber:
 			for infile in files:
 				_fname = os.path.join(root, infile)
 				file, ext = os.path.splitext(_fname)
-				if ext in ['.jpg','.JPG','.png','.PNG']:
+				if ext.lower() in ['.jpg','.png']:
 					_ret.append(_fname.replace(self.resource_dir+os.sep,''))
 		
 		return _ret
@@ -257,6 +257,7 @@ class Somber:
 			
 			#Update the screen
 			pygame.display.update(self.dirty_rects)
+			self.current_fps = self.clock_fps.get_fps()
 			self.clock_fps.tick(self.fps)
 			
 			self.dirty_rects = []
@@ -448,6 +449,13 @@ class Level:
 		self.name = name
 		
 		self.sprite_groups = []
+	
+	def get_sprite_group_z_level(self,name):
+		for _group in self.sprite_groups:
+			if _group['name'] == group_name:
+				return self.
+		
+		raise Exception('Sprite group %s does not exist!' % group_name)
 	
 	def create_sprite_group(self,name,z=-1):
 		if z == -1:
