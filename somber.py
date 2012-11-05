@@ -1,5 +1,6 @@
 import os, sys, pygame
 from pygame.locals import *
+import time
 
 __author__  = 'flags'
 __contact__ = 'jetstarforever@gmail.com'
@@ -62,6 +63,7 @@ class Somber:
 			'right':False}
 		self.mouse_pos = (0,0)
 		self.camera_pos = [0,0]
+		self.camera_follows = None
 		
 		#Lists
 		self.fonts = []
@@ -87,12 +89,10 @@ class Somber:
 		self.levels = []
 		self.current_level = None
 	
-	def create_level(self,name='Untitled'):
-		_level = Level(name)
+	def create_level(self,level,name='Untitled'):
+		self.levels.append({'name': name, 'level': level})
 		
-		self.levels.append({'name': name, 'level': _level})
-		
-		return _level
+		return True
 	
 	def change_level(self,name):
 		for level in self.levels:
@@ -102,6 +102,19 @@ class Somber:
 				return True
 		
 		raise Exception('Level \'%s\' does not exist.' % name)
+	
+	def camera_follow(self,object):
+		self.camera_follows = object
+	
+	def camera_update(self):
+		if not self.camera_follows:
+			return False
+		
+		_center_x = int(self.camera_follows.pos[0]-(self.win_size[0]/2))+\
+			(self.camera_follows.sprite.get_width()/2)
+		
+		if _center_x<0: _center_x = 0
+		self.camera_pos[0] = _center_x
 	
 	def get_all_resources(self):
 		_ret = []
@@ -235,32 +248,44 @@ class Somber:
 					if entry['key']=='m1':
 						entry['callback'](event.button)
 	
-	def run(self,callback):
+	def run(self,callback):	
 		while self.state=='running':
-			#Grab input
-			self.get_input()
-			
 			if not self.current_level:
 				continue
+				
+			milliseconds = self.clock_fps.tick(self.fps)
+			seconds = milliseconds / 1000.0
 			
-			#Update all groups
-			for group in self.current_level.sprite_groups:
-				#TODO: Update all, then clear?
-				group['group'].update()
-				group['group'].clear(self.window,self.background)
+			self.get_input()
 			
+			self.update(seconds)
 			callback()
 			
-			#Draw all groups
-			for group in self.current_level.sprite_groups:
-				self.dirty_rects.extend(group['group'].draw(self.window))
+			self.camera_update()
+			self.render()
 			
 			#Update the screen
 			pygame.display.update(self.dirty_rects)
-			self.current_fps = self.clock_fps.get_fps()
-			self.clock_fps.tick(self.fps)
 			
 			self.dirty_rects = []
+	
+	def update(self,delta):
+		#Update level
+		self.current_level.update()
+		
+		#Update all groups
+		for group in self.current_level.sprite_groups:
+			#TODO: Update all, then clear?
+			for sprite in group['group']:
+				sprite.delta_speed = delta
+			
+			group['group'].update()
+			group['group'].clear(self.window,self.background)
+	
+	def render(self):
+		#Draw all groups
+		for group in self.current_level.sprite_groups:
+			self.dirty_rects.extend(group['group'].draw(self.window))
 
 class General(pygame.sprite.Sprite):
 	def __init__(self,sprite,pos=None):
@@ -284,6 +309,7 @@ class General(pygame.sprite.Sprite):
 	
 	def set_pos(self,pos,set_start=False):
 		self.rect.topleft = list(pos)
+		self.pos = list(pos)
 		if set_start: self.start_pos = list(pos)
 	
 	def set_movement(self,type):
@@ -328,6 +354,8 @@ class Active(General):
 		self.vspeed_max = 0
 		self.vspeed_min = 0
 		
+		self.delta_speed = 0
+		
 		self.x_limit_min = None
 		self.x_limit_max = None
 		
@@ -347,8 +375,6 @@ class Active(General):
 		self.image.blit(self.image1,(0,0))
 	
 	def update(self):
-		self.pos = list(self.rect.topleft)
-		
 		if self.movement=='horizontal':
 			if self.somber.input['right']:
 				if self.hfriction_move and self.hspeed<self.hspeed_max:
@@ -372,36 +398,39 @@ class Active(General):
 			if self.somber.input['right']: self.vspeed = self.vspeed_max
 			elif self.somber.input['left']: self.vspeed = -self.vspeed_max
 			else: self.vspeed = self.vspeed_min
-		
-		if not self.x_limit_max == None:
-			if self.rect.topright[0]>self.x_limit_max:
-				if self.hspeed>0:
-					self.hspeed = 0
-		
-		if not self.x_limit_min == None:	
-			if self.pos[0]<self.x_limit_min:
-				if self.hspeed<0:
-					self.hspeed = 0
-					
-		if not self.y_limit_max == None:
-			if self.rect.bottomleft[1]>self.y_limit_max:
-				if self.vspeed>0:
-					self.vspeed = 0
-		
-		if not self.y_limit_min == None:	
-			if self.pos[1]<self.y_limit_min:
-				if self.vspeed<0:
-					self.vspeed = 0
-		
+		#
+		#if not self.x_limit_max == None:
+		#	if self.rect.topright[0]>self.x_limit_max:
+		#		if self.hspeed>0:
+		#			self.hspeed = 0
+		#
+		#if not self.x_limit_min == None:	
+		#	if self.pos[0]<self.x_limit_min:
+		#		if self.hspeed<0:
+		#			self.hspeed = 0
+		#			
+		#if not self.y_limit_max == None:
+		#	if self.rect.bottomleft[1]>self.y_limit_max:
+		#		if self.vspeed>0:
+		#			self.vspeed = 0
+		#
+		#if not self.y_limit_min == None:	
+		#	if self.pos[1]<self.y_limit_min:
+		#		if self.vspeed<0:
+		#			self.vspeed = 0
+		#
 		self.vspeed+=self.gravity
 		
 		if not self.alpha == self.last_alpha:
 			self.set_alpha(self.alpha)
 		
 		self.last_alpha = self.alpha
+		self.pos[0] += self.hspeed * self.delta_speed
+		self.pos[1] += self.vspeed * self.delta_speed
+		#print self.hspeed,nx
 		
-		self.rect.topleft = [self.rect.topleft[0]+round(self.hspeed),
-			self.rect.topleft[1]+round(self.vspeed)]
+		self.rect.topleft = [round(self.pos[0],0),round(self.pos[1],0)]
+		#print self.rect.topleft
 	
 	def collide_at(self,pos,other):
 		return other.rect.collidepoint((pos))
@@ -445,10 +474,20 @@ class Particle(Active):
 		active.update(self)
 
 class Level:
-	def __init__(self,name):
+	def __init__(self,somber,name):
+		self.somber = somber
 		self.name = name
 		
+		somber.create_level(self,name=name)
+		
 		self.sprite_groups = []
+	
+	def get_sprite_group(self,group_name):
+		for _group in self.sprite_groups:
+			if _group['name'] == group_name:
+				return _group['group']
+		
+		raise Exception('Sprite group %s does not exist!' % group_name)
 	
 	def get_sprite_group_z_level(self,group_name):
 		for _group in self.sprite_groups:
@@ -475,6 +514,9 @@ class Level:
 				return True
 		
 		raise Exception('Sprite group %s does not exist!' % group_name)
+	
+	def update(self):
+		pass
 
 def load_image(name):
 	try:
