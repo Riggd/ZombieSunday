@@ -22,11 +22,16 @@ class ActiveGroup(pygame.sprite.Group):
 			if s.static:
 				newrect = surface_blit(s.image, s.rect)
 			else:
-				_pos = (s.rect.topleft[0]-s.somber.camera_pos[0],
+				#if s.scroll_speed:
+				_scroll_x = s.somber.camera_pos[0]-(s.somber.camera_pos[0]*(s.scroll_speed*.1))
+				#else:1
+				#	_scroll_x = s.somber.camera_pos[0]
+				
+				_pos = (s.rect.topleft[0]-_scroll_x,
 					s.rect.topleft[1]-s.somber.camera_pos[1])
-				_posright = (s.rect.topright[0]-s.somber.camera_pos[0],
+				_posright = (s.rect.topright[0]-_scroll_x,
 					s.rect.topright[1]-s.somber.camera_pos[1])
-				_posdown = (s.rect.bottomright[0]-s.somber.camera_pos[0],
+				_posdown = (s.rect.bottomright[0]-_scroll_x,
 					s.rect.bottomright[1]-s.somber.camera_pos[1])
 				
 				if _posright[0]<0 or _pos[0]>s.somber.win_size[0]:
@@ -294,6 +299,7 @@ class General(pygame.sprite.Sprite):
 		self.pos = list(pos)
 		self.start_pos = list(pos)
 		self.static = False
+		self.z = 0
 		
 		self.movement = None
 		
@@ -447,6 +453,22 @@ class Active(General):
 		
 		return False
 	
+	def collides_with_group_at(self,group_name,point):
+		_found_group = False
+		
+		for group in self.somber.current_level.sprite_groups:
+			if group['name'] == group_name:
+				_found_group = True
+				
+				for sprite in group['group']:
+					if sprite.rect.collidepoint((point)):
+						return True
+		
+		if _found_group:
+			return False
+		else:
+			raise Exception('Sprite group %s does not exist!' % group_name)
+	
 	def destroy(self):
 		active.remove(self)
 		
@@ -496,19 +518,20 @@ class Level:
 		
 		raise Exception('Sprite group %s does not exist!' % group_name)
 	
-	def create_sprite_group(self,name,z=-1):
+	def create_sprite_group(self,name,z=-1,scroll_speed=1):
 		if z == -1:
 			z = len(self.sprite_groups)
 		
 		_group = ActiveGroup()
 		
-		self.sprite_groups.insert(z,{'name': name, 'group': _group})
+		self.sprite_groups.insert(z,{'name': name, 'group': _group, 'scroll_speed':scroll_speed})
 		
 		return _group
 	
 	def add_object(self,object,group_name):
 		for _group in self.sprite_groups:
 			if _group['name'] == group_name:
+				object.scroll_speed = _group['scroll_speed']
 				_group['group'].add(object)
 				
 				return True

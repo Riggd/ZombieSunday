@@ -10,6 +10,7 @@ class Character(somber_engine.Active):
 		self.somber = somber
 		self.level = level
 		self.sprite_group = sprite_group
+		self.hspeed_max_default = 500
 		level.add_object(self,sprite_group)
 		
 		self.climbing = False
@@ -28,9 +29,19 @@ class Character(somber_engine.Active):
 				self.vspeed = 0
 		else:
 			self.climbing = False
+			self.gravity = 3
+			
+		if self.collides_with_group_at('ground', (self.rect.bottomleft[0], self.rect.bottomleft[1])):
+			self.climbing = False
+			
+		if self.climbing:				
+			self.hspeed_max = 0
+		else:
+			self.hspeed_max = self.hspeed_max_default
+		
 		
 		if not self.climbing:
-			if self.collides_with_group(self.level.get_sprite_group('tiles')):
+			if self.collides_with_group(self.level.get_sprite_group('ground')):
 				if self.vspeed > 0:
 					self.vspeed = 0
 				self.gravity = 0

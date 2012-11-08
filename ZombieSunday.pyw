@@ -6,7 +6,7 @@ import level
 import ui
 import os
 
-win_size = (1024,600)
+win_size = (1024,768)
 
 somber = somber_engine.Somber(name='Zombie Sunday',win_size=win_size,fps=120)
 somber.resource_dir = os.path.join('sprites')
@@ -21,7 +21,7 @@ ENDLESS_LEVEL = level.Endless_Level(somber).create_level()
 
 #Player STUFF
 player = Character(somber,ENDLESS_LEVEL,'player.png','player',x=10,y=400)
-player.hspeed_max = 250
+player.hspeed_max = 500
 player.vspeed_max = 30
 player.gravity = 3
 player.set_movement('horizontal')
