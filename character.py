@@ -145,4 +145,3 @@ class Zombie(somber_engine.Active):
 					self.set_animation('idle_left')
 				else:
 					self.set_animation('idle_right')
-		

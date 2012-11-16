@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #Author list:
 #	Luke Martin <ltmartin@bsu.edu>
 #	Michael Milkovic <mlmilkovic@bsu.edu>
