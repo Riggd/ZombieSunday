@@ -1,6 +1,10 @@
 #For the handling of characters, both Player-controlled and NPCs
 #Author list:
 #	Luke Martin <ltmartin@bsu.edu>
+#	Michael Milkovic <mlmilkovic@bsu.edu>
+#	Derek Onay <dsonay@bsu.edu>
+#	Ryan Wiesjahn <rwiesjahn@bsu.edu>
+
 import somber as somber_engine
 from weapon import *
 
@@ -10,21 +14,33 @@ class Character(somber_engine.Active):
 		self.somber = somber
 		self.level = level
 		self.sprite_group = sprite_group
-		self.hspeed_max_default = 500
+		self.hspeed_max_default = 300
+		self.climb_speed = 100
 		level.add_object(self,sprite_group)
 		
 		self.climbing = False
+		self.add_animation('standing',30,['player.png'])
+		self.add_animation('move_right',30,['player_right.png'])
+		self.add_animation('move_left',30,['player_left.png'])
+		self.set_animation('standing')
 		
 		self.weapon = Weapon()
 	
 	def update(self):
+		self.check_climbing()
+		self.collision()
+		self.animate()
+		
+		somber_engine.Active.update(self)
+		
+	def check_climbing(self):
 		if self.collides_with_group(self.level.get_sprite_group('ladders')):
 			if self.somber.input['up']:
 				self.climbing = True
-				self.vspeed = -50
+				self.vspeed = -self.climb_speed
 			elif self.somber.input['down']:
 				self.climbing = True
-				self.vspeed = 50
+				self.vspeed = self.climb_speed
 			else:
 				self.vspeed = 0
 		else:
@@ -39,7 +55,13 @@ class Character(somber_engine.Active):
 		else:
 			self.hspeed_max = self.hspeed_max_default
 		
+	def collision(self):
+		if self.pos[0] < 0:
+			self.pos[0] = 0
 		
+		if self.pos[0] > self.level.ground_size * (self.level.level_size - 1):
+			self.pos[0] = self.level.ground_size * (self.level.level_size - 1)
+			
 		if not self.climbing:
 			if self.collides_with_group(self.level.get_sprite_group('ground')):
 				if self.vspeed > 0:
@@ -49,5 +71,78 @@ class Character(somber_engine.Active):
 				self.gravity = 3
 		else:
 			self.gravity = 0
+			
+	def animate(self):
+		if self.hspeed>0 and not self.gravity:
+			self.set_animation('move_right')
+		elif self.hspeed<0 and not self.gravity:
+			self.set_animation('move_left')
+		elif not self.gravity:
+			self.set_animation('standing')
+		#elif self.hspeed<0 and not self.gravity:
+		#	self.set_animation('move_right')
 		
+class Zombie(somber_engine.Active):
+	def __init__(self,somber,level,sprite,sprite_group,x=0,y=0):
+		somber_engine.Active.__init__(self,sprite,somber=somber,pos=(x,y))
+		self.somber = somber
+		self.level = level
+		self.sprite_group = sprite_group
+		level.add_object(self,sprite_group)
+		
+		self.direction = 1
+		self.pre_hspeed = 75
+		self.hspeed = self.pre_hspeed
+		
+		self.add_animation('idle_right',15,['zombiestandright.png'])
+		self.add_animation('idle_left',15,['zombiestandleft.png'])
+		self.add_animation('move_right',15,['zanimateright.png','zombiestandright.png'])
+		self.add_animation('move_left',15,['zanimateleft.png','zombiestandleft.png'])
+		self.set_animation('idle_right')
+		
+	def update(self):	
+		self.change_speed()
+		self.collision()
+		self.animate()
+
 		somber_engine.Active.update(self)
+		
+	def change_speed(self):
+		for player in self.level.get_sprite_group('player'):
+			if self.pos[0] > player.pos[0]:
+				if self.pos[0] < player.pos[0] + player.sprite.get_width():
+					self.direction = 0
+				else:
+					self.direction = -1
+			else:
+				if self.pos[0] + self.sprite.get_width() > player.pos[0]:
+					self.direction = 0
+				self.direction = 1
+
+		self.hspeed = self.direction * self.pre_hspeed
+			
+	def collision(self):
+		if self.pos[0] < 0:
+			self.pos[0] = 0
+			
+		if self.collides_with_group(self.level.get_sprite_group('ground')):
+			if self.vspeed > 0:
+				self.vspeed = 0
+			self.gravity = 0
+		else:
+			self.gravity = 3
+		
+	def animate(self):
+		if self.hspeed > 0:
+			if not self.get_animation() == 'move_right':
+				self.set_animation('move_right')
+		elif self.hspeed<0:
+			if not self.get_animation() == 'move_left':
+				self.set_animation('move_left')
+		elif not self.gravity:
+			if not self.get_animation() == 'idle_left' and not self.get_animation() == 'idle_right':
+				if self.get_animation() == 'move_left':
+					self.set_animation('idle_left')
+				else:
+					self.set_animation('idle_right')
+		

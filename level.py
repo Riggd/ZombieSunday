@@ -1,8 +1,13 @@
 #Levels
 #Author list:
 #	Luke Martin <ltmartin@bsu.edu>
+#	Michael Milkovic <mlmilkovic@bsu.edu>
+#	Derek Onay <dsonay@bsu.edu>
+#	Ryan Wiesjahn <rwiesjahn@bsu.edu>
+
 import somber as somber_engine
 import random
+import ui
 from character import *
 
 class Title_Screen(somber_engine.Level):
@@ -10,20 +15,28 @@ class Title_Screen(somber_engine.Level):
 		somber_engine.Level.__init__(self,somber,'Title Screen')
 	
 	def create_level(self):
-		self.create_sprite_group('background_0')
-		self.create_sprite_group('background_1')
-		self.create_sprite_group('background_2')
-		self.create_sprite_group('player')
-		self.create_sprite_group('ui')
+		self.create_sprite_group('background_0',scroll_speed=0)
+		self.create_sprite_group('background_1',scroll_speed=0.2,group=somber_engine.BackgroundParallaxGroup)
+		self.create_sprite_group('background_2',scroll_speed=0.3,group=somber_engine.BackgroundParallaxGroup)
+		self.create_sprite_group('sun',group=somber_engine.StaticBackgroundGroup)
+		self.create_sprite_group('clouds',group=somber_engine.StaticBackgroundGroup)
+		self.create_sprite_group('ground',scroll_speed=1,group=somber_engine.BackgroundParallaxGroup)
+		self.create_sprite_group('dummy')
+		self.create_sprite_group('ladders')
+		self.create_sprite_group('ui',group=somber_engine.StaticGroup)
 		
-		Background(self.somber,self,'background_sky.png','background_0')
-		Background(self.somber,self,'background_trees_back.png','background_1',y=330)
-		Sun(self.somber,self,'background_sun.png','background_1',x=620,y=5)
-		Cloud(self.somber,self,'background_cloud_1.png','background_2',x=660,y=10)
-		Cloud(self.somber,self,'background_cloud_2.png','background_2',x=540,y=200)
-		Cloud(self.somber,self,'background_cloud_3.png','background_2',y=90)
-		Background(self.somber,self,'background_trees_fore.png','background_2',y=390)
-		Background(self.somber,self,'foreground_grass.png','player',y=515)
+		Static_Background(self.somber,self,'background_sky.png','background_0')
+		Sun(self.somber,self,'background_sun.png','sun',x=self.somber.win_size[0] - 250,y=20)
+		Background(self.somber,self,'background_trees_back.png','background_1',y=self.somber.win_size[1] - 245)
+		Background(self.somber,self,'background_trees_fore.png','background_2',y=self.somber.win_size[1] - 192)
+		Cloud(self.somber,self,'background_cloud_1.png','clouds',x=self.somber.win_size[0] - 100,y=10)
+		Cloud(self.somber,self,'background_cloud_2.png','clouds',x=self.somber.win_size[0] / 2,y=200)
+		Cloud(self.somber,self,'background_cloud_3.png','clouds',y=100)
+		Background(self.somber,self,'foreground_grass.png','ground',y=self.somber.win_size[1] - 96)
+		
+		self.main_ui = ui.UI_Group(self.somber,self,'ui')
+		self.main_ui.create_element('logo_zombie_sunday.png','logo',x=(self.somber.win_size[0] / 2) - 338,y=30)
+		self.main_ui.create_element('ui_start_game.png','start',x=(self.somber.win_size[0] / 2) - 165,y=220)
 		
 		self.level = self
 		
@@ -32,45 +45,76 @@ class Title_Screen(somber_engine.Level):
 		return self.level
 	
 	def setup(self):
+		self.somber.bind_key('m1', self.mouse_down)
+		
+		self.dummy = Dummy(self.somber,self,'dummy.png','dummy',x=self.somber.win_size[0] / 2,y=400)
+		self.dummy.hspeed = 100
+		
 		for group in self.level.sprite_groups:
 			_speed = -(self.level.sprite_groups.index(group)*8)
 			
-			for sprite in group['group']:
-				sprite.hspeed = _speed
+			for sprite in group['group']:				
+				if group['name'] == 'clouds':
+					sprite.hspeed = -(random.randrange(2, 6) * 8)
 	
-	def update(self):
-		pass
+	def on_change_to(self):
+		self.somber.camera_follow(self.dummy)
+					
+	def mouse_down(self, button):
+		for element in self.main_ui.get_clicked_elements():
+			if element.name == 'start':
+				self.somber.change_level('Endless Level')
+	
+	def update(self, delta):
+		self.somber.camera_pos[0] = self.somber.camera_pos[0] + 1
 
 class Endless_Level(somber_engine.Level):
 	def __init__(self,somber):
 		somber_engine.Level.__init__(self,somber,'Endless Level')
+		self.level_size = 10
+		self.ground_size = 1600
+		self.zombie_timer = 0
 
 	def create_level(self):
-		self.create_sprite_group('background_0',scroll_speed=-1)
-		self.create_sprite_group('background_1',scroll_speed=-2)
-		self.create_sprite_group('background_2',scroll_speed=-3)
-		self.create_sprite_group('sun')
-		self.create_sprite_group('clouds',scroll_speed=0)
-		self.create_sprite_group('ground',z=4,scroll_speed=0)
-		self.create_sprite_group('ladders',z=5,scroll_speed=0)
-		self.create_sprite_group('player',scroll_speed=0)
+		self.create_sprite_group('background_0',scroll_speed=0)
+		self.create_sprite_group('background_1',scroll_speed=0.2,group=somber_engine.BackgroundParallaxGroup)
+		self.create_sprite_group('background_2',scroll_speed=0.3,group=somber_engine.BackgroundParallaxGroup)
+		self.create_sprite_group('sun',group=somber_engine.StaticBackgroundGroup)
+		self.create_sprite_group('clouds',group=somber_engine.StaticBackgroundGroup)
+		self.create_sprite_group('ground')
+		self.create_sprite_group('ladders')
+		self.create_sprite_group('buildings')
+		self.create_sprite_group('player')
+		self.create_sprite_group('zombies')
 		self.create_sprite_group('ui')
 		
-		Background(self.somber,self,'background_sky.png','background_0')
-		Background(self.somber,self,'background_trees_back.png','background_1',y=330)
-		Background(self.somber,self,'background_trees_fore.png','background_2',y=390)
+		Static_Background(self.somber,self,'background_sky.png','background_0')
 		
-		Sun(self.somber,self,'background_sun.png','sun',x=620,y=5)
+		Background(self.somber,self,'background_trees_back.png','background_1',y=self.somber.win_size[1] - 245)
+		Background(self.somber,self,'background_trees_fore.png','background_2',y=self.somber.win_size[1] - 192)
 		
-		Cloud(self.somber,self,'background_cloud_1.png','clouds',x=660,y=10)
-		Cloud(self.somber,self,'background_cloud_2.png','clouds',x=540,y=200)
-		Cloud(self.somber,self,'background_cloud_3.png','clouds',y=90)
+		Sun(self.somber,self,'background_sun.png','sun',x=self.somber.win_size[0] - 250,y=20)
 		
-		Background(self.somber,self,'foreground_grass.png','ground',y=515)
-		Background(self.somber,self,'foreground_grass.png','ground',x=320,y=387)
+		Cloud(self.somber,self,'background_cloud_1.png','clouds',x=self.somber.win_size[0] - 100,y=10)
+		Cloud(self.somber,self,'background_cloud_2.png','clouds',x=self.somber.win_size[0] / 2,y=200)
+		Cloud(self.somber,self,'background_cloud_3.png','clouds',y=100)
 		
-		Ladder(self.somber,self,'ladder.png','ladders',x=300,y=451)
-		Ladder(self.somber,self,'ladder.png','ladders',x=300,y=387)
+		#Ladder(self.somber,self,'ladder.png','ladders',x=300,y=451)
+		#Ladder(self.somber,self,'ladder.png','ladders',x=300,y=387)
+		
+		for tile in range(0, self.level_size):
+			Platform(self.somber,self,'foreground_grass.png','ground',x=tile*self.ground_size,y=self.somber.win_size[1] - 96)
+		
+		House(self.somber, self, 'home.png', 'buildings', x=5, y=self.somber.win_size[1] - 522)
+		
+		distance = 0
+		while True:
+			distance += random.randint(12, 20) * 100
+			if distance < self.level_size * self.ground_size:
+				House(self.somber,self,'house.png','buildings',x=distance,y=self.somber.win_size[1] - 572)
+			else:
+				break
+			
 		
 		self.level = self
 		
@@ -79,29 +123,37 @@ class Endless_Level(somber_engine.Level):
 		return self
 	
 	def setup(self):
-		pass
-	
-	def update(self):
-		pass
-		#for group in self.level.sprite_groups:
-		#	if group['name'] in ['player','platform','ladders']:
-		#		continue
-		#	
-		#	_layer = self.level.sprite_groups.index(group)
-		#	print _layer
-		#	
-		#	if group['name'] == 'clouds':
-		#		_scroll_x = self.somber.camera_pos[0]-((self.somber.camera_pos[0]/9)*_layer)
-		#		
-		#		for sprite in group['group']:
-		#			sprite.set_pos((_scroll_x+sprite.start_pos[0],sprite.rect.topleft[1]))
-		#	else:
-		#		_scroll_x = self.somber.camera_pos[0]-((self.somber.camera_pos[0]/9)*_layer)
-		#		
-		#		for sprite in group['group']:
-		#			sprite.set_pos((_scroll_x,sprite.rect.topleft[1]))
+		self.player = Character(self.somber,self,'player.png','player',x=10,y=400)
+		self.player.hspeed_max = 500
+		self.player.vspeed_max = 30
+		self.player.gravity = 3
+		self.player.set_movement('horizontal')
 
-class Background(somber_engine.Active):
+		for group in self.level.sprite_groups:
+			for sprite in group['group']:
+				if group['name'] == 'clouds':
+					sprite.hspeed = -(random.randint(2, 6) * 8)
+	
+	def on_change_to(self):
+		self.somber.camera_follow(self.player)
+	
+	def update(self, delta):
+		self.spawn_zombies(delta)
+	
+	def spawn_zombies(self, delta):
+		self.zombie_timer += delta
+		zombie_time = 5
+		if self.zombie_timer > zombie_time:
+			self.zombie_timer -= zombie_time
+			side = 1
+			extra = 200
+			if self.somber.camera_pos[0] > 200:
+				side = random.randint(0, 1)
+				if side == 0:
+					extra = -extra
+			Zombie(self.somber,self,'zombie_sketch.png','zombies',x=self.somber.camera_pos[0] + (self.somber.win_size[0] * side) + extra, y=self.somber.win_size[1] - 232)
+
+class Static_Background(somber_engine.Active):
 	def __init__(self,somber,level,sprite,sprite_group,x=0,y=0):
 		somber_engine.Active.__init__(self,sprite,somber=somber,pos=(x,y))
 		
@@ -110,17 +162,43 @@ class Background(somber_engine.Active):
 		self.static = True
 		
 		level.add_object(self,sprite_group)
+
+class Background(somber_engine.BackgroundParallax):
+	def __init__(self,somber,level,sprite,sprite_group,x=0,y=0):
+		somber_engine.BackgroundParallax.__init__(self,sprite,somber=somber,pos=(x,y))
+		
+		self.level = level
+		self.sprite_group = sprite_group
+		self.static = False
+		
+		level.add_object(self,sprite_group)
 	
 	def update(self):
-		player_hspeed = self.level.get_sprite_group('player').sprites()[0].hspeed
-		#print player_hspeed
+		somber_engine.BackgroundParallax.update(self)
+
+class Platform(somber_engine.Active):
+	def __init__(self,somber,level,sprite,sprite_group,x=0,y=0):
+		somber_engine.Active.__init__(self,sprite,somber=somber,pos=(x,y))
 		
-		#if self.pos[0]<=-self.sprite.get_width()/2:
-		#	self.set_pos((self.pos[0]+(self.sprite.get_width()/2),self.pos[1]))
-		#
-		#somber_engine.Active.update(self)
+		self.level = level
+		self.sprite_group = sprite_group
+		
+		level.add_object(self,sprite_group)
+	
+	def update(self):
+		somber_engine.Active.update(self)
 
 class Ladder(somber_engine.Active):
+	def __init__(self,somber,level,sprite,sprite_group,x=0,y=0):
+		somber_engine.Active.__init__(self,sprite,somber=somber,pos=(x,y))
+		
+		self.level = level
+		self.sprite_group = sprite_group
+		self.set_pos((x,y))
+		
+		level.add_object(self,sprite_group)
+		
+class House(somber_engine.Active):
 	def __init__(self,somber,level,sprite,sprite_group,x=0,y=0):
 		somber_engine.Active.__init__(self,sprite,somber=somber,pos=(x,y))
 		
@@ -136,13 +214,12 @@ class Cloud(somber_engine.Active):
 		
 		self.level = level
 		self.sprite_group = sprite_group
-		self.static = True
 		
 		level.add_object(self,sprite_group)
 	
 	def update(self):
-		#if self.pos[0]<-self.sprite.get_width():
-		#	self.set_pos((800,self.pos[1]))
+		if self.pos[0] + self.sprite.get_width() < 0:
+			self.set_pos((self.somber.win_size[0] + 10,self.pos[1]))
 		
 		somber_engine.Active.update(self)
 
@@ -154,3 +231,14 @@ class Sun(somber_engine.Active):
 		self.sprite_group = sprite_group
 		
 		level.add_object(self,sprite_group)
+		
+class Dummy(somber_engine.Active):
+	def __init__(self,somber,level,sprite,sprite_group,x=0,y=0):
+		somber_engine.Active.__init__(self,sprite,somber=somber,pos=(x,y))
+		self.somber = somber
+		self.level = level
+		self.sprite_group = sprite_group
+		level.add_object(self,sprite_group)
+		
+	def update(self):	
+		somber_engine.Active.update(self)

@@ -1,6 +1,10 @@
 #Handles weapons (duh)
 #Author list:
 #	Luke Martin <ltmartin@bsu.edu>
+#	Michael Milkovic <mlmilkovic@bsu.edu>
+#	Derek Onay <dsonay@bsu.edu>
+#	Ryan Wiesjahn <rwiesjahn@bsu.edu>
+
 import somber as somber_engine
 
 class Weapon:
