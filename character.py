@@ -19,10 +19,11 @@ class Character(somber_engine.Active):
 		level.add_object(self,sprite_group)
 		
 		self.climbing = False
-		self.add_animation('standing',30,['player.png'])
-		self.add_animation('move_right',30,['player_right.png'])
-		self.add_animation('move_left',30,['player_left.png'])
-		self.set_animation('standing')
+		self.add_animation('idle_right',15,['sprites/player/player_right_0.png'])
+		self.add_animation('idle_left',15,['sprites/player/player_left_0.png'])
+		self.add_animation('move_right',15,['sprites/player/player_right_0.png', 'sprites/player/player_right_1.png'])
+		self.add_animation('move_left',15,['sprites/player/player_left_0.png', 'sprites/player/player_left_1.png'])
+		self.set_animation('idle_right')
 		
 		self.weapon = Weapon()
 	
@@ -73,14 +74,18 @@ class Character(somber_engine.Active):
 			self.gravity = 0
 			
 	def animate(self):
-		if self.hspeed>0 and not self.gravity:
-			self.set_animation('move_right')
-		elif self.hspeed<0 and not self.gravity:
-			self.set_animation('move_left')
+		if self.hspeed > 0:
+			if not self.get_animation() == 'move_right':
+				self.set_animation('move_right')
+		elif self.hspeed<0:
+			if not self.get_animation() == 'move_left':
+				self.set_animation('move_left')
 		elif not self.gravity:
-			self.set_animation('standing')
-		#elif self.hspeed<0 and not self.gravity:
-		#	self.set_animation('move_right')
+			if not self.get_animation() == 'idle_left' and not self.get_animation() == 'idle_right':
+				if self.get_animation() == 'move_left':
+					self.set_animation('idle_left')
+				else:
+					self.set_animation('idle_right')
 		
 class Zombie(somber_engine.Active):
 	def __init__(self,somber,level,sprite,sprite_group,x=0,y=0):
@@ -94,10 +99,10 @@ class Zombie(somber_engine.Active):
 		self.pre_hspeed = 75
 		self.hspeed = self.pre_hspeed
 		
-		self.add_animation('idle_right',15,['zombiestandright.png'])
-		self.add_animation('idle_left',15,['zombiestandleft.png'])
-		self.add_animation('move_right',15,['zanimateright.png','zombiestandright.png'])
-		self.add_animation('move_left',15,['zanimateleft.png','zombiestandleft.png'])
+		self.add_animation('idle_right',15,['sprites/zombie/zombie_right_0.png'])
+		self.add_animation('idle_left',15,['sprites/zombie/zombie_left_0.png'])
+		self.add_animation('move_right',15,['sprites/zombie/zombie_right_0.png', 'sprites/zombie/zombie_right_1.png'])
+		self.add_animation('move_left',15,['sprites/zombie/zombie_left_0.png', 'sprites/zombie/zombie_left_1.png'])
 		self.set_animation('idle_right')
 		
 	def update(self):	

@@ -19,7 +19,7 @@ import os
 somber = somber_engine.Somber(name='Zombie Sunday',
 	win_size=config.WINDOW_SIZE,
 	fps=config.FPS)
-somber.set_resource_directory('sprites')
+somber.set_resource_directory('res')
 
 def callback():
 	somber.write('ProggySquare.ttf',

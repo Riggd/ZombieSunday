@@ -6,7 +6,9 @@
 #	Ryan Wiesjahn <rwiesjahn@bsu.edu>
 
 import somber as somber_engine
+from weapon import *
 
 class Bullet:
-	def __init__(self,sprite,somber):
+	def __init__(self,somber,sprite,weapon):
 		somber_engine.active.__init__(self,sprite,somber=somber)
+		self.type = weapon.type
