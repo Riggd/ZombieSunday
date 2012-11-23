@@ -289,13 +289,13 @@ class Somber:
 				sys.exit()
 			
 			elif event.type == KEYDOWN:
-				if event.key == K_UP or event.key == K_KP8:
+				if event.key == K_UP or event.key == K_KP8 or event.key == K_w:
 					self.input['up'] = True
-				elif event.key == K_DOWN or event.key == K_KP2:
+				elif event.key == K_DOWN or event.key == K_KP2 or event.key == K_s:
 					self.input['down'] = True
-				elif event.key == K_LEFT or event.key == K_KP4:
+				elif event.key == K_LEFT or event.key == K_KP4 or event.key == K_a:
 					self.input['left'] = True
-				elif event.key == K_RIGHT or event.key == K_KP6:
+				elif event.key == K_RIGHT or event.key == K_KP6 or event.key == K_d:
 					self.input['right'] = True
 				elif event.key == K_KP7:
 					self.input['upleft'] = True
@@ -311,13 +311,13 @@ class Somber:
 						entry['callback']()
 			
 			elif event.type == KEYUP:
-				if event.key == K_UP or event.key == K_KP8:
+				if event.key == K_UP or event.key == K_KP8 or event.key == K_w:
 					self.input['up'] = False
-				elif event.key == K_DOWN or event.key == K_KP2:
+				elif event.key == K_DOWN or event.key == K_KP2 or event.key == K_s:
 					self.input['down'] = False
-				elif event.key == K_LEFT or event.key == K_KP4:
+				elif event.key == K_LEFT or event.key == K_KP4 or event.key == K_a:
 					self.input['left'] = False
-				elif event.key == K_RIGHT or event.key == K_KP6:
+				elif event.key == K_RIGHT or event.key == K_KP6 or event.key == K_d:
 					self.input['right'] = False
 				elif event.key == K_KP7:
 					self.input['upleft'] = False

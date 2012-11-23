@@ -1,8 +1,8 @@
-#Author list:
-#	Luke Martin <ltmartin@bsu.edu>
-#	Michael Milkovic <mlmilkovic@bsu.edu>
-#	Derek Onay <dsonay@bsu.edu>
-#	Ryan Wiesjahn <rwiesjahn@bsu.edu>
+# Author list:
+# 	Luke Martin <ltmartin@bsu.edu>
+# 	Michael Milkovic <mlmilkovic@bsu.edu>
+# 	Derek Onay <dsonay@bsu.edu>
+# 	Ryan Wiesjahn <rwiesjahn@bsu.edu>
 
 # Testing a change. Again.
 
@@ -23,18 +23,18 @@ somber.set_resource_directory('res')
 
 def callback():
 	somber.write('ProggySquare.ttf',
-		(0,0),
-		'Camera: X=%s, Y=%s' % (somber.camera_pos[0],somber.camera_pos[1]),
-		color=(0,0,0))
+		(0, 0),
+		'Camera: X=%s, Y=%s' % (somber.camera_pos[0], somber.camera_pos[1]),
+		color=(0, 0, 0))
 	
 	somber.write('ProggySquare.ttf',
-		(0,10),
+		(0, 10),
 		'FPS: %s' % int(somber.current_fps),
-		color=(0,0,0))
+		color=(0, 0, 0))
 
-#Level setup
-somber.set_background_color((150,150,150))
-somber.add_font('ProggySquare.ttf',16)
+# Level setup
+somber.set_background_color((150, 150, 150))
+somber.add_font('ProggySquare.ttf', 16)
 TITLE_SCREEN = level.Title_Screen(somber).create_level()
 ENDLESS_LEVEL = level.Endless_Level(somber).create_level()
 

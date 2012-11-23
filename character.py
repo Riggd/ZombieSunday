@@ -1,38 +1,44 @@
-#For the handling of characters, both Player-controlled and NPCs
-#Author list:
-#	Luke Martin <ltmartin@bsu.edu>
-#	Michael Milkovic <mlmilkovic@bsu.edu>
-#	Derek Onay <dsonay@bsu.edu>
-#	Ryan Wiesjahn <rwiesjahn@bsu.edu>
+# For the handling of characters, both Player-controlled and NPCs
+# Author list:
+# 	Luke Martin <ltmartin@bsu.edu>
+# 	Michael Milkovic <mlmilkovic@bsu.edu>
+# 	Derek Onay <dsonay@bsu.edu>
+# 	Ryan Wiesjahn <rwiesjahn@bsu.edu>
 
 import somber as somber_engine
 from weapon import *
 
 class Character(somber_engine.Active):
-	def __init__(self,somber,level,sprite,sprite_group,x=0,y=0):
-		somber_engine.Active.__init__(self,sprite,somber=somber,pos=(x,y))
+	def __init__(self, somber, level, sprite, sprite_group, x=0, y=0):
+		somber_engine.Active.__init__(self, sprite, somber=somber, pos=(x, y))
 		self.somber = somber
 		self.level = level
 		self.sprite_group = sprite_group
 		self.hspeed_max_default = 300
 		self.climb_speed = 100
-		level.add_object(self,sprite_group)
+		self.direction = 1
+		level.add_object(self, sprite_group)
 		
 		self.climbing = False
-		self.add_animation('idle_right',15,['sprites/player/player_right_0.png'])
-		self.add_animation('idle_left',15,['sprites/player/player_left_0.png'])
-		self.add_animation('move_right',15,['sprites/player/player_right_0.png', 'sprites/player/player_right_1.png'])
-		self.add_animation('move_left',15,['sprites/player/player_left_0.png', 'sprites/player/player_left_1.png'])
+		self.add_animation('idle_right', 15, ['sprites/player/player_right_0.png'])
+		self.add_animation('idle_left', 15, ['sprites/player/player_left_0.png'])
+		self.add_animation('move_right', 15, ['sprites/player/player_right_0.png', 'sprites/player/player_right_1.png'])
+		self.add_animation('move_left', 15, ['sprites/player/player_left_0.png', 'sprites/player/player_left_1.png'])
 		self.set_animation('idle_right')
 		
-		self.weapon = Weapon()
+		self.weapon = Weapon(somber, self)
 	
 	def update(self):
+		self.change_direction()
 		self.check_climbing()
 		self.collision()
 		self.animate()
+		# self.fire()
 		
 		somber_engine.Active.update(self)
+		
+	def fire(self, button):
+		self.weapon.fire()
 		
 	def check_climbing(self):
 		if self.collides_with_group(self.level.get_sprite_group('ladders')):
@@ -73,11 +79,17 @@ class Character(somber_engine.Active):
 		else:
 			self.gravity = 0
 			
+	def change_direction(self):
+		if self.hspeed > 0:
+			self.direction = 1
+		if self.hspeed < 0:
+			self.direction = 0
+			
 	def animate(self):
 		if self.hspeed > 0:
 			if not self.get_animation() == 'move_right':
 				self.set_animation('move_right')
-		elif self.hspeed<0:
+		elif self.hspeed < 0:
 			if not self.get_animation() == 'move_left':
 				self.set_animation('move_left')
 		elif not self.gravity:
@@ -88,21 +100,21 @@ class Character(somber_engine.Active):
 					self.set_animation('idle_right')
 		
 class Zombie(somber_engine.Active):
-	def __init__(self,somber,level,sprite,sprite_group,x=0,y=0):
-		somber_engine.Active.__init__(self,sprite,somber=somber,pos=(x,y))
+	def __init__(self, somber, level, sprite, sprite_group, x=0, y=0):
+		somber_engine.Active.__init__(self, sprite, somber=somber, pos=(x, y))
 		self.somber = somber
 		self.level = level
 		self.sprite_group = sprite_group
-		level.add_object(self,sprite_group)
+		level.add_object(self, sprite_group)
 		
 		self.direction = 1
 		self.pre_hspeed = 75
 		self.hspeed = self.pre_hspeed
 		
-		self.add_animation('idle_right',15,['sprites/zombie/zombie_right_0.png'])
-		self.add_animation('idle_left',15,['sprites/zombie/zombie_left_0.png'])
-		self.add_animation('move_right',15,['sprites/zombie/zombie_right_0.png', 'sprites/zombie/zombie_right_1.png'])
-		self.add_animation('move_left',15,['sprites/zombie/zombie_left_0.png', 'sprites/zombie/zombie_left_1.png'])
+		self.add_animation('idle_right', 15, ['sprites/zombie/zombie_right_0.png'])
+		self.add_animation('idle_left', 15, ['sprites/zombie/zombie_left_0.png'])
+		self.add_animation('move_right', 15, ['sprites/zombie/zombie_right_0.png', 'sprites/zombie/zombie_right_1.png'])
+		self.add_animation('move_left', 15, ['sprites/zombie/zombie_left_0.png', 'sprites/zombie/zombie_left_1.png'])
 		self.set_animation('idle_right')
 		
 	def update(self):	
@@ -141,7 +153,7 @@ class Zombie(somber_engine.Active):
 		if self.hspeed > 0:
 			if not self.get_animation() == 'move_right':
 				self.set_animation('move_right')
-		elif self.hspeed<0:
+		elif self.hspeed < 0:
 			if not self.get_animation() == 'move_left':
 				self.set_animation('move_left')
 		elif not self.gravity:

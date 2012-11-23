@@ -1,16 +1,19 @@
-#Handles weapons (duh)
-#Author list:
-#	Luke Martin <ltmartin@bsu.edu>
-#	Michael Milkovic <mlmilkovic@bsu.edu>
-#	Derek Onay <dsonay@bsu.edu>
-#	Ryan Wiesjahn <rwiesjahn@bsu.edu>
+# Handles weapons (duh)
+# Author list:
+# 	Luke Martin <ltmartin@bsu.edu>
+# 	Michael Milkovic <mlmilkovic@bsu.edu>
+# 	Derek Onay <dsonay@bsu.edu>
+# 	Ryan Wiesjahn <rwiesjahn@bsu.edu>
 
 import somber as somber_engine
+from bullet import *
 
 class Weapon:
-	def __init__(self, attachments = [None, None]):
+	def __init__(self, somber, character, attachments=[None, None]):
+		self.somber = somber
 		self.attachments = attachments
 		self.type = WeaponType.Default
+		self.character = character
 		
 		if attachments.count(Attachment.Multi) == 1:
 			if attachments.count(Attachment.Fire) == 1:
@@ -50,6 +53,12 @@ class Weapon:
 		
 		elif attachments.count(Attachment.Force) == 2:
 			self.type = WeaponType.ForceForce
+	
+	def fire(self):
+		x = self.character.pos[0] + (self.character.sprite.get_width() * self.character.direction)
+		y = self.character.pos[1] + (self.character.sprite.get_height() / 2)
+		if self.type == WeaponType.Default:
+			Bullet(self.somber, self.character, x, y)
 
 class WeaponType:
 	Default, Multi, MultiMulti, MultiFire, MultiLob, MultiForce, Fire, FireFire, FireLob, FireForce, Lob, LobLob, LobForce, Force, ForceForce = range(15)
