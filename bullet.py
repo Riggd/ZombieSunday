@@ -12,7 +12,7 @@ class Bullet(somber_engine.Active):
 	def __init__(self, somber, character, x=0, y=0):
 		sprite = 'sprites/bullets/bullet_default.png'
 		somber_engine.Active.__init__(self, sprite, somber=somber, pos=(x, y))
-		character.level.add_object(self, 'player')
+		character.level.add_object(self, 'bullets')
 		self.hspeed = 600
 		
 		if character.direction == 0:

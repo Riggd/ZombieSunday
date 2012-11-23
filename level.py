@@ -85,6 +85,7 @@ class Endless_Level(somber_engine.Level):
 		self.create_sprite_group('ladders')
 		self.create_sprite_group('buildings')
 		self.create_sprite_group('player')
+		self.create_sprite_group('bullets')
 		self.create_sprite_group('zombies')
 		self.create_sprite_group('ui')
 		
