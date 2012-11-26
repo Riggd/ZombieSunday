@@ -17,6 +17,8 @@ class Character(somber_engine.Active):
 		self.hspeed_max_default = 300
 		self.climb_speed = 100
 		self.direction = 1
+		self.health = [1, 100]
+		self.health[0] = self.health[1]
 		level.add_object(self, sprite_group)
 		
 		self.climbing = False
@@ -107,6 +109,8 @@ class Zombie(somber_engine.Active):
 		self.sprite_group = sprite_group
 		level.add_object(self, sprite_group)
 		
+		self.health = [1, 100]
+		self.health[0] = self.health[1]
 		self.direction = 1
 		self.pre_hspeed = 75
 		self.hspeed = self.pre_hspeed
@@ -121,6 +125,7 @@ class Zombie(somber_engine.Active):
 		self.change_speed()
 		self.collision()
 		self.animate()
+		self.die()
 
 		somber_engine.Active.update(self)
 		
@@ -136,7 +141,7 @@ class Zombie(somber_engine.Active):
 					self.direction = 0
 				self.direction = 1
 
-		self.hspeed = self.direction * self.pre_hspeed
+		self.hspeed = self.direction * self.pre_hspeed			
 			
 	def collision(self):
 		if self.pos[0] < 0:
@@ -162,3 +167,6 @@ class Zombie(somber_engine.Active):
 					self.set_animation('idle_left')
 				else:
 					self.set_animation('idle_right')
+	def die(self):
+		if self.health[0] <= 0:
+			self.kill()
