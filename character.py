@@ -39,7 +39,7 @@ class Character(somber_engine.Active):
 		
 		somber_engine.Active.update(self)
 		
-	def fire(self, button):
+	def fire(self):
 		self.weapon.fire()
 		
 	def check_climbing(self):
