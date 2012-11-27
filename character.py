@@ -45,8 +45,6 @@ class Character(somber_engine.Active):
 			self.fire_timer += self.delta_speed
 		
 	def fire(self):
-		self.weapon.fire()
-	
 		if self.fire_timer >= self.weapon.rate:
 			self.weapon.fire()
 			self.fire_timer = 0
