@@ -14,6 +14,7 @@ class Weapon:
 		self.attachments = attachments
 		self.type = WeaponType.Default
 		self.character = character
+		self.rate = 1
 		
 		if attachments.count(Attachment.Multi) == 1:
 			if attachments.count(Attachment.Fire) == 1:
@@ -58,11 +59,14 @@ class Weapon:
 		if self.type == WeaponType.Default:
 			Bullet(self.somber, self.character)
 		elif self.type == WeaponType.Multi:
-			MultiBullet(self.somber, self.character)
-			MultiBullet(self.somber, self.character, x_offset=40, y_offset=-40)
-			MultiBullet(self.somber, self.character, x_offset=80, y_offset=-80)
+			Bullet(self.somber, self.character)
+			Bullet(self.somber, self.character, x_offset=40, y_offset= -40)
+			Bullet(self.somber, self.character, x_offset=80, y_offset= -80)
 		elif self.type == WeaponType.MultiMulti:
-			MultiMultiBullet(self.somber, self.character)
+			Bullet(self.somber, self.character)
+			Bullet(self.somber, self.character, x_offset=40, y_offset= -40)
+			Bullet(self.somber, self.character, x_offset=-100, direction= -1)
+			Bullet(self.somber, self.character, x_offset=-140, y_offset= -40, direction= -1)
 		elif self.type == WeaponType.MultiFire:
 			MultiFireBullet(self.somber, self.character)
 		elif self.type == WeaponType.MultiLob:

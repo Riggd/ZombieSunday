@@ -19,6 +19,7 @@ class Character(somber_engine.Active):
 		self.direction = 1
 		self.health = [1, 100]
 		self.health[0] = self.health[1]
+		self.fire_timer = 1
 		level.add_object(self, sprite_group)
 		
 		self.climbing = False
@@ -28,20 +29,28 @@ class Character(somber_engine.Active):
 		self.add_animation('move_left', 15, ['sprites/player/player_left_0.png', 'sprites/player/player_left_1.png'])
 		self.set_animation('idle_right')
 		
-		self.weapon = Weapon(somber, self, [None, None])
+		self.weapon = Weapon(somber, self, [Attachment.Multi, Attachment.Multi])
 	
 	def update(self):
 		self.change_direction()
 		self.check_climbing()
 		self.collision()
 		self.animate()
-		# self.fire()
+		self.weapon_timer()
 		
 		somber_engine.Active.update(self)
+		
+	def weapon_timer(self):
+		if self.fire_timer < self.weapon.rate:
+			self.fire_timer += self.delta_speed
 		
 	def fire(self):
 		self.weapon.fire()
 	
+		if self.fire_timer >= self.weapon.rate:
+			self.weapon.fire()
+			self.fire_timer = 0
+
 	def flip(self):
 		self.flip_horizontally()
 		
