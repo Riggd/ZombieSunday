@@ -14,6 +14,7 @@ class Weapon:
 		self.attachments = attachments
 		self.type = WeaponType.Default
 		self.character = character
+		self.rate = 1
 		
 		if attachments.count(Attachment.Multi) == 1:
 			if attachments.count(Attachment.Fire) == 1:

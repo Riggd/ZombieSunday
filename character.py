@@ -19,6 +19,7 @@ class Character(somber_engine.Active):
 		self.direction = 1
 		self.health = [1, 100]
 		self.health[0] = self.health[1]
+		self.fire_timer = 1
 		level.add_object(self, sprite_group)
 		
 		self.climbing = False
@@ -35,12 +36,18 @@ class Character(somber_engine.Active):
 		self.check_climbing()
 		self.collision()
 		self.animate()
-		# self.fire()
+		self.weapon_timer()
 		
 		somber_engine.Active.update(self)
 		
+	def weapon_timer(self):
+		if self.fire_timer < self.weapon.rate:
+			self.fire_timer += self.delta_speed
+		
 	def fire(self):
-		self.weapon.fire()
+		if self.fire_timer >= self.weapon.rate:
+			self.weapon.fire()
+			self.fire_timer = 0
 		
 	def check_climbing(self):
 		if self.collides_with_group(self.level.get_sprite_group('ladders')):
