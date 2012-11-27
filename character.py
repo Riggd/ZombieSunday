@@ -28,7 +28,7 @@ class Character(somber_engine.Active):
 		self.add_animation('move_left', 15, ['sprites/player/player_left_0.png', 'sprites/player/player_left_1.png'])
 		self.set_animation('idle_right')
 		
-		self.weapon = Weapon(somber, self, [None, None])
+		self.weapon = Weapon(somber, self, [Attachment.Multi, Attachment.Multi])
 	
 	def update(self):
 		self.change_direction()
