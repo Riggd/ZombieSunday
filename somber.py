@@ -309,6 +309,8 @@ class Somber:
 				for entry in self.keybinds:
 					if len(entry['key'])==1 and ord(entry['key']) == event.key:
 						entry['callback']()
+					elif len(entry['key'])==1 and entry['key'] == chr(event.key):
+						entry['callback']()
 			
 			elif event.type == KEYUP:
 				if event.key == K_UP or event.key == K_KP8 or event.key == K_w:
