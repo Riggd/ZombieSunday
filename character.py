@@ -41,6 +41,9 @@ class Character(somber_engine.Active):
 		
 	def fire(self):
 		self.weapon.fire()
+	
+	def flip(self):
+		self.flip_horizontally()
 		
 	def check_climbing(self):
 		if self.collides_with_group(self.level.get_sprite_group('ladders')):

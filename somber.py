@@ -217,8 +217,10 @@ class Somber:
 		
 		return _ret
 	
-	def bind_key(self,key,callback):
-		self.keybinds.append({'key':key,'callback':callback})
+	def bind_key(self,key,callback,repeat=False):
+		self.keybinds.append({'key': key,
+			'callback': callback,
+			'repeat': repeat})
 	
 	def make_rect(self,x,y,w,h):
 		return pygame.Rect(x,y,w,h)
@@ -356,6 +358,9 @@ class Somber:
 			if not self.input[entry['key']]:
 				continue
 			
+			if not entry['repeat']:
+				self.input[entry['key']] = False
+			
 			entry['callback']()
 		#for entry in self.keybinds:
 			#if len(entry['key'])==1 and ord(entry['key']) == event.key:
@@ -479,6 +484,10 @@ class General(pygame.sprite.Sprite):
 		self.image1 = self.image.copy()
 		self.image1.set_alpha(val)
 		self.image.blit(self.image1,(0,0))
+	
+	def flip_horizontally(self):
+		self.image = pygame.transform.flip(self.sprite,True,False)
+		self.image.blit(self.image,(0,0))
 	
 	def set_pos(self,pos,set_start=False):
 		self.rect.topleft = list(pos)
