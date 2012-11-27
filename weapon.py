@@ -55,10 +55,22 @@ class Weapon:
 			self.type = WeaponType.ForceForce
 	
 	def fire(self):
-		x = self.character.pos[0] + (self.character.sprite.get_width() * self.character.direction)
-		y = self.character.pos[1] + (self.character.sprite.get_height() / 2)
 		if self.type == WeaponType.Default:
-			Bullet(self.somber, self.character, x, y)
+			Bullet(self.somber, self.character)
+		elif self.type == WeaponType.Multi:
+			MultiBullet(self.somber, self.character)
+			MultiBullet(self.somber, self.character, x_offset=40, y_offset=-40)
+			MultiBullet(self.somber, self.character, x_offset=80, y_offset=-80)
+		elif self.type == WeaponType.MultiMulti:
+			MultiMultiBullet(self.somber, self.character)
+		elif self.type == WeaponType.MultiFire:
+			MultiFireBullet(self.somber, self.character)
+		elif self.type == WeaponType.MultiLob:
+			MultiLobBullet(self.somber, self.character)
+		elif self.type == WeaponType.MultiForce:
+			MultiForceBullet(self.somber, self.character)
+		elif self.type == WeaponType.Fire:
+			FireBullet(self.somber, self.character)
 
 class WeaponType:
 	Default, Multi, MultiMulti, MultiFire, MultiLob, MultiForce, Fire, FireFire, FireLob, FireForce, Lob, LobLob, LobForce, Force, ForceForce = range(15)
