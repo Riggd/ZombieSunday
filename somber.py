@@ -131,7 +131,13 @@ class Somber:
 		self.input = {'up':False,
 			'down':False,
 			'left':False,
-			'right':False}
+			'right':False,
+			'm1': False,
+			'm2': False}
+		
+		for i in range(256):
+			self.input[chr(i)] = False
+		
 		self.mouse_pos = (0,0)
 		self.camera_pos = [0,0]
 		self.camera_follows = None
@@ -307,11 +313,12 @@ class Somber:
 					self.input['downright'] = True
 				
 				for entry in self.keybinds:
-					if len(entry['key'])==1 and ord(entry['key']) == event.key:
-						entry['callback']()
-					elif len(entry['key'])==1 and entry['key'] == chr(event.key):
-						entry['callback']()
-			
+					if not len(entry['key']) == 1:
+						continue
+					
+					if ord(entry['key']) == int(unicode(event.key)):
+						self.input[entry['key']] = True
+				
 			elif event.type == KEYUP:
 				if event.key == K_UP or event.key == K_KP8 or event.key == K_w:
 					self.input['up'] = False
@@ -329,6 +336,13 @@ class Somber:
 					self.input['downleft'] = False
 				elif event.key == K_KP3:
 					self.input['downright'] = False
+				
+				for entry in self.keybinds:
+					if not len(entry['key']) == 1:
+						continue
+					
+					if ord(entry['key']) == int(unicode(event.key)):
+						self.input[entry['key']] = False
 			
 			elif event.type == MOUSEMOTION:
 				self.mouse_pos = tuple(event.pos)
@@ -337,6 +351,21 @@ class Somber:
 				for entry in self.keybinds:
 					if entry['key']=='m1':
 						entry['callback'](event.button)
+		
+		for entry in self.keybinds:
+			if not self.input[entry['key']]:
+				continue
+			
+			entry['callback']()
+		#for entry in self.keybinds:
+			#if len(entry['key'])==1 and ord(entry['key']) == event.key:
+				#entry['callback']()
+			#else:
+				#try:
+					#if len(entry['key'])==1 and entry['key'] == chr(event.key):
+						#entry['callback']()
+				#except ValueError:
+					#logging.warning('Inputs broken. Fix soon!')
 	
 	def run(self,callback):	
 		while self.state=='running':
