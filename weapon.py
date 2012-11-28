@@ -14,22 +14,22 @@ class Weapon:
 		self.attachments = attachments
 		self.type = WeaponType.Default
 		self.character = character
-		self.fire_bullet = False
-		self.firing = False
+		self.ammo = [0, 50]
+		self.ammo[0] = self.ammo[1]
 		self.rate = .5
 		
-		if attachments.count(Attachment.Multi) == 1:
+		if attachments.count(Attachment.Speed) == 1:
 			if attachments.count(Attachment.Fire) == 1:
-				self.type = WeaponType.MultiFire
+				self.type = WeaponType.SpeedFire
 				self.rate = 1
 			elif attachments.count(Attachment.Lob) == 1:
-				self.type = WeaponType.MultiLob
+				self.type = WeaponType.SpeedLob
 				self.rate = 2
 			elif attachments.count(Attachment.Force) == 1:
-				self.type = WeaponType.MultiForce
+				self.type = WeaponType.SpeedForce
 				self.rate = 2
 			else:
-				self.type = WeaponType.Multi
+				self.type = WeaponType.Speed
 				self.rate = 1
 	
 		elif attachments.count(Attachment.Fire) == 1:
@@ -55,8 +55,8 @@ class Weapon:
 				self.type = WeaponType.Force
 				self.rate = 1.5
 		
-		elif attachments.count(Attachment.Multi) == 2:
-			self.type = WeaponType.MultiMulti
+		elif attachments.count(Attachment.Speed) == 2:
+			self.type = WeaponType.SpeedSpeed
 			self.rate = 2
 		
 		elif attachments.count(Attachment.Fire) == 2:
@@ -88,25 +88,18 @@ class Weapon:
 	
 	def create_bullet(self):
 		if self.type == WeaponType.Default:
-			Bullet(self.somber, self.character)
-		elif self.type == WeaponType.Multi:
-			Bullet(self.somber, self.character)
-			Bullet(self.somber, self.character, x_offset=40, y_offset= -40)
-			Bullet(self.somber, self.character, x_offset=80, y_offset= -80)
+			DefaultBullet(self.somber)
+		elif self.type == WeaponType.Speed:
+			DefaultBullet(self.somber)
 		elif self.type == WeaponType.Fire:
-			FireBullet(self.somber, self.character)
+			FireBullet(self.somber)
 		elif self.type == WeaponType.Lob:
-			LobBullet(self.somber, self.character)
+			LobBullet(self.somber)
 		elif self.type == WeaponType.Force:
-			ForceBullet(self.somber, self.character)
-		elif self.type == WeaponType.MultiMulti:
-			Bullet(self.somber, self.character)
-			Bullet(self.somber, self.character, x_offset=40, y_offset= -40)
-			Bullet(self.somber, self.character, x_offset= -100, direction= -1)
-			Bullet(self.somber, self.character, x_offset= -140, y_offset= -40, direction= -1)
+			ForceBullet(self.somber)
 
 class WeaponType:
-	Default, Multi, MultiMulti, MultiFire, MultiLob, MultiForce, Fire, FireFire, FireLob, FireForce, Lob, LobLob, LobForce, Force, ForceForce = range(15)
+	Default, Speed, SpeedSpeed, SpeedFire, SpeedLob, SpeedForce, Fire, FireFire, FireLob, FireForce, Lob, LobLob, LobForce, Force, ForceForce = range(15)
 
 class Attachment:
-	Multi, Fire, Lob, Force = range(4)
+	Speed, Fire, Lob, Force = range(4)
