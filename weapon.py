@@ -98,7 +98,7 @@ class Weapon:
 		elif self.type == WeaponType.Lob:
 			LobBullet(self.somber, self.character)
 		elif self.type == WeaponType.Force:
-			FoceBullet(self.somber, self.character)
+			ForceBullet(self.somber, self.character)
 		elif self.type == WeaponType.MultiMulti:
 			Bullet(self.somber, self.character)
 			Bullet(self.somber, self.character, x_offset=40, y_offset= -40)
