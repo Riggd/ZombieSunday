@@ -108,7 +108,7 @@ class FireBullet(somber_engine.Active):
 
 class ForceBullet(somber_engine.Active):
 	def __init__(self, somber, character, x_offset=0, y_offset=0, direction=1):
-		sprite = 'sprites/bullets/bullet_default.png'
+		sprite = 'sprites/bullets/bullet_force.png'
 		x = x_offset + character.pos[0] + (character.sprite.get_width() * character.direction)
 		y = y_offset + character.pos[1] + (character.sprite.get_height() / 2)
 		somber_engine.Active.__init__(self, sprite, somber=somber, pos=(x, y))
