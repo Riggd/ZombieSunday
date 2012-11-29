@@ -7,6 +7,7 @@
 
 import somber as somber_engine
 from weapon import *
+import config
 
 class Entity(somber_engine.Active):
 	def __init__(self, somber, level, sprite, sprite_group, x=0, y=0):
@@ -32,7 +33,7 @@ class Entity(somber_engine.Active):
 				self.vspeed = 0
 			self.gravity = 0
 		else:
-			self.gravity = 3
+			self.gravity = config.ENTITY_GRAVITY
 	
 	def animate(self):
 		if self.hspeed > 0:
@@ -86,7 +87,7 @@ class Character(Entity):
 	def change_attachment_1(self):
 		attachment = self.weapon.attachments[0]
 		if attachment == None:
-			attachment = 1
+			attachment = 0
 		else:
 			attachment += 1
 		if attachment > 3:
@@ -97,7 +98,7 @@ class Character(Entity):
 	def change_attachment_2(self):
 		attachment = self.weapon.attachments[1]
 		if attachment == None:
-			attachment = 1
+			attachment = 0
 		else:
 			attachment += 1
 		if attachment > 3:
