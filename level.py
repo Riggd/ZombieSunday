@@ -8,7 +8,7 @@
 import somber as somber_engine
 import random
 import ui
-from character import *
+from entity import *
 
 class Title_Screen(somber_engine.Level):
 	def __init__(self, somber):
@@ -114,7 +114,6 @@ class Endless_Level(somber_engine.Level):
 			
 		
 		self.level = self
-		
 		self.setup()
 		
 		return self
@@ -125,8 +124,6 @@ class Endless_Level(somber_engine.Level):
 		self.player.vspeed_max = 30
 		self.player.gravity = 3
 		self.player.set_movement('horizontal')
-		
-		self.somber.bind_key(' ', self.player.weapon.fire, repeat=True)
 
 		for group in self.level.sprite_groups:
 			for sprite in group['group']:

@@ -8,85 +8,39 @@
 import somber as somber_engine
 from weapon import *
 
-class Character(somber_engine.Active):
+class Entity(somber_engine.Active):
 	def __init__(self, somber, level, sprite, sprite_group, x=0, y=0):
 		somber_engine.Active.__init__(self, sprite, somber=somber, pos=(x, y))
+		level.add_object(self, sprite_group)
 		self.somber = somber
 		self.level = level
 		self.sprite_group = sprite_group
-		self.hspeed_max_default = 300
-		self.climb_speed = 100
+		self.hspeed_max = 100
 		self.direction = 1
 		self.health = [1, 100]
 		self.health[0] = self.health[1]
-		level.add_object(self, sprite_group)
-		
-		self.climbing = False
-		self.add_animation('idle_right', 15, ['sprites/player/player_right_0.png'])
-		self.add_animation('idle_left', 15, ['sprites/player/player_left_0.png'])
-		self.add_animation('move_right', 15, ['sprites/player/player_right_0.png', 'sprites/player/player_right_1.png'])
-		self.add_animation('move_left', 15, ['sprites/player/player_left_0.png', 'sprites/player/player_left_1.png'])
-		self.set_animation('idle_right')
-		
-		self.weapon = Weapon(somber, self, [Attachment.Force, None])
-		
-		self.somber.bind_key('-', self.change_attachment_1)
-		self.somber.bind_key('=', self.change_attachment_2)
 	
 	def update(self):
 		self.change_direction()
-		self.check_climbing()
 		self.collision()
 		self.animate()
-		self.weapon.update(self.delta_speed)
-		
+		self.die()
 		somber_engine.Active.update(self)
-		
-	def check_climbing(self):
-		if self.collides_with_group(self.level.get_sprite_group('ladders')):
-			if self.somber.input['up']:
-				self.climbing = True
-				self.vspeed = -self.climb_speed
-			elif self.somber.input['down']:
-				self.climbing = True
-				self.vspeed = self.climb_speed
-			else:
-				self.vspeed = 0
-		else:
-			self.climbing = False
-			self.gravity = 3
-			
-		if self.collides_with_group_at('ground', (self.rect.bottomleft[0], self.rect.bottomleft[1])):
-			self.climbing = False
-			
-		if self.climbing:				
-			self.hspeed_max = 0
-		else:
-			self.hspeed_max = self.hspeed_max_default
-		
+	
 	def collision(self):
 		if self.pos[0] < 0:
 			self.pos[0] = 0
-		
-		if self.pos[0] > self.level.ground_size * (self.level.level_size - 1):
-			self.pos[0] = self.level.ground_size * (self.level.level_size - 1)
 			
-		if not self.climbing:
-			if self.collides_with_group(self.level.get_sprite_group('ground')):
-				if self.vspeed > 0:
-					self.vspeed = 0
-				self.gravity = 0
-			else:
-				self.gravity = 3
-		else:
+		if self.collides_with_group(self.level.get_sprite_group('ground')):
+			if self.vspeed > 0:
+				self.vspeed = 0
 			self.gravity = 0
+		else:
+			self.gravity = 3
 			
 	def change_direction(self):
-		if self.hspeed > 0:
-			self.direction = 1
-		if self.hspeed < 0:
-			self.direction = 0
-			
+		pass
+	
 	def animate(self):
 		if self.hspeed > 0:
 			if not self.get_animation() == 'move_right':
@@ -100,6 +54,41 @@ class Character(somber_engine.Active):
 					self.set_animation('idle_left')
 				else:
 					self.set_animation('idle_right')
+	
+	def die(self):
+		pass
+
+class Character(Entity):
+	def __init__(self, somber, level, sprite, sprite_group, x=0, y=0):
+		Entity.__init__(self, somber, level, sprite, sprite_group, x, y)
+		self.weapon = Weapon(somber, self, [Attachment.Force, None])
+		self.hspeed_max = 1000
+		
+		self.add_animation('idle_right', 15, ['sprites/player/player_right_0.png'])
+		self.add_animation('idle_left', 15, ['sprites/player/player_left_0.png'])
+		self.add_animation('move_right', 15, ['sprites/player/player_right_0.png', 'sprites/player/player_right_1.png'])
+		self.add_animation('move_left', 15, ['sprites/player/player_left_0.png', 'sprites/player/player_left_1.png'])
+		self.set_animation('idle_right')
+		
+		self.somber.bind_key(' ', self.weapon.fire, repeat=True)
+		self.somber.bind_key('-', self.change_attachment_1)
+		self.somber.bind_key('=', self.change_attachment_2)
+	
+	def update(self):
+		self.weapon.update(self.delta_speed)
+		Entity.update(self)
+		
+	def collision(self):
+		Entity.collision(self)
+		
+		if self.pos[0] > self.level.ground_size * (self.level.level_size - 1):
+			self.pos[0] = self.level.ground_size * (self.level.level_size - 1)
+			
+	def change_direction(self):
+		if self.hspeed > 0:
+			self.direction = 1
+		if self.hspeed < 0:
+			self.direction = 0
 					
 	def change_attachment_1(self):
 		attachment = self.weapon.attachments[0]
@@ -123,23 +112,16 @@ class Character(somber_engine.Active):
 		self.weapon.attachments[1] = attachment
 		self.weapon.set_weapon_type()
 		
-class Zombie(somber_engine.Active):
+class Zombie(Entity):
 	def __init__(self, somber, level, sprite, sprite_group, x=0, y=0):
-		somber_engine.Active.__init__(self, sprite, somber=somber, pos=(x, y))
-		self.somber = somber
-		self.level = level
-		self.sprite_group = sprite_group
-		level.add_object(self, sprite_group)
+		Entity.__init__(self, somber, level, sprite, sprite_group, x, y)
+		self.pre_hspeed = 100
+		self.hspeed = self.pre_hspeed
 		
+		# Effects
 		self.push_speed = 0
 		self.push_timer = 0
 		self.push_duration = 0
-		
-		self.health = [1, 100]
-		self.health[0] = self.health[1]
-		self.direction = 1
-		self.pre_hspeed = 75
-		self.hspeed = self.pre_hspeed
 		
 		self.add_animation('idle_right', 15, ['sprites/zombie/zombie_right_0.png'])
 		self.add_animation('idle_left', 15, ['sprites/zombie/zombie_left_0.png'])
@@ -148,15 +130,10 @@ class Zombie(somber_engine.Active):
 		self.set_animation('idle_right')
 		
 	def update(self):	
-		self.change_speed()
-		self.collision()
 		self.effects()
-		self.animate()
-		self.die()
-
-		somber_engine.Active.update(self)
+		Entity.update(self)
 		
-	def change_speed(self):
+	def change_direction(self):
 		for player in self.level.get_sprite_group('player'):
 			if self.pos[0] > player.pos[0]:
 				if self.pos[0] < player.pos[0] + player.sprite.get_width():
@@ -169,31 +146,6 @@ class Zombie(somber_engine.Active):
 				self.direction = 1
 
 		self.hspeed = self.direction * self.pre_hspeed			
-			
-	def collision(self):
-		if self.pos[0] < 0:
-			self.pos[0] = 0
-			
-		if self.collides_with_group(self.level.get_sprite_group('ground')):
-			if self.vspeed > 0:
-				self.vspeed = 0
-			self.gravity = 0
-		else:
-			self.gravity = 3
-		
-	def animate(self):
-		if self.hspeed > 0:
-			if not self.get_animation() == 'move_right':
-				self.set_animation('move_right')
-		elif self.hspeed < 0:
-			if not self.get_animation() == 'move_left':
-				self.set_animation('move_left')
-		elif not self.gravity:
-			if not self.get_animation() == 'idle_left' and not self.get_animation() == 'idle_right':
-				if self.get_animation() == 'move_left':
-					self.set_animation('idle_left')
-				else:
-					self.set_animation('idle_right')
 					
 	def effects(self):
 		if self.push_speed != 0:
