@@ -127,13 +127,13 @@ class Endless_Level(somber_engine.Level):
 		self.player.vspeed_max = 30
 		self.player.gravity = 3
 		self.player.set_movement('horizontal')
+		
+		DefaultItem(self.somber, self.level, x=500, y=490)
 
 		for group in self.level.sprite_groups:
 			for sprite in group['group']:
 				if group['name'] == 'clouds':
 					sprite.hspeed = -(random.randint(2, 6) * 8)
-					
-		Item(self.somber, x=200, y=340)
 	
 	def on_change_to(self):
 		self.somber.camera_follow(self.player)

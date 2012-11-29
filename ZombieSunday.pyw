@@ -6,6 +6,7 @@
 
 import somber as somber_engine
 from entity import *
+from items import *
 import weapon
 import bullet
 import config
