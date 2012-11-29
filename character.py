@@ -29,6 +29,9 @@ class Character(somber_engine.Active):
 		self.set_animation('idle_right')
 		
 		self.weapon = Weapon(somber, self, [Attachment.Force, None])
+		
+		self.somber.bind_key('-', self.change_attachment_1)
+		self.somber.bind_key('=', self.change_attachment_2)
 	
 	def update(self):
 		self.change_direction()
@@ -97,6 +100,28 @@ class Character(somber_engine.Active):
 					self.set_animation('idle_left')
 				else:
 					self.set_animation('idle_right')
+					
+	def change_attachment_1(self):
+		attachment = self.weapon.attachments[0]
+		if attachment == None:
+			attachment = 1
+		else:
+			attachment += 1
+		if attachment > 3:
+			attachment = None
+		self.weapon.attachments[0] = attachment
+		self.weapon.set_weapon_type()
+			
+	def change_attachment_2(self):
+		attachment = self.weapon.attachments[1]
+		if attachment == None:
+			attachment = 1
+		else:
+			attachment += 1
+		if attachment > 3:
+			attachment = None
+		self.weapon.attachments[1] = attachment
+		self.weapon.set_weapon_type()
 		
 class Zombie(somber_engine.Active):
 	def __init__(self, somber, level, sprite, sprite_group, x=0, y=0):

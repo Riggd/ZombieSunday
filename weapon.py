@@ -16,60 +16,68 @@ class Weapon:
 		self.character = character
 		self.ammo = [0, 50]
 		self.ammo[0] = self.ammo[1]
-		self.rate = .5
+		self.rate = 0
+		self.timer = self.rate
 		
-		if attachments.count(Attachment.Speed) == 1:
-			if attachments.count(Attachment.Fire) == 1:
+		self.set_weapon_type()
+	
+	def set_weapon_type(self):
+		if self.attachments.count(Attachment.Speed) == 1:
+			if self.attachments.count(Attachment.Fire) == 1:
 				self.type = WeaponType.SpeedFire
 				self.rate = 1
-			elif attachments.count(Attachment.Lob) == 1:
+			elif self.attachments.count(Attachment.Lob) == 1:
 				self.type = WeaponType.SpeedLob
 				self.rate = 2
-			elif attachments.count(Attachment.Force) == 1:
+			elif self.attachments.count(Attachment.Force) == 1:
 				self.type = WeaponType.SpeedForce
 				self.rate = 2
 			else:
 				self.type = WeaponType.Speed
 				self.rate = .2
 	
-		elif attachments.count(Attachment.Fire) == 1:
-			if attachments.count(Attachment.Lob) == 1:
+		elif self.attachments.count(Attachment.Fire) == 1:
+			if self.attachments.count(Attachment.Lob) == 1:
 				self.type = WeaponType.FireLob
 				self.rate = 2.5
-			elif attachments.count(Attachment.Force) == 1:
+			elif self.attachments.count(Attachment.Force) == 1:
 				self.type = WeaponType.FireForce
 				self.rate = 2
 			else:
 				self.type = WeaponType.Fire
 				self.rate = 3
 		
-		elif attachments.count(Attachment.Lob) == 1:
-			if attachments.count(Attachment.Force) == 1:
+		elif self.attachments.count(Attachment.Lob) == 1:
+			if self.attachments.count(Attachment.Force) == 1:
 				self.type = WeaponType.LobForce
 				self.rate = 2
 			else:
 				self.type = WeaponType.Lob
 				self.rate = 2
 				
-		elif attachments.count(Attachment.Force) == 1:
+		elif self.attachments.count(Attachment.Force) == 1:
 				self.type = WeaponType.Force
 				self.rate = 1.5
 		
-		elif attachments.count(Attachment.Speed) == 2:
+		elif self.attachments.count(Attachment.Speed) == 2:
 			self.type = WeaponType.SpeedSpeed
 			self.rate = 2
 		
-		elif attachments.count(Attachment.Fire) == 2:
+		elif self.attachments.count(Attachment.Fire) == 2:
 			self.type = WeaponType.FireFire
 			self.rate = -1
 		
-		elif attachments.count(Attachment.Lob) == 2:
+		elif self.attachments.count(Attachment.Lob) == 2:
 			self.type = WeaponType.LobLob
 			self.rate = 3
 		
-		elif attachments.count(Attachment.Force) == 2:
+		elif self.attachments.count(Attachment.Force) == 2:
 			self.type = WeaponType.ForceForce
 			self.rate = 2
+			
+		elif self.attachments.count(None) == 2:
+			self.type = WeaponType.Default
+			self.rate = .5
 		
 		self.timer = self.rate
 			
