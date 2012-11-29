@@ -146,13 +146,11 @@ class Zombie(Entity):
 		self.hspeed = self.direction * self.pre_hspeed			
 					
 	def effects(self):
-		print self.push_speed
 		if self.push_speed != 0:
-			self.push_timer += self.delta_speed
-			self.hspeed = self.push_speed
-			if self.push_timer >= self.push_duration:
+			if not self.collides_with_group(self.level.get_sprite_group('ground')):
+				self.hspeed = self.push_speed
+			else:
 				self.push_speed = 0
-				self.push_timer = 0
 				
 	def die(self):
 		if self.health[0] <= 0:

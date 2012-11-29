@@ -162,6 +162,6 @@ class ForceBullet(Bullet):
 	def hit(self):
 		for zombie in self.level.get_sprite_group('zombies'):
 			if self.collides_with(zombie):
-				zombie.push_speed = self.hspeed * self.direction
-				zombie.vspeed = -300
+				zombie.push_speed = (self.hspeed + 1) * self.direction
+				zombie.vspeed = -100
 				zombie.push_duration = self.duration
