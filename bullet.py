@@ -10,22 +10,30 @@ from weapon import *
 
 class Bullet(somber_engine.Active):
 	def __init__(self, somber, x=0, y=0, from_player=True, sprite='sprites/bullets/bullet_default.png'):
+		somber_engine.Active.__init__(self, sprite, somber=somber, pos=(x, y))
 		for player in somber.current_level.get_sprite_group('player'):
 			self.player = player
 			self.level = player.level
+		if self.player.direction == 1:
+			self.direction = 1
+		else:
+			self.direction = -1
+			
+		x *= self.direction
 		if from_player:
-			x += self.player.pos[0] + (self.player.sprite.get_width() * self.player.direction)
-			y += self.player.pos[1] + (self.player.sprite.get_height() / 2)
-		somber_engine.Active.__init__(self, sprite, somber=somber, pos=(x, y))
+			x_mod = 0
+			if self.direction == -1:
+				x_mod = 1
+			x += self.player.pos[0] - (self.sprite.get_width() * x_mod) + (self.player.sprite.get_width() * self.player.direction) - 5
+			y += self.player.pos[1] - (self.sprite.get_height() / 2) + (self.player.sprite.get_height() / 2) - 14
+		self.pos[0] = x
+		self.pos[1] = y
 		self.level.add_object(self, 'bullets')
 		
 		self.timer = 0
 		self.damage = 0
 		self.duration = 0
 		self.hspeed = 0
-		
-		if self.player.direction == 0:
-			self.hspeed = -self.hspeed
 		
 	def update(self):
 		self.hit()
@@ -42,15 +50,31 @@ class Bullet(somber_engine.Active):
 		pass
 				
 class DefaultBullet(Bullet):
-	def __init__(self, somber, x_offset=0, y_offset=0, direction=1):
-		Bullet.__init__(self, somber, x_offset, y_offset)
+	def __init__(self, somber, x=0, y=0):
+		Bullet.__init__(self, somber, x, y)
 		self.duration = 1
-		self.hspeed = 600
-		self.damage = 10
+		self.hspeed = 800
+		self.damage = 20
 		
-		self.hspeed = (self.hspeed + abs(self.player.hspeed)) * direction
-		if self.player.direction == 0:
-			self.hspeed = -self.hspeed
+		self.hspeed = (self.hspeed + abs(self.player.hspeed)) * self.direction
+		
+	def update(self):
+		Bullet.update(self)
+		
+	def hit(self):
+		for zombie in self.level.get_sprite_group('zombies'):
+			if self.collides_with(zombie):
+				self.kill()
+				zombie.health[0] -= self.damage
+				
+class SpeedBullet(Bullet):
+	def __init__(self, somber, x=0, y=0):
+		Bullet.__init__(self, somber, x, y)
+		self.duration = 1
+		self.hspeed = 1000
+		self.damage = 5
+
+		self.hspeed = (self.hspeed + abs(self.player.hspeed)) * self.direction
 		
 	def update(self):
 		Bullet.update(self)
@@ -62,17 +86,14 @@ class DefaultBullet(Bullet):
 				zombie.health[0] -= self.damage
 
 class LobBullet(Bullet):
-	def __init__(self, somber, x_offset=0, y_offset=0, direction=1):
-		Bullet.__init__(self, somber, x_offset, y_offset, sprite='sprites/bullets/bullet_lob.png')
+	def __init__(self, somber, x=0, y=0):
+		Bullet.__init__(self, somber, x, y, sprite='sprites/bullets/bullet_lob.png')
 		self.duration = 1
 		self.hspeed = 500
 		self.vspeed = -500
 		self.gravity = 20
-		self.damage = 10
-		
-		self.hspeed = (self.hspeed + abs(self.player.hspeed)) * direction
-		if self.player.direction == 0:
-			self.hspeed = -self.hspeed
+
+		self.hspeed = (self.hspeed + abs(self.player.hspeed)) * self.direction
 		
 	def update(self):
 		Bullet.update(self)
@@ -83,7 +104,7 @@ class LobBullet(Bullet):
 			self.kill()
 
 class Explosion(Bullet):
-	def __init__(self, somber, x=0, y=0, direction=1):
+	def __init__(self, somber, x=0, y=0):
 		Bullet.__init__(self, somber, x, y, from_player=False, sprite='sprites/bullets/explosion.png')
 		self.has_hit = False
 		self.duration = 1
@@ -100,50 +121,46 @@ class Explosion(Bullet):
 				if self.collides_with(zombie):
 					zombie.health[0] -= self.damage
 
-class FireBullet(somber_engine.Active):
-	def __init__(self, somber, character):
-		sprite = 'sprites/bullets/bullet_fire.png'
-		x = character.pos[0] + (character.sprite.get_width() * character.direction)
-		y = character.pos[1] + (character.sprite.get_height() / 2) - 82
-		somber_engine.Active.__init__(self, sprite, somber=somber, pos=(x, y))
-		character.level.add_object(self, 'bullets')
-		self.character = character
-		self.level = character.level
-		self.damage = 2
+class FireBullet(Bullet):
+	def __init__(self, somber, x=0, y=0):
+		Bullet.__init__(self, somber, x, y, sprite='sprites/bullets/bullet_fire_0.png')
+		self.add_animation('anim', 10, ['sprites/bullets/bullet_fire_0.png', 'sprites/bullets/bullet_fire_1.png'])
+		self.set_animation('anim')
 		
-	def update(self):
-		self.hit()
-		somber_engine.Active.update(self)
+		self.duration = .7
+		self.hspeed = 300
+		self.damage = 40
 		
-	def hit(self):
-		for zombie in self.level.get_sprite_group('zombies'):
-			if self.collides_with(zombie):
-				zombie.health[0] -= self.damage
-
-class ForceBullet(somber_engine.Active):
-	def __init__(self, somber, x_offset=0, y_offset=0, direction=1):
-		sprite = 'sprites/bullets/bullet_force.png'
-		x = x_offset + character.pos[0] + (character.sprite.get_width() * character.direction)
-		y = y_offset + character.pos[1] + (character.sprite.get_height() / 2)
-		somber_engine.Active.__init__(self, sprite, somber=somber, pos=(x, y))
-		character.level.add_object(self, 'bullets')
-		self.character = character
-		self.level = character.level
-		self.hspeed = (600 + abs(character.hspeed)) * direction
-		self.damage = 10
-		self.duration = 1
-		self.timer = 0
-		
-		if character.direction == 0:
-			self.hspeed = -self.hspeed
+		if self.direction < 0:
 			self.flip_horizontally()
+		self.hspeed = (self.hspeed + abs(self.player.hspeed)) * self.direction
 		
 	def update(self):
-		self.hit()
-		somber_engine.Active.update(self)
+		Bullet.update(self)
 		
 	def hit(self):
 		for zombie in self.level.get_sprite_group('zombies'):
 			if self.collides_with(zombie):
 				self.kill()
 				zombie.health[0] -= self.damage
+
+class ForceBullet(Bullet):
+	def __init__(self, somber, x=0, y=0):
+		Bullet.__init__(self, somber, x, y, sprite='sprites/bullets/bullet_force.png')
+		
+		self.duration = .7
+		self.hspeed = 400
+		self.damage = 0
+		
+		if self.direction < 0:
+			self.flip_horizontally()
+		self.hspeed = (self.hspeed + abs(self.player.hspeed)) * self.direction
+		
+	def update(self):
+		Bullet.update(self)
+		
+	def hit(self):
+		for zombie in self.level.get_sprite_group('zombies'):
+			if self.collides_with(zombie):
+				zombie.push_speed = 400 * self.direction
+				zombie.push_duration = self.duration

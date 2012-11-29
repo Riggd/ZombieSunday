@@ -30,7 +30,7 @@ class Weapon:
 				self.rate = 2
 			else:
 				self.type = WeaponType.Speed
-				self.rate = 1
+				self.rate = .2
 	
 		elif attachments.count(Attachment.Fire) == 1:
 			if attachments.count(Attachment.Lob) == 1:
@@ -41,7 +41,7 @@ class Weapon:
 				self.rate = 2
 			else:
 				self.type = WeaponType.Fire
-				self.rate = -1
+				self.rate = 3
 		
 		elif attachments.count(Attachment.Lob) == 1:
 			if attachments.count(Attachment.Force) == 1:
@@ -90,7 +90,7 @@ class Weapon:
 		if self.type == WeaponType.Default:
 			DefaultBullet(self.somber)
 		elif self.type == WeaponType.Speed:
-			DefaultBullet(self.somber)
+			SpeedBullet(self.somber)
 		elif self.type == WeaponType.Fire:
 			FireBullet(self.somber)
 		elif self.type == WeaponType.Lob:

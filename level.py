@@ -131,7 +131,6 @@ class Endless_Level(somber_engine.Level):
 		self.player.set_movement('horizontal')
 		
 		self.somber.bind_key(' ', self.player.weapon.fire, repeat=True)
-		self.somber.bind_key('g', self.player.flip)
 
 		for group in self.level.sprite_groups:
 			for sprite in group['group']:

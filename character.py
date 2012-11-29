@@ -28,7 +28,7 @@ class Character(somber_engine.Active):
 		self.add_animation('move_left', 15, ['sprites/player/player_left_0.png', 'sprites/player/player_left_1.png'])
 		self.set_animation('idle_right')
 		
-		self.weapon = Weapon(somber, self, [Attachment.Lob, None])
+		self.weapon = Weapon(somber, self, [Attachment.Force, None])
 	
 	def update(self):
 		self.change_direction()
@@ -38,9 +38,6 @@ class Character(somber_engine.Active):
 		self.weapon.update(self.delta_speed)
 		
 		somber_engine.Active.update(self)
-
-	def flip(self):
-		self.flip_horizontally()
 		
 	def check_climbing(self):
 		if self.collides_with_group(self.level.get_sprite_group('ladders')):
@@ -109,6 +106,10 @@ class Zombie(somber_engine.Active):
 		self.sprite_group = sprite_group
 		level.add_object(self, sprite_group)
 		
+		self.push_speed = 0
+		self.push_timer = 0
+		self.push_duration = 0
+		
 		self.health = [1, 100]
 		self.health[0] = self.health[1]
 		self.direction = 1
@@ -124,6 +125,7 @@ class Zombie(somber_engine.Active):
 	def update(self):	
 		self.change_speed()
 		self.collision()
+		self.effects()
 		self.animate()
 		self.die()
 
@@ -167,6 +169,15 @@ class Zombie(somber_engine.Active):
 					self.set_animation('idle_left')
 				else:
 					self.set_animation('idle_right')
+					
+	def effects(self):
+		if self.push_speed != 0:
+			self.push_timer += self.delta_speed
+			self.hspeed = self.push_speed
+			if self.push_timer >= self.push_duration:
+				self.push_speed = 0
+				self.push_timer = 0
+				
 	def die(self):
 		if self.health[0] <= 0:
 			self.kill()
