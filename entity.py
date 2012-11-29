@@ -53,7 +53,7 @@ class Character(Entity):
 	def __init__(self, somber, level, sprite, sprite_group, x=0, y=0):
 		Entity.__init__(self, somber, level, sprite, sprite_group, x, y)
 		self.weapon = Weapon(somber, self, [Attachment.Force, None])
-		self.hspeed_max = 10
+		self.hspeed_default = 10
 		
 		self.add_animation('idle_right', 15, ['sprites/player/player_right_0.png'])
 		self.add_animation('idle_left', 15, ['sprites/player/player_left_0.png'])

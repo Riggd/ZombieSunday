@@ -149,12 +149,12 @@ class ForceBullet(Bullet):
 		Bullet.__init__(self, somber, x, y, sprite='sprites/bullets/bullet_force.png')
 		
 		self.duration = .7
-		self.hspeed = 400
+		self.hspeed = 500
 		self.damage = 0
 		
 		if self.direction < 0:
 			self.flip_horizontally()
-		self.hspeed = (self.hspeed + abs(self.player.hspeed)) * self.direction
+		self.hspeed = self.hspeed * self.direction
 		
 	def update(self):
 		Bullet.update(self)
@@ -162,6 +162,6 @@ class ForceBullet(Bullet):
 	def hit(self):
 		for zombie in self.level.get_sprite_group('zombies'):
 			if self.collides_with(zombie):
-				zombie.push_speed = 401 * self.direction
+				zombie.push_speed = self.hspeed
 				zombie.vspeed = -100
 				zombie.push_duration = self.duration

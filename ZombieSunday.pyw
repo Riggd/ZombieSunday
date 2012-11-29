@@ -14,10 +14,10 @@ import sys
 import ui
 import os
 
-somber = somber_engine.Somber(name='Zombie Sunday',
+somber = somber_engine.Somber(name=config.TITLE,
 	win_size=config.WINDOW_SIZE,
 	fps=config.FPS)
-somber.set_resource_directory('res')
+somber.set_resource_directory(config.RES_DIR)
 
 def callback():
 	debug()
