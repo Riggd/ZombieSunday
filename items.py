@@ -7,6 +7,8 @@
 
 import somber as somber_engine
 
+#
+
 class Item(somber_engine.Active):
 	def __init__(self, somber, x=0, y=0, sprite='sprites/items/item_default.png'):
 		somber_engine.Active.__init__(self, sprite, somber=somber, pos=(x, y))
