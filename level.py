@@ -9,6 +9,7 @@ import somber as somber_engine
 import random
 import ui
 from entity import *
+from items import *
 
 class Title_Screen(somber_engine.Level):
 	def __init__(self, somber):
@@ -85,6 +86,7 @@ class Endless_Level(somber_engine.Level):
 		self.create_sprite_group('buildings')
 		self.create_sprite_group('player')
 		self.create_sprite_group('bullets')
+		self.create_sprite_group('items')
 		self.create_sprite_group('zombies')
 		self.create_sprite_group('ui')
 		
@@ -98,6 +100,7 @@ class Endless_Level(somber_engine.Level):
 		Cloud(self.somber, self, 'sprites/background/cloud_1.png', 'clouds', x=self.somber.win_size[0] - 100, y=10)
 		Cloud(self.somber, self, 'sprites/background/cloud_2.png', 'clouds', x=self.somber.win_size[0] / 2, y=200)
 		Cloud(self.somber, self, 'sprites/background/cloud_3.png', 'clouds', y=100)
+		
 		
 		for tile in range(0, self.level_size):
 			Platform(self.somber, self, 'sprites/foreground/ground.png', 'ground', x=tile * self.ground_size, y=self.somber.win_size[1] - 96)
@@ -129,6 +132,8 @@ class Endless_Level(somber_engine.Level):
 			for sprite in group['group']:
 				if group['name'] == 'clouds':
 					sprite.hspeed = -(random.randint(2, 6) * 8)
+					
+		Item(self.somber, x=200, y=340)
 	
 	def on_change_to(self):
 		self.somber.camera_follow(self.player)
