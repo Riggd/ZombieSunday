@@ -22,21 +22,20 @@ class Title_Screen(somber_engine.Level):
 		self.create_sprite_group('clouds', group=somber_engine.StaticBackgroundGroup)
 		self.create_sprite_group('ground', scroll_speed=1, group=somber_engine.BackgroundParallaxGroup)
 		self.create_sprite_group('dummy')
-		self.create_sprite_group('ladders')
 		self.create_sprite_group('ui', group=somber_engine.StaticGroup)
 		
-		Static_Background(self.somber, self, 'background_sky.png', 'background_0')
-		Sun(self.somber, self, 'background_sun.png', 'sun', x=self.somber.win_size[0] - 250, y=20)
-		Background(self.somber, self, 'background_trees_back.png', 'background_1', y=self.somber.win_size[1] - 245)
-		Background(self.somber, self, 'background_trees_fore.png', 'background_2', y=self.somber.win_size[1] - 192)
-		Cloud(self.somber, self, 'background_cloud_1.png', 'clouds', x=self.somber.win_size[0] - 100, y=10)
-		Cloud(self.somber, self, 'background_cloud_2.png', 'clouds', x=self.somber.win_size[0] / 2, y=200)
-		Cloud(self.somber, self, 'background_cloud_3.png', 'clouds', y=100)
-		Background(self.somber, self, 'foreground_grass.png', 'ground', y=self.somber.win_size[1] - 96)
+		Static_Background(self.somber, self, 'sprites/background/sky.png', 'background_0')
+		Sun(self.somber, self, 'sprites/background/sun.png', 'sun', x=self.somber.win_size[0] - 250, y=20)
+		Background(self.somber, self, 'sprites/background/trees_back.png', 'background_1', y=self.somber.win_size[1] - 245)
+		Background(self.somber, self, 'sprites/background/trees_fore.png', 'background_2', y=self.somber.win_size[1] - 192)
+		Cloud(self.somber, self, 'sprites/background/cloud_1.png', 'clouds', x=self.somber.win_size[0] - 100, y=10)
+		Cloud(self.somber, self, 'sprites/background/cloud_2.png', 'clouds', x=self.somber.win_size[0] / 2, y=200)
+		Cloud(self.somber, self, 'sprites/background/cloud_3.png', 'clouds', y=100)
+		Background(self.somber, self, 'sprites/foreground/ground.png', 'ground', y=self.somber.win_size[1] - 96)
 		
 		self.main_ui = ui.UI_Group(self.somber, self, 'ui')
-		self.main_ui.create_element('logo_zombie_sunday.png', 'logo', x=(self.somber.win_size[0] / 2) - 338, y=30)
-		self.main_ui.create_element('ui_start_game.png', 'start', x=(self.somber.win_size[0] / 2) - 165, y=220)
+		self.main_ui.create_element('sprites/ui/logo_zombie_sunday.png', 'logo', x=(self.somber.win_size[0] / 2) - 338, y=30)
+		self.main_ui.create_element('sprites/ui/ui_start_game.png', 'start', x=(self.somber.win_size[0] / 2) - 165, y=220)
 		
 		self.level = self
 		
@@ -47,7 +46,7 @@ class Title_Screen(somber_engine.Level):
 	def setup(self):
 		self.somber.bind_key('m1', self.mouse_down)
 		
-		self.dummy = Dummy(self.somber, self, 'dummy.png', 'dummy', x=self.somber.win_size[0] / 2, y=400)
+		self.dummy = Dummy(self.somber, self, 'sprites/foreground/dummy.png', 'dummy', x=self.somber.win_size[0] / 2, y=400)
 		self.dummy.hspeed = 100
 		
 		for group in self.level.sprite_groups:
@@ -89,30 +88,27 @@ class Endless_Level(somber_engine.Level):
 		self.create_sprite_group('zombies')
 		self.create_sprite_group('ui')
 		
-		Static_Background(self.somber, self, 'background_sky.png', 'background_0')
+		Static_Background(self.somber, self, 'sprites/background/sky.png', 'background_0')
 		
-		Background(self.somber, self, 'background_trees_back.png', 'background_1', y=self.somber.win_size[1] - 245)
-		Background(self.somber, self, 'background_trees_fore.png', 'background_2', y=self.somber.win_size[1] - 192)
+		Background(self.somber, self, 'sprites/background/trees_back.png', 'background_1', y=self.somber.win_size[1] - 245)
+		Background(self.somber, self, 'sprites/background/trees_fore.png', 'background_2', y=self.somber.win_size[1] - 192)
 		
-		Sun(self.somber, self, 'background_sun.png', 'sun', x=self.somber.win_size[0] - 250, y=20)
+		Sun(self.somber, self, 'sprites/background/sun.png', 'sun', x=self.somber.win_size[0] - 250, y=20)
 		
-		Cloud(self.somber, self, 'background_cloud_1.png', 'clouds', x=self.somber.win_size[0] - 100, y=10)
-		Cloud(self.somber, self, 'background_cloud_2.png', 'clouds', x=self.somber.win_size[0] / 2, y=200)
-		Cloud(self.somber, self, 'background_cloud_3.png', 'clouds', y=100)
-		
-		# Ladder(self.somber,self,'ladder.png','ladders',x=300,y=451)
-		# Ladder(self.somber,self,'ladder.png','ladders',x=300,y=387)
+		Cloud(self.somber, self, 'sprites/background/cloud_1.png', 'clouds', x=self.somber.win_size[0] - 100, y=10)
+		Cloud(self.somber, self, 'sprites/background/cloud_2.png', 'clouds', x=self.somber.win_size[0] / 2, y=200)
+		Cloud(self.somber, self, 'sprites/background/cloud_3.png', 'clouds', y=100)
 		
 		for tile in range(0, self.level_size):
-			Platform(self.somber, self, 'foreground_grass.png', 'ground', x=tile * self.ground_size, y=self.somber.win_size[1] - 96)
+			Platform(self.somber, self, 'sprites/foreground/ground.png', 'ground', x=tile * self.ground_size, y=self.somber.win_size[1] - 96)
 		
-		House(self.somber, self, 'home.png', 'buildings', x=5, y=self.somber.win_size[1] - 525)
+		House(self.somber, self, 'sprites/foreground/home.png', 'buildings', x=5, y=self.somber.win_size[1] - 525)
 		
 		distance = 0
 		while True:
 			distance += random.randint(12, 20) * 100
 			if distance < self.level_size * self.ground_size:
-				House(self.somber, self, 'house.png', 'buildings', x=distance, y=self.somber.win_size[1] - 572)
+				House(self.somber, self, 'sprites/foreground/house.png', 'buildings', x=distance, y=self.somber.win_size[1] - 572)
 			else:
 				break
 			
