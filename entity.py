@@ -21,10 +21,6 @@ class Entity(somber_engine.Active):
 		self.health[0] = self.health[1]
 	
 	def update(self):
-		self.change_direction()
-		self.collision()
-		self.animate()
-		self.die()
 		somber_engine.Active.update(self)
 	
 	def collision(self):
@@ -37,9 +33,6 @@ class Entity(somber_engine.Active):
 			self.gravity = 0
 		else:
 			self.gravity = 3
-			
-	def change_direction(self):
-		pass
 	
 	def animate(self):
 		if self.hspeed > 0:
@@ -54,15 +47,12 @@ class Entity(somber_engine.Active):
 					self.set_animation('idle_left')
 				else:
 					self.set_animation('idle_right')
-	
-	def die(self):
-		pass
 
 class Character(Entity):
 	def __init__(self, somber, level, sprite, sprite_group, x=0, y=0):
 		Entity.__init__(self, somber, level, sprite, sprite_group, x, y)
 		self.weapon = Weapon(somber, self, [Attachment.Force, None])
-		self.hspeed_max = 1000
+		self.hspeed_max = 10
 		
 		self.add_animation('idle_right', 15, ['sprites/player/player_right_0.png'])
 		self.add_animation('idle_left', 15, ['sprites/player/player_left_0.png'])
@@ -76,6 +66,9 @@ class Character(Entity):
 	
 	def update(self):
 		self.weapon.update(self.delta_speed)
+		Entity.collision(self)
+		self.change_direction()
+		Entity.animate(self)
 		Entity.update(self)
 		
 	def collision(self):
@@ -130,6 +123,10 @@ class Zombie(Entity):
 		self.set_animation('idle_right')
 		
 	def update(self):	
+		Entity.collision(self)
+		self.change_direction()
+		Entity.animate(self)
+		self.die()
 		self.effects()
 		Entity.update(self)
 		
@@ -148,6 +145,7 @@ class Zombie(Entity):
 		self.hspeed = self.direction * self.pre_hspeed			
 					
 	def effects(self):
+		print self.push_speed
 		if self.push_speed != 0:
 			self.push_timer += self.delta_speed
 			self.hspeed = self.push_speed
