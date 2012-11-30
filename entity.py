@@ -10,7 +10,7 @@ from weapon import *
 import config
 
 class Entity(somber_engine.Active):
-	def __init__(self, somber, level, sprite, sprite_group, x=0, y=0):
+	def __init__(self, somber, level, sprite_group, x=0, y=0, sprite='sprites/player/player_right_0.png'):
 		somber_engine.Active.__init__(self, sprite, somber=somber, pos=(x, y))
 		level.add_object(self, sprite_group)
 		self.somber = somber
@@ -52,8 +52,8 @@ class Entity(somber_engine.Active):
 					self.set_animation('idle_right')
 
 class Character(Entity):
-	def __init__(self, somber, level, sprite, sprite_group, x=0, y=0):
-		Entity.__init__(self, somber, level, sprite, sprite_group, x, y)
+	def __init__(self, somber, level, sprite_group, x=0, y=0):
+		Entity.__init__(self, somber, level, sprite_group, x, y)
 		self.weapon = Weapon(somber, self, [Attachment.Force, None])
 		self.hspeed_default = 10
 		
@@ -106,8 +106,8 @@ class Character(Entity):
 		self.weapon.set_weapon_type()
 		
 class Zombie(Entity):
-	def __init__(self, somber, level, sprite, sprite_group, x=0, y=0):
-		Entity.__init__(self, somber, level, sprite, sprite_group, x, y)
+	def __init__(self, somber, level, sprite_group, x=0, y=0):
+		Entity.__init__(self, somber, level, sprite_group, x, y, sprite='sprites/zombie/zombie_right_0.png')
 		self.pre_hspeed = 100
 		self.hspeed = self.pre_hspeed
 		

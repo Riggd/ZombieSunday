@@ -122,7 +122,7 @@ class Endless_Level(somber_engine.Level):
 		return self
 	
 	def setup(self):
-		self.player = Character(self.somber, self, 'sprites/player/player_right_0.png', 'player', x=10, y=self.somber.win_size[1] - 246)
+		self.player = Character(self.somber, self, 'player', x=10, y=self.somber.win_size[1] - 246)
 		self.player.hspeed_max = 500
 		self.player.vspeed_max = 30
 		self.player.gravity = 3
@@ -152,7 +152,7 @@ class Endless_Level(somber_engine.Level):
 				side = random.randint(0, 1)
 				if side == 0:
 					extra = -extra
-			Zombie(self.somber, self, 'sprites/zombie/zombie_right_0.png', 'zombies', x=self.somber.camera_pos[0] + (self.somber.win_size[0] * side) + extra, y=self.somber.win_size[1] - 246)
+			Zombie(self.somber, self, 'zombies', x=self.somber.camera_pos[0] + (self.somber.win_size[0] * side) + extra, y=self.somber.win_size[1] - 246)
 
 class Static_Background(somber_engine.Active):
 	def __init__(self, somber, level, sprite, sprite_group, x=0, y=0):
