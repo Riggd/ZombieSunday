@@ -128,7 +128,6 @@ class Explosion(Bullet):
 
 class FireBullet(Bullet):
 	def __init__(self, somber, x=0, y=0):
-		x = -150
 		Bullet.__init__(self, somber, x, y, sprite='sprites/bullets/bullet_fire_0.png')
 		self.add_animation('anim', 10, ['sprites/bullets/bullet_fire_0.png', 'sprites/bullets/bullet_fire_1.png'])
 		self.set_animation('anim')
@@ -153,12 +152,14 @@ class FireBullet(Bullet):
 	
 class Fire(Bullet):
 	def __init__(self, somber, entity, x=0, y=0):
+		x = -110
+		y = -22
 		Bullet.__init__(self, somber, x, y, from_player=False, sprite='sprites/fire/fire_0.png')
 		self.entity = entity
 		self.hit_timer = 0
 		self.hit_rate = .5
-		self.duration = 10
-		self.damage = 1
+		self.duration = 5
+		self.damage = 5
 		
 	def update(self):
 		Bullet.set_pos_to_entity(self, self.entity)
