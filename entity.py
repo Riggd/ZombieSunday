@@ -20,6 +20,13 @@ class Entity(somber_engine.Active):
 		self.direction = 1
 		self.health = [1, 100]
 		self.health[0] = self.health[1]
+		
+		# Effects
+		self.push_speed = 0
+		self.fire_duration = 3
+		self.fire_timer = 0
+		self.fire_hit_timer = 0
+		self.fire_rate = .5
 	
 	def update(self):
 		somber_engine.Active.update(self)
@@ -111,11 +118,6 @@ class Zombie(Entity):
 		self.pre_hspeed = 100
 		self.hspeed = self.pre_hspeed
 		
-		# Effects
-		self.push_speed = 0
-		self.push_timer = 0
-		self.push_duration = 0
-		
 		self.add_animation('idle_right', 15, ['sprites/zombie/zombie_right_0.png'])
 		self.add_animation('idle_left', 15, ['sprites/zombie/zombie_left_0.png'])
 		self.add_animation('move_right', 15, ['sprites/zombie/zombie_right_0.png', 'sprites/zombie/zombie_right_1.png'])
@@ -150,6 +152,15 @@ class Zombie(Entity):
 				self.hspeed = self.push_speed
 			else:
 				self.push_speed = 0
+		
+		if self.fire_timer > 0:
+			self.fire_hit_timer += self.delta_speed
+			if self.fire_hit_timer >= self.fire_rate:
+				self.health[0] -= 5
+				self.fire_hit_timer = 0
+				print "Fire!"
+			self.fire_timer -= self.delta_speed
+			
 				
 	def die(self):
 		if self.health[0] <= 0:

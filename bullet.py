@@ -120,6 +120,24 @@ class Explosion(Bullet):
 			for zombie in self.level.get_sprite_group('zombies'):
 				if self.collides_with(zombie):
 					zombie.health[0] -= self.damage
+					
+class Fire(Bullet):
+	def __init__(self, somber, x=0, y=0):
+		Bullet.__init__(self, somber, x, y, from_player=False, sprite='sprites/fire/fire_0.png')
+		self.has_hit = False
+		self.duration = 1
+		self.hspeed = 0
+		self.damage = 40
+		
+	def update(self):
+		Bullet.update(self)
+		
+	def hit(self):
+		if not self.has_hit:
+			self.has_hit = True
+			for zombie in self.level.get_sprite_group('zombies'):
+				if self.collides_with(zombie):
+					zombie.health[0] -= self.damage
 
 class FireBullet(Bullet):
 	def __init__(self, somber, x=0, y=0):
@@ -143,6 +161,7 @@ class FireBullet(Bullet):
 			if self.collides_with(zombie):
 				self.kill()
 				zombie.health[0] -= self.damage
+				zombie.fire_timer = zombie.fire_duration
 
 class ForceBullet(Bullet):
 	def __init__(self, somber, x=0, y=0):
