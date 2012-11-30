@@ -26,8 +26,8 @@ class Bullet(somber_engine.Active):
 				x_mod = 1
 			x += self.player.pos[0] - (self.sprite.get_width() * x_mod) + (self.player.sprite.get_width() * self.player.direction) - 5
 			y += self.player.pos[1] - (self.sprite.get_height() / 2) + (self.player.sprite.get_height() / 2) - 14
-		self.pos[0] = x
-		self.pos[1] = y
+			self.pos[0] = x
+			self.pos[1] = y
 		self.level.add_object(self, 'bullets')
 		
 		self.timer = 0

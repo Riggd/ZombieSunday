@@ -105,6 +105,8 @@ class Weapon:
 			LobBullet(self.somber)
 		elif self.type == WeaponType.Force:
 			ForceBullet(self.somber)
+		else:
+			DefaultBullet(self.somber)
 
 class WeaponType:
 	Default, Speed, SpeedSpeed, SpeedFire, SpeedLob, SpeedForce, Fire, FireFire, FireLob, FireForce, Lob, LobLob, LobForce, Force, ForceForce = range(15)

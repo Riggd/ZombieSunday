@@ -27,7 +27,9 @@ class Entity(somber_engine.Active):
 	def collision(self):
 		if self.pos[0] < 0:
 			self.pos[0] = 0
-			
+		if self.pos[0] > self.level.ground_size * (self.level.level_size - 1):
+			self.pos[0] = self.level.ground_size * (self.level.level_size - 1)
+					
 		if self.collides_with_group(self.level.get_sprite_group('ground')):
 			if self.vspeed > 0:
 				self.vspeed = 0
@@ -74,9 +76,6 @@ class Character(Entity):
 		
 	def collision(self):
 		Entity.collision(self)
-		
-		if self.pos[0] > self.level.ground_size * (self.level.level_size - 1):
-			self.pos[0] = self.level.ground_size * (self.level.level_size - 1)
 			
 	def change_direction(self):
 		if self.hspeed > 0:
