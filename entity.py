@@ -23,10 +23,6 @@ class Entity(somber_engine.Active):
 		
 		# Effects
 		self.push_speed = 0
-		self.fire_duration = 3
-		self.fire_timer = 0
-		self.fire_hit_timer = 0
-		self.fire_rate = .5
 	
 	def update(self):
 		somber_engine.Active.update(self)
@@ -45,23 +41,25 @@ class Entity(somber_engine.Active):
 			self.gravity = config.ENTITY_GRAVITY
 	
 	def animate(self):
-		if self.hspeed > 0:
-			if not self.get_animation() == 'move_right':
-				self.set_animation('move_right')
-		elif self.hspeed < 0:
-			if not self.get_animation() == 'move_left':
-				self.set_animation('move_left')
-		elif not self.gravity:
-			if not self.get_animation() == 'idle_left' and not self.get_animation() == 'idle_right':
-				if self.get_animation() == 'move_left':
-					self.set_animation('idle_left')
-				else:
+		if self.hspeed != 0:
+			if self.direction == 1:
+				if not self.get_animation() == 'move_right':
+					self.set_animation('move_right')
+			else:
+				if not self.get_animation() == 'move_left':
+					self.set_animation('move_left')
+		else:
+			if self.direction == 1:
+				if not self.get_animation() == 'idle_right':
 					self.set_animation('idle_right')
+			else:
+				if not self.get_animation() == 'idle_left':
+					self.set_animation('idle_left')
 
 class Character(Entity):
 	def __init__(self, somber, level, sprite_group, x=0, y=0):
 		Entity.__init__(self, somber, level, sprite_group, x, y)
-		self.weapon = Weapon(somber, self, [Attachment.Force, None])
+		self.weapon = Weapon(somber, self, [None, None])
 		self.hspeed_default = 10
 		
 		self.add_animation('idle_right', 15, ['sprites/player/player_right_0.png'])
@@ -151,16 +149,7 @@ class Zombie(Entity):
 			if not self.collides_with_group(self.level.get_sprite_group('ground')):
 				self.hspeed = self.push_speed
 			else:
-				self.push_speed = 0
-		
-		if self.fire_timer > 0:
-			self.fire_hit_timer += self.delta_speed
-			if self.fire_hit_timer >= self.fire_rate:
-				self.health[0] -= 5
-				self.fire_hit_timer = 0
-				print "Fire!"
-			self.fire_timer -= self.delta_speed
-			
+				self.push_speed = 0			
 				
 	def die(self):
 		if self.health[0] <= 0:

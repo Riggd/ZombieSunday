@@ -19,15 +19,10 @@ class Bullet(somber_engine.Active):
 		else:
 			self.direction = -1
 			
-		x *= self.direction
+		self.x_offset = x
+		self.y_offset = y
 		if from_player:
-			x_mod = 0
-			if self.direction == -1:
-				x_mod = 1
-			x += self.player.pos[0] - (self.sprite.get_width() * x_mod) + (self.player.sprite.get_width() * self.player.direction) - 5
-			y += self.player.pos[1] - (self.sprite.get_height() / 2) + (self.player.sprite.get_height() / 2) - 14
-			self.pos[0] = x
-			self.pos[1] = y
+			self.set_pos_to_entity(self.player)
 		self.level.add_object(self, 'bullets')
 		
 		self.timer = 0
@@ -48,6 +43,16 @@ class Bullet(somber_engine.Active):
 		
 	def hit(self):
 		pass
+	
+	def set_pos_to_entity(self, entity):
+		x = entity.pos[0]
+		y = self.y_offset + entity.pos[1] - (self.sprite.get_height() / 2) + (entity.sprite.get_height() / 2) - 14
+		if entity.direction == 1:
+			x += entity.sprite.get_width() + self.x_offset
+		else:
+			x += -self.x_offset - self.sprite.get_width()
+		self.pos[0] = x
+		self.pos[1] = y
 				
 class DefaultBullet(Bullet):
 	def __init__(self, somber, x=0, y=0):
@@ -120,27 +125,10 @@ class Explosion(Bullet):
 			for zombie in self.level.get_sprite_group('zombies'):
 				if self.collides_with(zombie):
 					zombie.health[0] -= self.damage
-					
-class Fire(Bullet):
-	def __init__(self, somber, x=0, y=0):
-		Bullet.__init__(self, somber, x, y, from_player=False, sprite='sprites/fire/fire_0.png')
-		self.has_hit = False
-		self.duration = 1
-		self.hspeed = 0
-		self.damage = 40
-		
-	def update(self):
-		Bullet.update(self)
-		
-	def hit(self):
-		if not self.has_hit:
-			self.has_hit = True
-			for zombie in self.level.get_sprite_group('zombies'):
-				if self.collides_with(zombie):
-					zombie.health[0] -= self.damage
 
 class FireBullet(Bullet):
 	def __init__(self, somber, x=0, y=0):
+		x = -150
 		Bullet.__init__(self, somber, x, y, sprite='sprites/bullets/bullet_fire_0.png')
 		self.add_animation('anim', 10, ['sprites/bullets/bullet_fire_0.png', 'sprites/bullets/bullet_fire_1.png'])
 		self.set_animation('anim')
@@ -161,7 +149,27 @@ class FireBullet(Bullet):
 			if self.collides_with(zombie):
 				self.kill()
 				zombie.health[0] -= self.damage
-				zombie.fire_timer = zombie.fire_duration
+				Fire(self.somber, zombie)
+	
+class Fire(Bullet):
+	def __init__(self, somber, entity, x=0, y=0):
+		Bullet.__init__(self, somber, x, y, from_player=False, sprite='sprites/fire/fire_0.png')
+		self.entity = entity
+		self.hit_timer = 0
+		self.hit_rate = .5
+		self.duration = 10
+		self.damage = 1
+		
+	def update(self):
+		Bullet.set_pos_to_entity(self, self.entity)
+		Bullet.update(self)
+		
+	def hit(self):
+		if self.hit_timer >= self.hit_rate:
+			self.entity.health[0] -= self.damage
+			self.hit_timer -= self.hit_rate
+			print "FIRE!"
+		self.hit_timer += self.delta_speed
 
 class ForceBullet(Bullet):
 	def __init__(self, somber, x=0, y=0):

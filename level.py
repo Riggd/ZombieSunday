@@ -122,11 +122,13 @@ class Endless_Level(somber_engine.Level):
 		return self
 	
 	def setup(self):
-		self.player = Character(self.somber, self, 'player', x=10, y=self.somber.win_size[1] - 246)
+		self.player = Character(self.somber, self, 'player', x=10, y=self.somber.win_size[1] - 300)
 		self.player.hspeed_max = 500
 		self.player.vspeed_max = 30
 		self.player.gravity = 3
 		self.player.set_movement('horizontal')
+		
+		Zombie(self.somber, self, 'zombies', x=300, y=self.somber.win_size[1] - 300)
 		
 		DefaultItem(self.somber, self.level, x=500, y=490)
 
