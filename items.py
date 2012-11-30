@@ -6,8 +6,7 @@
 # 	Ryan Wiesjahn <rwiesjahn@bsu.edu>
 
 import somber as somber_engine
-
-#
+import weapon
 
 class Item(somber_engine.Active):
 	def __init__(self, somber, level, x=0, y=0, sprite='sprites/items/item_default.png'):
@@ -35,3 +34,14 @@ class DefaultItem(Item):
 		if self.collides_with(self.player):
 			self.kill()
 			print 'Collected Item!'
+
+class Ammo(Item):
+	def __init__(self, somber, level, x=0, y=0):
+		Item.__init__(self, somber, level, x, y, sprite='sprites/items/item_default.png')
+		
+	def update(self):
+		Item.update(self)
+		
+	def collect(self):
+		if self.collides_with(self.player):
+			self.kill()
