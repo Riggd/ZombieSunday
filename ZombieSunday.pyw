@@ -44,6 +44,10 @@ def debug():
 				(0, 30),
 				'Weapon: %s, %s' % (str(player.weapon.attachments[0]), str(player.weapon.attachments[1])),
 				color=(0, 0, 0))
+			somber.write(config.FONT,
+				(0, 40),
+				'Ammo: %s, %s' % (str(player.weapon.ammo[0]), str(player.weapon.ammo[1])),
+				color=(0, 0, 0))
 
 # Level setup
 somber.set_background_color((150, 150, 150))

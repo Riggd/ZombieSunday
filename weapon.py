@@ -7,6 +7,7 @@
 
 import somber as somber_engine
 from bullet import *
+import items
 
 class Weapon:
 	def __init__(self, somber, character, attachments=[None, None]):
@@ -92,6 +93,7 @@ class Weapon:
 		if self.rate >= 0:
 			if self.timer >= self.rate:
 				self.create_bullet()
+				self.ammo[1] -= 1
 				self.timer = 0
 	
 	def create_bullet(self):
@@ -108,6 +110,10 @@ class Weapon:
 		else:
 			DefaultBullet(self.somber)
 
+	def set_ammo(self):
+		if self.collides_with_group('items'):
+			self.ammo[1] = 50
+			
 class WeaponType:
 	Default, Speed, SpeedSpeed, SpeedFire, SpeedLob, SpeedForce, Fire, FireFire, FireLob, FireForce, Lob, LobLob, LobForce, Force, ForceForce = range(15)
 
