@@ -148,17 +148,17 @@ class FireBullet(Bullet):
 			if self.collides_with(zombie):
 				self.kill()
 				zombie.health[0] -= self.damage
-				Fire(self.somber, zombie)
+				Fire(self.somber, zombie, duration=.5)
 	
 class Fire(Bullet):
-	def __init__(self, somber, entity, x=0, y=0):
+	def __init__(self, somber, entity, duration=3, hit_rate=.5, x=0, y=0):
 		x = -110
 		y = -22
 		Bullet.__init__(self, somber, x, y, from_player=False, sprite='sprites/fire/fire_0.png')
 		self.entity = entity
+		self.hit_rate = hit_rate
+		self.duration = duration
 		self.hit_timer = 0
-		self.hit_rate = .5
-		self.duration = 5
 		self.damage = 5
 		
 	def update(self):
