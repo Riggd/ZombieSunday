@@ -23,6 +23,7 @@ class Entity(somber_engine.Active):
 		
 		# Effects
 		self.push_speed = 0
+		self.fire_object = None
 	
 	def update(self):
 		somber_engine.Active.update(self)
@@ -154,3 +155,5 @@ class Zombie(Entity):
 	def die(self):
 		if self.health[0] <= 0:
 			self.kill()
+			if self.fire_object != None:
+				self.fire_object.kill()

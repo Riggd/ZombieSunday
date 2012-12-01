@@ -46,7 +46,7 @@ class Weapon:
 				self.rate = 2
 			else:
 				self.type = WeaponType.Fire
-				self.rate = 3
+				self.rate = 1
 		
 		elif self.attachments.count(Attachment.Lob) == 1:
 			if self.attachments.count(Attachment.Force) == 1:

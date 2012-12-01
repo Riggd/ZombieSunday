@@ -39,7 +39,10 @@ class Bullet(somber_engine.Active):
 		if self.timer < self.duration:
 			self.timer += self.player.delta_speed
 		else:
-			self.kill()
+			self.remove()
+			
+	def remove(self):
+		self.kill()
 		
 	def hit(self):
 		pass
@@ -134,7 +137,7 @@ class FireBullet(Bullet):
 		
 		self.duration = .7
 		self.hspeed = 300
-		self.damage = 40
+		self.damage = 1
 		
 		if self.direction < 0:
 			self.flip_horizontally()
@@ -148,7 +151,10 @@ class FireBullet(Bullet):
 			if self.collides_with(zombie):
 				self.kill()
 				zombie.health[0] -= self.damage
-				Fire(self.somber, zombie, duration=.5)
+				if zombie.fire_object != None:
+					zombie.fire_object.kill()
+				fire = Fire(self.somber, zombie)
+				zombie.fire_object = fire
 	
 class Fire(Bullet):
 	def __init__(self, somber, entity, duration=3, hit_rate=.5, x=0, y=0):
@@ -159,7 +165,7 @@ class Fire(Bullet):
 		self.hit_rate = hit_rate
 		self.duration = duration
 		self.hit_timer = 0
-		self.damage = 5
+		self.damage = 1
 		
 	def update(self):
 		Bullet.set_pos_to_entity(self, self.entity)
@@ -171,6 +177,10 @@ class Fire(Bullet):
 			self.hit_timer -= self.hit_rate
 			print "FIRE!"
 		self.hit_timer += self.delta_speed
+		
+	def remove(self):
+		self.entity.fire_object = None
+		Bullet.remove(self)
 
 class ForceBullet(Bullet):
 	def __init__(self, somber, x=0, y=0):
