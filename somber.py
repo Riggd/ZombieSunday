@@ -295,24 +295,24 @@ class Somber:
 		
 		self.dirty_rects.append(self.window.blit(_square,(pos[0],pos[1])))
 	
-	def play_song(self,song):
+	def play_music(self,song):
 		song = pygame.mixer.music.load(song)
-		pygame.mixer.music.set_volume(var.music_volume)
+		#pygame.mixer.music.set_volume(var.music_volume)
 		pygame.mixer.music.play()
 	
-	def pause_song(self):
+	def pause_music(self):
 		pygame.mixer.music.pause()
 	
-	def unpause_song(self):
+	def unpause_music(self):
 		pygame.mixer.music.unpause()
 	
-	def stop_song(self,fade=0):
+	def stop_music(self,fade=0):
 		if fade:
 			pygame.mixer.music.fadeout(fade)
 		else:
 			pygame.mixer.music.stop()
 	
-	def add_sound(self,name):
+	def add_music(self,name):
 		_sound = pygame.mixer.Sound(os.path.join(self.resource_dir,name))
 		_sound.set_volume(1)
 		
