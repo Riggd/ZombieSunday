@@ -17,6 +17,7 @@ class Weapon:
 		self.character = character
 		self.ammo = [0, 50]
 		self.ammo[0] = self.ammo[1]
+		self.ammo_consumption = 1
 		self.rate = 0
 		self.timer = self.rate
 		
@@ -27,58 +28,73 @@ class Weapon:
 			if self.attachments.count(Attachment.Fire) == 1:
 				self.type = WeaponType.SpeedFire
 				self.rate = 1
+				self.ammo_consumption = 1
 			elif self.attachments.count(Attachment.Lob) == 1:
 				self.type = WeaponType.SpeedLob
 				self.rate = 2
+				self.ammo_consumption = 1
 			elif self.attachments.count(Attachment.Force) == 1:
 				self.type = WeaponType.SpeedForce
 				self.rate = 2
+				self.ammo_consumption = 1
 			else:
 				self.type = WeaponType.Speed
 				self.rate = .2
+				self.ammo_consumption = 1
 	
 		elif self.attachments.count(Attachment.Fire) == 1:
 			if self.attachments.count(Attachment.Lob) == 1:
 				self.type = WeaponType.FireLob
 				self.rate = 2.5
+				self.ammo_consumption = 1
 			elif self.attachments.count(Attachment.Force) == 1:
 				self.type = WeaponType.FireForce
 				self.rate = 2
+				self.ammo_consumption = 1
 			else:
 				self.type = WeaponType.Fire
 				self.rate = 2
+				self.ammo_consumption = 5
 		
 		elif self.attachments.count(Attachment.Lob) == 1:
 			if self.attachments.count(Attachment.Force) == 1:
 				self.type = WeaponType.LobForce
 				self.rate = 2
+				self.ammo_consumption = 1
 			else:
 				self.type = WeaponType.Lob
 				self.rate = 2
+				self.ammo_consumption = 1
 				
 		elif self.attachments.count(Attachment.Force) == 1:
 				self.type = WeaponType.Force
 				self.rate = 1.5
+				self.ammo_consumption = 1
 		
 		elif self.attachments.count(Attachment.Speed) == 2:
 			self.type = WeaponType.SpeedSpeed
 			self.rate = .1
+			self.ammo_consumption = 1
 		
 		elif self.attachments.count(Attachment.Fire) == 2:
 			self.type = WeaponType.FireFire
 			self.rate = -1
+			self.ammo_consumption = 1
 		
 		elif self.attachments.count(Attachment.Lob) == 2:
 			self.type = WeaponType.LobLob
 			self.rate = 3
+			self.ammo_consumption = 1
 		
 		elif self.attachments.count(Attachment.Force) == 2:
 			self.type = WeaponType.ForceForce
 			self.rate = 2
+			self.ammo_consumption = 1
 			
 		elif self.attachments.count(None) == 2:
 			self.type = WeaponType.Default
 			self.rate = .5
+			self.ammo_consumption = 1
 		
 		self.timer = self.rate
 			
@@ -90,11 +106,12 @@ class Weapon:
 			self.timer += delta
 		
 	def fire(self):
-		if self.rate >= 0:
-			if self.timer >= self.rate:
-				self.create_bullet()
-				self.ammo[1] -= 1
-				self.timer = 0
+		if self.ammo[0] - self.ammo_consumption >= 0:
+			if self.rate >= 0:
+				if self.timer >= self.rate:
+					self.create_bullet()
+					self.ammo[0] -= self.ammo_consumption
+					self.timer = 0
 	
 	def create_bullet(self):
 		if self.type == WeaponType.Speed:

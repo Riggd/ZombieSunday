@@ -47,6 +47,7 @@ class Title_Screen(somber_engine.Level):
 	
 	def setup(self):
 		self.somber.bind_key('m1', self.mouse_down)
+		self.somber.bind_key('\r', self.start_game)
 		
 		self.dummy = Dummy(self.somber, self, 'sprites/foreground/dummy.png', 'dummy', x=self.somber.win_size[0] / 2, y=400)
 		self.dummy.hspeed = 100
@@ -64,7 +65,10 @@ class Title_Screen(somber_engine.Level):
 	def mouse_down(self, button):
 		for element in self.main_ui.get_clicked_elements():
 			if element.name == 'start':
-				self.somber.change_level('Endless Level')
+				self.start_game()
+	
+	def start_game(self):
+		self.somber.change_level('Endless Level')
 	
 	def update(self, delta):
 		self.somber.camera_pos[0] = self.somber.camera_pos[0] + 1
