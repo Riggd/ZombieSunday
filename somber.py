@@ -164,6 +164,9 @@ class Somber:
 		self.buffer = pygame.Surface(self.win_size)
 		self.background = pygame.Surface(self.win_size)
 		
+		#Sounds
+		pygame.mixer.init()
+		
 		#Set caption
 		pygame.display.set_caption(self.name)
 		
@@ -315,13 +318,13 @@ class Somber:
 		logging.debug('[Somber] Cached new sound \'%s\'.' % (name))
 		
 		#TODO: Set volume
-		#_s.set_volume(var.sound_volume)
+		_sound.set_volume(1)
 	
 		return _sound
 
 	def play_sound(self,name):
 		for sound in self.sounds:
-			if sound['name'] == sound:
+			if sound['name'] == name:
 				sound['sound'].play()
 				return True
 		

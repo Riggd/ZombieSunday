@@ -52,6 +52,8 @@ def debug():
 # Level setup
 somber.set_background_color((150, 150, 150))
 somber.add_font(config.FONT, 16)
+somber.add_sound('sounds/revolver-1.wav')
+somber.play_sound('sounds/revolver-1.wav')
 TITLE_SCREEN = level.Title_Screen(somber).create_level()
 ENDLESS_LEVEL = level.Endless_Level(somber).create_level()
 
