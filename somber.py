@@ -362,15 +362,6 @@ class Somber:
 				self.input[entry['key']] = False
 			
 			entry['callback']()
-		#for entry in self.keybinds:
-			#if len(entry['key'])==1 and ord(entry['key']) == event.key:
-				#entry['callback']()
-			#else:
-				#try:
-					#if len(entry['key'])==1 and entry['key'] == chr(event.key):
-						#entry['callback']()
-				#except ValueError:
-					#logging.warning('Inputs broken. Fix soon!')
 	
 	def run(self,callback):	
 		while self.state=='running':
@@ -429,6 +420,7 @@ class General(pygame.sprite.Sprite):
 		self.animations = {}
 		self.animation = None
 		self.animation_index = 0
+		self.animation_horz_flip = False
 		
 		self.image = self.sprite
 		self.rect = self.image.get_bounding_rect()
@@ -450,9 +442,13 @@ class General(pygame.sprite.Sprite):
 		
 		logging.debug('[Somber] Created new animation \'%s\'.' % name)
 	
-	def set_animation(self,animation):
+	def set_animation(self,animation,flip_horizontally=False):
 		self.animation = animation
 		self.animation_index = 0
+		self.animation_horz_flip = flip_horizontally
+		
+		if self.animation_horz_flip:
+			self.flip_horizontally()
 		
 		self.set_sprite(self.animations[self.animation]['sprites'][0])
 	
@@ -471,6 +467,9 @@ class General(pygame.sprite.Sprite):
 			self.set_sprite(self.animations[self.animation]['sprites'][self.animation_index])
 			self.animations[self.animation]['time'] =\
 				self.animations[self.animation]['time_max']
+			
+			if self.animation_horz_flip:
+				self.flip_horizontally()
 	
 	def get_animation(self):
 		return self.animation
