@@ -221,7 +221,7 @@ class FireBullet(Bullet):
 		self.add_animation('anim_left', 10, ['sprites/bullets/bullet_fire_2.png', 'sprites/bullets/bullet_fire_3.png'])
 		
 		if self.direction < 0:
-			self.set_animation('anim_left')
+			self.set_animation('anim_right',flip_horizontally=True)
 		else:
 			self.set_animation('anim_right')
 		
