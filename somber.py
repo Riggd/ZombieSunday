@@ -166,6 +166,7 @@ class Somber:
 		
 		#Sounds
 		pygame.mixer.init()
+		print pygame.mixer.get_init()
 		
 		#Set caption
 		pygame.display.set_caption(self.name)
@@ -312,20 +313,19 @@ class Somber:
 			pygame.mixer.music.stop()
 	
 	def add_sound(self,name):
-		_sound = pygame.mixer.Sound(name)
+		_sound = pygame.mixer.Sound(os.path.join(self.resource_dir,name))
+		_sound.set_volume(1)
 		
 		self.sounds.append({'name':name,'sound':_sound})
 		logging.debug('[Somber] Cached new sound \'%s\'.' % (name))
-		
-		#TODO: Set volume
-		_sound.set_volume(1)
 	
 		return _sound
 
 	def play_sound(self,name):
 		for sound in self.sounds:
 			if sound['name'] == name:
-				sound['sound'].play()
+				print sound['sound'].play()
+				print sound['sound'].get_length()
 				return True
 		
 		self.add_sound(name).play()

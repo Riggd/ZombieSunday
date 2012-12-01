@@ -8,6 +8,7 @@
 import somber as somber_engine
 import random
 import ui
+import os
 from entity import *
 from items import *
 
@@ -115,7 +116,6 @@ class Endless_Level(somber_engine.Level):
 			else:
 				break
 			
-		
 		self.level = self
 		self.setup()
 		
