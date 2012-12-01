@@ -16,7 +16,9 @@ class Entity(somber_engine.Active):
 		self.somber = somber
 		self.level = level
 		self.sprite_group = sprite_group
-		self.hspeed_max = 100
+		self.hspeed_max = 200
+		self.vspeed_max = 300
+		self.gravity = config.ENTITY_GRAVITY
 		self.direction = 1
 		self.health = [1, 100]
 		self.health[0] = self.health[1]
@@ -61,7 +63,8 @@ class Character(Entity):
 	def __init__(self, somber, level, sprite_group, x=0, y=0):
 		Entity.__init__(self, somber, level, sprite_group, x, y)
 		self.weapon = Weapon(somber, self, [None, None])
-		self.hspeed_default = 10
+		
+		self.hspeed_max = 400
 		
 		self.add_animation('idle_right', 15, ['sprites/player/player_right_0.png'])
 		self.add_animation('idle_left', 15, ['sprites/player/player_left_0.png'])
@@ -114,8 +117,7 @@ class Character(Entity):
 class Zombie(Entity):
 	def __init__(self, somber, level, sprite_group, x=0, y=0):
 		Entity.__init__(self, somber, level, sprite_group, x, y, sprite='sprites/zombie/zombie_right_0.png')
-		self.pre_hspeed = 100
-		self.hspeed = self.pre_hspeed
+		self.hspeed = self.hspeed_max
 		
 		self.add_animation('idle_right', 15, ['sprites/zombie/zombie_right_0.png'])
 		self.add_animation('idle_left', 15, ['sprites/zombie/zombie_left_0.png'])
@@ -143,7 +145,7 @@ class Zombie(Entity):
 					self.direction = 0
 				self.direction = 1
 
-		self.hspeed = self.direction * self.pre_hspeed			
+		self.hspeed = self.direction * self.hspeed_max		
 					
 	def effects(self):
 		if self.push_speed != 0:
