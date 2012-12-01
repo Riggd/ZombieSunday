@@ -6,6 +6,7 @@
 # 	Ryan Wiesjahn <rwiesjahn@bsu.edu>
 
 import somber as somber_engine
+import os
 from weapon import *
 
 class Bullet(somber_engine.Active):

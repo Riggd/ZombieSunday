@@ -324,8 +324,7 @@ class Somber:
 	def play_sound(self,name):
 		for sound in self.sounds:
 			if sound['name'] == name:
-				print sound['sound'].play()
-				print sound['sound'].get_length()
+				sound['sound'].play()
 				return True
 		
 		self.add_sound(name).play()

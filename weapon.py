@@ -114,6 +114,8 @@ class Weapon:
 					self.timer = 0
 	
 	def create_bullet(self):
+		self.somber.play_sound(os.path.join('sounds','revolver-1.wav'))
+		
 		if self.type == WeaponType.Speed:
 			SpeedBullet(self.somber)
 		elif self.type == WeaponType.Fire:
