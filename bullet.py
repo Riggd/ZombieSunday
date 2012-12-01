@@ -217,13 +217,12 @@ class Explosion(Bullet):
 class FireBullet(Bullet):
 	def __init__(self, somber, x=0, y=0):
 		Bullet.__init__(self, somber, x, y, sprite='sprites/bullets/bullet_fire_0.png')
-		self.add_animation('anim_right', 10, ['sprites/bullets/bullet_fire_0.png', 'sprites/bullets/bullet_fire_1.png'])
-		self.add_animation('anim_left', 10, ['sprites/bullets/bullet_fire_2.png', 'sprites/bullets/bullet_fire_3.png'])
+		self.add_animation('anim', 10, ['sprites/bullets/bullet_fire_0.png', 'sprites/bullets/bullet_fire_1.png'])
 		
 		if self.direction < 0:
-			self.set_animation('anim_right',flip_horizontally=True)
+			self.set_animation('anim',flip_horizontally=True)
 		else:
-			self.set_animation('anim_right')
+			self.set_animation('anim')
 		
 		self.duration = .7
 		self.hspeed = 300
