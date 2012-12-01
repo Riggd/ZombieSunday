@@ -312,7 +312,7 @@ class Somber:
 		else:
 			pygame.mixer.music.stop()
 	
-	def add_music(self,name):
+	def add_sound(self,name):
 		_sound = pygame.mixer.Sound(os.path.join(self.resource_dir,name))
 		_sound.set_volume(1)
 		
