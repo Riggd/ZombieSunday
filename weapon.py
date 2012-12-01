@@ -46,7 +46,7 @@ class Weapon:
 				self.rate = 2
 			else:
 				self.type = WeaponType.Fire
-				self.rate = 1
+				self.rate = 2
 		
 		elif self.attachments.count(Attachment.Lob) == 1:
 			if self.attachments.count(Attachment.Force) == 1:
@@ -62,7 +62,7 @@ class Weapon:
 		
 		elif self.attachments.count(Attachment.Speed) == 2:
 			self.type = WeaponType.SpeedSpeed
-			self.rate = 2
+			self.rate = .1
 		
 		elif self.attachments.count(Attachment.Fire) == 2:
 			self.type = WeaponType.FireFire
@@ -97,9 +97,7 @@ class Weapon:
 				self.timer = 0
 	
 	def create_bullet(self):
-		if self.type == WeaponType.Default:
-			DefaultBullet(self.somber)
-		elif self.type == WeaponType.Speed:
+		if self.type == WeaponType.Speed:
 			SpeedBullet(self.somber)
 		elif self.type == WeaponType.Fire:
 			FireBullet(self.somber)
@@ -107,6 +105,14 @@ class Weapon:
 			LobBullet(self.somber)
 		elif self.type == WeaponType.Force:
 			ForceBullet(self.somber)
+		elif self.type == WeaponType.SpeedSpeed:
+			SpeedSpeedBullet(self.somber)
+		elif self.type == WeaponType.SpeedFire:
+			SpeedFireBullet(self.somber)
+		elif self.type == WeaponType.SpeedLob:
+			SpeedLobBullet(self.somber)
+		elif self.type == WeaponType.SpeedForce:
+			SpeedForceBullet(self.somber)
 		else:
 			DefaultBullet(self.somber)
 
