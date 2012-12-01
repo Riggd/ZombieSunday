@@ -146,6 +146,7 @@ class Somber:
 		self.fonts = []
 		self.dirty_rects = []
 		self.sprites = []
+		self.sounds = []
 		self.keybinds = []
 		
 		#Start Pygame
@@ -289,6 +290,42 @@ class Somber:
 		_square.fill((color[0],color[1],color[2],alpha))
 		
 		self.dirty_rects.append(self.window.blit(_square,(pos[0],pos[1])))
+	
+	def play_song(self,song):
+		song = pygame.mixer.music.load(song)
+		pygame.mixer.music.set_volume(var.music_volume)
+		pygame.mixer.music.play()
+	
+	def pause_song(self):
+		pygame.mixer.music.pause()
+	
+	def unpause_song(self):
+		pygame.mixer.music.unpause()
+	
+	def stop_song(self,fade=0):
+		if fade:
+			pygame.mixer.music.fadeout(fade)
+		else:
+			pygame.mixer.music.stop()
+	
+	def add_sound(self,name):
+		_sound = pygame.mixer.Sound(name)
+		
+		self.sounds.append({'name':name,'sound':_sound})
+		logging.debug('[Somber] Cached new sound \'%s\'.' % (name))
+		
+		#TODO: Set volume
+		#_s.set_volume(var.sound_volume)
+	
+		return _sound
+
+	def play_sound(self,name):
+		for sound in self.sounds:
+			if sound['name'] == sound:
+				sound['sound'].play()
+				return True
+		
+		self.add_sound(name).play()
 	
 	def get_input(self):
 		for event in pygame.event.get():
@@ -447,10 +484,10 @@ class General(pygame.sprite.Sprite):
 		self.animation_index = 0
 		self.animation_horz_flip = flip_horizontally
 		
+		self.set_sprite(self.animations[self.animation]['sprites'][0])
+		
 		if self.animation_horz_flip:
 			self.flip_horizontally()
-		
-		self.set_sprite(self.animations[self.animation]['sprites'][0])
 	
 	def play_animation(self):
 		if not self.animation:
