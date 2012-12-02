@@ -89,7 +89,7 @@ class Character(Entity):
 		if self.hspeed > 0:
 			self.direction = 1
 		if self.hspeed < 0:
-			self.direction = 0
+			self.direction = -1
 					
 	def change_attachment_1(self):
 		attachment = self.weapon.attachments[0]

@@ -4,6 +4,7 @@
 # 	Michael Milkovic <mlmilkovic@bsu.edu>
 # 	Derek Onay <dsonay@bsu.edu>
 # 	Ryan Wiesjahn <rwiesjahn@bsu.edu>
+# LobLob, LobForce, ForceForce
 
 import somber as somber_engine
 from bullet import *
@@ -15,7 +16,8 @@ class Weapon:
 		self.attachments = attachments
 		self.type = WeaponType.Default
 		self.character = character
-		self.ammo = [0, 50]
+		self.firefire_check = False
+		self.ammo = [0, 5000]
 		self.ammo[0] = self.ammo[1]
 		self.ammo_consumption = 1
 		self.rate = 0
@@ -107,14 +109,14 @@ class Weapon:
 		
 	def fire(self):
 		if self.ammo[0] - self.ammo_consumption >= 0:
-			if self.rate >= 0:
+			if self.rate > -5:
 				if self.timer >= self.rate:
 					self.create_bullet()
 					self.ammo[0] -= self.ammo_consumption
 					self.timer = 0
 	
 	def create_bullet(self):
-		self.somber.play_sound(os.path.join('sounds','revolver-1.wav'))
+		#self.somber.play_sound(os.path.join('sounds','revolver-1.wav'))
 		
 		if self.type == WeaponType.Speed:
 			SpeedBullet(self.somber)
@@ -132,6 +134,16 @@ class Weapon:
 			SpeedLobBullet(self.somber)
 		elif self.type == WeaponType.SpeedForce:
 			SpeedForceBullet(self.somber)
+		elif self.type == WeaponType.FireFire:
+			if not self.firefire_check:
+				FireFireBullet(self.somber)
+				self.firefire_check = True
+		elif self.type == WeaponType.FireLob:
+			FireLobBullet(self.somber)
+		elif self.type == WeaponType.FireForce:
+			FireForceBullet(self.somber)
+		elif self.type == WeaponType.LobForce:
+			LobForceBullet(self.somber)
 		else:
 			DefaultBullet(self.somber)
 
