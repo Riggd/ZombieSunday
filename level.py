@@ -141,7 +141,7 @@ class Endless_Level(somber_engine.Level):
 	def _setup_buildings(self):
 		distance = 0
 		while distance < config.LEVEL_SIZE * config.GROUND_WIDTH:
-			distance += (random.randint(config.BUILDING_RANGE[0], config.BUILDING_RANGE[1]) * config.BUILDING_RANGE[2]) + (config.BUILDING_RANGE[2] * config.BUILDING_DISTANCE_MOD * self.stage)
+			distance += (random.randint(config.BUILDING_RANGE[0], config.BUILDING_RANGE[1]) * config.BUILDING_RANGE[2]) + (config.BUILDING_DISTANCE_MOD * self.stage)
 			Building(self.somber, self, 'sprites/foreground/house.png', 'buildings', x=distance, y=self.somber.win_size[1] - 572)
 	
 	def _spawn_zombies(self, delta):

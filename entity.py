@@ -17,8 +17,8 @@ class Entity(somber_engine.Active):
 		self.level = level
 		self.sprite_group = sprite_group
 		self.attacking = False
-		self.hspeed_max = config.ENTITY_HSPEED_MAX
-		self.vspeed_max = config.ENTITY_VSPEED_MAX
+		self.hspeed_max = config.ENTITY_HSPEED
+		self.vspeed_max = config.ENTITY_VSPEED
 		self.gravity = config.ENTITY_GRAVITY
 		self.direction = 1
 		self.health = [1, config.ENTITY_HEALTH]
@@ -73,7 +73,7 @@ class Character(Entity):
 	def __init__(self, somber, level, sprite_group, x=0, y=0):
 		Entity.__init__(self, somber, level, sprite_group, x, y)
 		self.weapon = Weapon(somber, self, [None, None])
-		self.hspeed_max = config.PLAYER_HSPEED_MAX
+		self.hspeed_max = config.PLAYER_HSPEED
 		self.health = [1, config.PLAYER_HEALTH]
 		self.health[0] = self.health[1]
 		self.score = 0
@@ -134,12 +134,13 @@ class Zombie(Entity):
 		for player in self.level.get_sprite_group('player'):
 			self.player = player
 		self.attack_timer = 0
-		self.health = [1, config.ZOMBIE_HEALTH]
+		self.health = [1, config.ZOMBIE_HEALTH + (config.ZOMBIE_HEALTH_MOD * self.level.stage)]
 		self.health[0] = self.health[1]
-		self.damage = config.ZOMBIE_DAMAGE
-		self.attack_rate = config.ZOMBIE_ATTACK_RATE
-		self.hspeed_max = config.ZOMBIE_HSPEED_MAX
+		self.damage = config.ZOMBIE_DAMAGE + (config.ZOMBIE_DAMAGE_MOD * self.level.stage)
+		self.attack_rate = config.ZOMBIE_ATTACK_RATE - (config.ZOMBIE_ATTACK_RATE_MOD * self.level.stage)
+		self.hspeed_max = config.ZOMBIE_HSPEED + (config.ZOMBIE_HSPEED_MOD * self.level.stage)
 		self.hspeed = self.hspeed_max
+		self.score = config.ZOMBIE_SCORE + (config.ZOMBIE_SCORE_MOD * self.level.stage)
 		
 		self.add_animation('idle_right', 15, ['sprites/zombie/zombie_right_0.png'])
 		self.add_animation('idle_left', 15, ['sprites/zombie/zombie_left_0.png'])
@@ -196,6 +197,6 @@ class Zombie(Entity):
 			self.add_scores()
 	
 	def add_scores(self):
-		self.player.score += config.ZOMBIE_SCORE
+		self.player.score += self.score
 		self.player.zombies_killed += 1
 			
