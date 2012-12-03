@@ -57,6 +57,10 @@ def debug():
 				(0, 90),
 				'Score: %s' % int(player.score), 
 				color=(0, 0, 0))
+			somber.write(config.FONT,
+				(80, 90),
+				'Heads Taken: %s' % int(player.zombies_killed), 
+				color=(0, 0, 0))
 
 # Level setup
 somber.set_background_color((150, 150, 150))

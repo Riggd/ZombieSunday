@@ -75,6 +75,7 @@ class Character(Entity):
 		self.weapon = Weapon(somber, self, [None, None])
 		self.hspeed_max = 400
 		self.score = 0
+		self.zombies_killed = 0
 		
 		self.add_animation('idle_right', 15, ['sprites/player/player_right_0.png'])
 		self.add_animation('idle_left', 15, ['sprites/player/player_left_0.png'])
@@ -188,4 +189,5 @@ class Zombie(Entity):
 			if self.fire_object != None:
 				self.fire_object.kill()
 			self.player.score += 100
+			self.player.zombies_killed += 1
 			
