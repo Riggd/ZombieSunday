@@ -74,6 +74,7 @@ class Character(Entity):
 		Entity.__init__(self, somber, level, sprite_group, x, y)
 		self.weapon = Weapon(somber, self, [None, None])
 		self.hspeed_max = 400
+		self.score = 0
 		
 		self.add_animation('idle_right', 15, ['sprites/player/player_right_0.png'])
 		self.add_animation('idle_left', 15, ['sprites/player/player_left_0.png'])
@@ -122,6 +123,7 @@ class Character(Entity):
 			attachment = None
 		self.weapon.attachments[1] = attachment
 		self.weapon.set_weapon_type()
+		
 		
 class Zombie(Entity):
 	def __init__(self, somber, level, sprite_group, x=0, y=0):
@@ -185,3 +187,5 @@ class Zombie(Entity):
 			self.kill()
 			if self.fire_object != None:
 				self.fire_object.kill()
+			self.player.score += 100
+			

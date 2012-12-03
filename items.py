@@ -96,3 +96,17 @@ class AttachmentItem(Item):
 			self.weapon.attachments[1] = self.attachment
 				
 		self.weapon.set_weapon_type()
+		
+class SalvagedGoods(Item):
+	def __init__(self, somber, level, x, y):
+		self.sprite = 'sprites/items/item_slavaged.png'
+		Item.__init__(self, somber, level, x, y, sprite=self.sprite)
+		
+	def update(self):
+		Item.update(self)
+		
+	def collect(self):
+		if self.collides_with(self.player):
+			self.kill()		
+		
+		
