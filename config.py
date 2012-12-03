@@ -27,9 +27,9 @@ GROUND_WIDTH = 1600
 GROUND_HEIGHT = 96
 TITLE_SCROLL_SPEED = 100
 
-BUILDING_RANGE = [15, 25, 100] # Min, max, multiplier.  EX: Houses will be 150, 160, 170, ... , 250 pixels apart
+BUILDING_RANGE = [15, 25, 100] # [Min, max, multiplier]. randint(min, max) * multiplier
 ZOMBIE_MAX = 10
-ZOMBIE_SPAWN_TIME = 2
+ZOMBIE_SPAWN_TIME = 2 # In seconds
 
 ZOMBIE_MAX_MOD = 1 # ZOMBIE_MAX += ZOMBIE_MAX_MOD * level.stage
 ZOMBIE_SPAWN_TIME_MOD = .98 # ZOMBIE_SPAWN_TIME *= pow(ZOMBIE_SPAWN_TIME_MOD, level.stage)
