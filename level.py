@@ -117,7 +117,6 @@ class Endless_Level(somber_engine.Level):
 			distance += random.randint(12, 20) * 100
 			if distance < self.level_size * self.ground_size:
 				House(self.somber, self, 'sprites/foreground/house.png', 'buildings', x=distance, y=self.somber.win_size[1] - 572)
-				#Ammo(self.somber, self.level, x=distance, y=self.somber.win_size[1] - 572)
 			else:
 				break
 			
@@ -132,12 +131,12 @@ class Endless_Level(somber_engine.Level):
 		
 		Zombie(self.somber, self, 'zombies', x=300, y=self.somber.win_size[1] - 300)
 		
-		Ammo(self.somber, self.level, x=600, y=self.somber.win_size[1] - 200)
-		
 		for group in self.level.sprite_groups:
 			for sprite in group['group']:
 				if group['name'] == 'clouds':
 					sprite.hspeed = -(random.randint(2, 6) * 8)
+					
+		self.spawn_ammo()
 	
 	def on_change_to(self):
 		self.somber.camera_follow(self.player)
@@ -157,7 +156,16 @@ class Endless_Level(somber_engine.Level):
 				if side == 0:
 					extra = -extra
 			Zombie(self.somber, self, 'zombies', x=self.somber.camera_pos[0] + (self.somber.win_size[0] * side) + extra, y=self.somber.win_size[1] - 246)
-
+	
+	def spawn_ammo(self):
+		distance = 0
+		while True:
+			distance += random.randint(12, 20) * 100
+			if distance < self.level_size * self.ground_size:
+				Ammo(self.somber, self.level, x=distance, y=self.somber.win_size[1] - 150)
+			else:
+				break
+		
 class Static_Background(somber_engine.Active):
 	def __init__(self, somber, level, sprite, sprite_group, x=0, y=0):
 		somber_engine.Active.__init__(self, sprite, somber=somber, pos=(x, y))
