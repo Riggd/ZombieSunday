@@ -34,8 +34,8 @@ class Entity(somber_engine.Active):
 	def collision(self):
 		if self.pos[0] < 0:
 			self.pos[0] = 0
-		if self.pos[0] > self.level.ground_size * (self.level.level_size - 1):
-			self.pos[0] = self.level.ground_size * (self.level.level_size - 1)
+		if self.pos[0] > config.GROUND_WIDTH * (config.LEVEL_SIZE - 1):
+			self.pos[0] = config.GROUND_WIDTH * (config.LEVEL_SIZE - 1)
 					
 		if self.collides_with_group(self.level.get_sprite_group('ground')):
 			self.pos[1] = self.somber.win_size[1] - 96 - 150 + 1

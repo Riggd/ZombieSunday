@@ -60,6 +60,9 @@ class Title_Screen(somber_engine.Level):
 				if group['name'] == 'clouds':
 					sprite.hspeed = -(random.randrange(2, 6) * 8)
 	
+	def update(self, delta):
+		pass
+	
 	def on_change_to(self):
 		self.somber.camera_follow(self.dummy)
 					
@@ -73,8 +76,9 @@ class Title_Screen(somber_engine.Level):
 		self.somber.change_level('Endless Level')
 
 class Endless_Level(somber_engine.Level):
-	def __init__(self, somber, level=1):
+	def __init__(self, somber, stage=0):
 		somber_engine.Level.__init__(self, somber, 'Endless Level')
+		self.stage = stage
 		self.zombie_timer = 0
 
 	def create_level(self):
@@ -86,10 +90,11 @@ class Endless_Level(somber_engine.Level):
 		self.create_sprite_group('ground')
 		self.create_sprite_group('ladders')
 		self.create_sprite_group('buildings')
-		self.create_sprite_group('player')
 		self.create_sprite_group('bullets')
 		self.create_sprite_group('items')
+		self.create_sprite_group('player')
 		self.create_sprite_group('zombies')
+		self.create_sprite_group('explosions')
 		self.create_sprite_group('ui')
 		
 		Static_Background(self.somber, self, 'sprites/background/sky.png', 'background_0')
@@ -100,58 +105,61 @@ class Endless_Level(somber_engine.Level):
 		Cloud(self.somber, self, 'sprites/background/cloud_2.png', 'clouds', x=config.CLOUD_2_POS[0], y=config.CLOUD_2_POS[1])
 		Cloud(self.somber, self, 'sprites/background/cloud_3.png', 'clouds', x=config.CLOUD_3_POS[0], y=config.CLOUD_3_POS[1])
 		
-		House(self.somber, self, 'sprites/foreground/home.png', 'buildings', x=config.HOME_POS[0], y=config.HOME_POS[1])
+		Building(self.somber, self, 'sprites/foreground/home.png', 'buildings', x=config.HOME_POS[0], y=config.HOME_POS[1])
 		
-		for tile in range(0, config.LEVEL_SIZE):
-			Platform(self.somber, self, 'sprites/foreground/ground.png', 'ground', x=tile * config.GROUND_WIDTH, y=config.GROUND_POS[1])
-		
-		distance = 0
-		while True:
-			distance += random.randint(12, 20) * 100
-			if distance < config.LEVEL_SIZE * config.GROUND_WIDTH:
-				House(self.somber, self, 'sprites/foreground/house.png', 'buildings', x=distance, y=self.somber.win_size[1] - 572)
-			else:
-				break
+		self._init_ground()
+		self._init_clouds()
 			
 		self.level = self
 		self.setup()
 		
 		return self
 	
-	def setup(self):
-		self.player = Character(self.somber, self, 'player', x=10, y=self.somber.win_size[1] - 300)
-		self.player.set_movement('horizontal')
-		
-		Zombie(self.somber, self, 'zombies', x=300, y=self.somber.win_size[1] - 300)
-		
-		for group in self.level.sprite_groups:
+	def _init_ground(self):
+		for tile in range(0, config.LEVEL_SIZE):
+			Platform(self.somber, self, 'sprites/foreground/ground.png', 'ground', x=tile * config.GROUND_WIDTH, y=config.GROUND_POS[1])
+	
+	def _init_clouds(self):
+		for group in self.sprite_groups:
 			for sprite in group['group']:
 				if group['name'] == 'clouds':
 					sprite.hspeed = -(random.randint(2, 6) * 8)
+	
+	def setup(self):
+		self._setup_player()
+		self._setup_buildings()
+		
+		Zombie(self.somber, self, 'zombies', x=300, y=config.ZOMBIE_POS[1])
 					
 		self.spawn_ammo()
 		self.spawn_attachments()
 	
-	def on_change_to(self):
-		self.somber.camera_follow(self.player)
+	def _setup_player(self):
+		self.player = Character(self.somber, self, 'player', x=config.PLAYER_POS[0], y=config.PLAYER_POS[1])
+		self.player.set_movement('horizontal')
+		
+	def _setup_buildings(self):
+		distance = 0
+		while distance < config.LEVEL_SIZE * config.GROUND_WIDTH:
+			distance += (random.randint(config.BUILDING_RANGE[0], config.BUILDING_RANGE[1]) * config.BUILDING_RANGE[2]) + (config.BUILDING_RANGE[2] * config.BUILDING_DISTANCE_MOD * self.stage)
+			Building(self.somber, self, 'sprites/foreground/house.png', 'buildings', x=distance, y=self.somber.win_size[1] - 572)
 	
-	def update(self, delta):
-		self.spawn_zombies(delta)
+	def _spawn_zombies(self, delta):
+		print len(self.get_sprite_group('zombies'))
+		if len(self.get_sprite_group('zombies')) < config.ZOMBIE_MAX + (config.ZOMBIE_MAX_MOD * self.stage):
+			self.zombie_timer += delta
+			zombie_time = round(config.ZOMBIE_SPAWN_TIME * pow(config.ZOMBIE_SPAWN_TIME_MOD, self.stage), 10)
+			if self.zombie_timer > zombie_time:
+				self.zombie_timer -= zombie_time
+				side = 1
+				extra = 200
+				if self.somber.camera_pos[0] > extra:
+					side = random.randint(0, 1)
+					if side == 0:
+						extra = -extra
+				Zombie(self.somber, self, 'zombies', x=self.somber.camera_pos[0] + (config.WINDOW_SIZE[0] * side) + extra, y=config.ZOMBIE_POS[1])
 	
-	def spawn_zombies(self, delta):
-		self.zombie_timer += delta
-		zombie_time = 5
-		if self.zombie_timer > zombie_time:
-			self.zombie_timer -= zombie_time
-			side = 1
-			extra = 200
-			if self.somber.camera_pos[0] > 200:
-				side = random.randint(0, 1)
-				if side == 0:
-					extra = -extra
-			Zombie(self.somber, self, 'zombies', x=self.somber.camera_pos[0] + (self.somber.win_size[0] * side) + extra, y=self.somber.win_size[1] - 246)
-	
-	def spawn_ammo(self):
+	def spawn_ammo(self): # TEMPORARY
 		distance = 0
 		while True:
 			distance += random.randint(12, 20) * 100
@@ -160,7 +168,7 @@ class Endless_Level(somber_engine.Level):
 			else:
 				break
 			
-	def spawn_attachments(self):
+	def spawn_attachments(self): # TEMPORARY
 		distance = 0
 		while True:
 			distance += random.randint(12, 20) * 100
@@ -168,6 +176,12 @@ class Endless_Level(somber_engine.Level):
 				AttachmentItem(self.somber, self, random.randint(0, 3), x=distance, y=self.somber.win_size[1] - 150)
 			else:
 				break
+	
+	def on_change_to(self):
+		self.somber.camera_follow(self.player)
+	
+	def update(self, delta):
+		self._spawn_zombies(delta)
 		
 class Static_Background(somber_engine.Active):
 	def __init__(self, somber, level, sprite, sprite_group, x=0, y=0):
@@ -203,18 +217,8 @@ class Platform(somber_engine.Active):
 	
 	def update(self):
 		somber_engine.Active.update(self)
-
-class Ladder(somber_engine.Active):
-	def __init__(self, somber, level, sprite, sprite_group, x=0, y=0):
-		somber_engine.Active.__init__(self, sprite, somber=somber, pos=(x, y))
 		
-		self.level = level
-		self.sprite_group = sprite_group
-		self.set_pos((x, y))
-		
-		level.add_object(self, sprite_group)
-		
-class House(somber_engine.Active):
+class Building(somber_engine.Active):
 	def __init__(self, somber, level, sprite, sprite_group, x=0, y=0):
 		somber_engine.Active.__init__(self, sprite, somber=somber, pos=(x, y))
 		

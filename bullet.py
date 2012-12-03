@@ -19,12 +19,13 @@ class Bullet(somber_engine.Active):
 			self.direction = 1
 		else:
 			self.direction = -1
+		self.sprite_group = 'explosions'
 			
 		self.x_offset = x
 		self.y_offset = y
 		if from_player:
 			self.set_pos_to_entity(self.player)
-		self.level.add_object(self, 'bullets')
+		self.level.add_object(self, self.sprite_group)
 		
 		self.timer = 0
 		self.damage = 0
@@ -379,6 +380,7 @@ class Explosion(Bullet):
 		self.set_fire = set_fire
 		self.push = push
 		self.has_hit = False
+		self.sprite_group = 'explosions'
 		self.duration = 1
 		self.hspeed = 0
 		self.damage = 40
