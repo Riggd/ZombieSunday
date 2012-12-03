@@ -8,6 +8,7 @@
 import somber as somber_engine
 from weapon import *
 from entity import *
+import config
 
 class Item(somber_engine.Active):
 	def __init__(self, somber, level, x=0, y=0, sprite='sprites/items/item_default.png'):

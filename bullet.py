@@ -8,6 +8,7 @@
 import somber as somber_engine
 import os
 from weapon import *
+import config
 
 class Bullet(somber_engine.Active):
 	def __init__(self, somber, x=0, y=0, from_player=True, sprite='sprites/bullets/bullet_default.png'):

@@ -74,7 +74,8 @@ class Character(Entity):
 		Entity.__init__(self, somber, level, sprite_group, x, y)
 		self.weapon = Weapon(somber, self, [None, None])
 		self.hspeed_max = config.PLAYER_HSPEED_MAX
-		self.health = config.PLAYER_HEALTH
+		self.health = [1, config.PLAYER_HEALTH]
+		self.health[0] = self.health[1]
 		self.score = 0
 		self.zombies_killed = 0
 		
@@ -133,7 +134,8 @@ class Zombie(Entity):
 		for player in self.level.get_sprite_group('player'):
 			self.player = player
 		self.attack_timer = 0
-		self.health = config.ZOMBIE_HEALTH
+		self.health = [1, config.ZOMBIE_HEALTH]
+		self.health[0] = self.health[1]
 		self.damage = config.ZOMBIE_DAMAGE
 		self.attack_rate = config.ZOMBIE_ATTACK_RATE
 		self.hspeed_max = config.ZOMBIE_HSPEED_MAX

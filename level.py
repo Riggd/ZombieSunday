@@ -145,7 +145,6 @@ class Endless_Level(somber_engine.Level):
 			Building(self.somber, self, 'sprites/foreground/house.png', 'buildings', x=distance, y=self.somber.win_size[1] - 572)
 	
 	def _spawn_zombies(self, delta):
-		print len(self.get_sprite_group('zombies'))
 		if len(self.get_sprite_group('zombies')) < config.ZOMBIE_MAX + (config.ZOMBIE_MAX_MOD * self.stage):
 			self.zombie_timer += delta
 			zombie_time = round(config.ZOMBIE_SPAWN_TIME * pow(config.ZOMBIE_SPAWN_TIME_MOD, self.stage), 10)

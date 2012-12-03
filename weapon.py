@@ -8,6 +8,7 @@
 
 import somber as somber_engine
 from bullet import *
+import config
 
 class Weapon:
 	def __init__(self, somber, character, attachments=[None, None]):
