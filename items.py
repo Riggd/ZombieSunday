@@ -6,7 +6,7 @@
 # 	Ryan Wiesjahn <rwiesjahn@bsu.edu>
 
 import somber as somber_engine
-from weapon import *
+import weapon
 from entity import *
 
 class Item(somber_engine.Active):
@@ -62,5 +62,92 @@ class Ammo(Item):
 			
 		else:
 			self.weapon.ammo[0] += self.add_ammo
-	
+
+class AttachmentSpeed(Item):
+	def __init__(self, somber, level, x=0, y=0):
+		Item.__init__(self, somber, level, x, y, sprite='sprites/items/item_speed.png')
+		self.weapon = self.player.weapon
+		self.attachments = self.player.weapon.attachments
+		
+	def update(self):
+		Item.update(self)
+		
+	def collect(self):
+		if self.collides_with(self.player):
+			self.set_attachment()
+			self.kill()
 			
+	def set_attachment(self):
+		if self.attachments[0] == None:
+			 self.attachments[0] = weapon.Attachment.Speed
+		else:
+			self.attachments[1] = weapon.Attachment.Speed
+				
+		self.weapon.set_weapon_type()
+			
+class AttachmentFire(Item):
+	def __init__(self, somber, level, x=0, y=0):
+		Item.__init__(self, somber, level, x, y, sprite='sprites/items/item_fire.png')
+		self.weapon = self.player.weapon
+		self.attachments = self.player.weapon.attachments
+		
+	def update(self):
+		Item.update(self)
+		
+	def collect(self):
+		if self.collides_with(self.player):
+			self.set_attachment()
+			self.kill()
+			
+	def set_attachment(self):
+		if self.attachments[0] == None:
+			 self.attachments[0] = weapon.Attachment.Fire
+		else:
+			self.attachments[1] = weapon.Attachment.Fire
+				
+		self.weapon.set_weapon_type()
+
+class AttachmentLob(Item):
+	def __init__(self, somber, level, x=0, y=0):
+		Item.__init__(self, somber, level, x, y, sprite='sprites/items/item_lob.png')
+		self.weapon = self.player.weapon
+		self.attachments = self.player.weapon.attachments
+		
+	def update(self):
+		Item.update(self)
+		
+	def collect(self):
+		if self.collides_with(self.player):
+			self.set_attachment()
+			self.kill()
+			
+	def set_attachment(self):
+		if self.attachments[0] == None:
+			 self.attachments[0] = weapon.Attachment.Lob
+		else:
+			self.attachments[1] = weapon.Attachment.Lob
+				
+		self.weapon.set_weapon_type()
+
+class AttachmentForce(Item):
+	def __init__(self, somber, level, x=0, y=0):
+		Item.__init__(self, somber, level, x, y, sprite='sprites/items/item_force.png')
+		self.weapon = self.player.weapon
+		self.attachments = self.player.weapon.attachments
+		
+	def update(self):
+		Item.update(self)
+		
+	def collect(self):
+		if self.collides_with(self.player):
+			self.set_attachment()
+			self.kill()
+			
+	def set_attachment(self):
+		if self.attachments[0] == None:
+			 self.attachments[0] = weapon.Attachment.Force
+		else:
+			self.attachments[1] = weapon.Attachment.Force
+				
+		self.weapon.set_weapon_type()
+		
