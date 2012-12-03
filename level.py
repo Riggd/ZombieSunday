@@ -69,6 +69,7 @@ class Title_Screen(somber_engine.Level):
 				self.start_game()
 	
 	def start_game(self):
+		ENDLESS_LEVEL = Endless_Level(self.somber).create_level()
 		self.somber.change_level('Endless Level')
 	
 	def update(self, delta):

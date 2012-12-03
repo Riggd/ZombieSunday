@@ -35,7 +35,7 @@ def debug():
 		'Camera: X=%s, Y=%s' % (somber.camera_pos[0], somber.camera_pos[1]),
 		color=(0, 0, 0))
 	
-	if ENDLESS_LEVEL == somber.current_level:
+	if TITLE_SCREEN != somber.current_level:
 		for player in somber.current_level.get_sprite_group('player'):
 			somber.write(config.FONT,
 				(0, 30),
@@ -66,12 +66,8 @@ def debug():
 somber.set_background_color((150, 150, 150))
 somber.add_font(config.FONT, 16)
 TITLE_SCREEN = level.Title_Screen(somber).create_level()
-ENDLESS_LEVEL = level.Endless_Level(somber).create_level()
 #somber.play_music(os.path.join('res','sounds','squired.xm'))
 
-if '-testlevel' in sys.argv:
-	somber.change_level('Endless Level')
-else:
-	somber.change_level('Title Screen')
+somber.change_level('Title Screen')
 
 somber.run(callback)

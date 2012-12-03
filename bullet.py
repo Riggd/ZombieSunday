@@ -123,7 +123,10 @@ class SpeedFireBullet(Bullet):
 		self.damage = 6
 		
 		if self.direction < 0:
-			self.flip_horizontally()
+			self.set_animation('anim',flip_horizontally=True)
+		else:
+			self.set_animation('anim')
+			
 		self.hspeed = (self.hspeed + abs(self.player.hspeed)) * self.direction
 		
 	def update(self):
