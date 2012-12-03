@@ -40,6 +40,7 @@ class Ammo(Item):
 	def __init__(self, somber, level, x=0, y=0):
 		Item.__init__(self, somber, level, x, y, sprite='sprites/items/item_default.png')
 		self.weapon = self.player.weapon
+		self.rounds = 50
 		
 	def update(self):
 		Item.update(self)
@@ -53,7 +54,7 @@ class Ammo(Item):
 		self.add_ammo = 0
 		
 		if self.weapon.ammo[0] < self.weapon.ammo[1]:
-			self.add_ammo = 50
+			self.add_ammo = self.rounds
 		
 		if (self.add_ammo + self.weapon.ammo[0]) > self.weapon.ammo[1]:
 			self.add_ammo = 0
