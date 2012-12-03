@@ -117,6 +117,7 @@ class Endless_Level(somber_engine.Level):
 			distance += random.randint(12, 20) * 100
 			if distance < self.level_size * self.ground_size:
 				House(self.somber, self, 'sprites/foreground/house.png', 'buildings', x=distance, y=self.somber.win_size[1] - 572)
+				#Ammo(self.somber, self.level, x=distance, y=self.somber.win_size[1] - 572)
 			else:
 				break
 			
@@ -131,8 +132,8 @@ class Endless_Level(somber_engine.Level):
 		
 		Zombie(self.somber, self, 'zombies', x=300, y=self.somber.win_size[1] - 300)
 		
-		DefaultItem(self.somber, self.level, x=500, y=490)
-
+		Ammo(self.somber, self.level, x=600, y=self.somber.win_size[1] - 200)
+		
 		for group in self.level.sprite_groups:
 			for sprite in group['group']:
 				if group['name'] == 'clouds':
