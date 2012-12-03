@@ -4,7 +4,7 @@
 # 	Michael Milkovic <mlmilkovic@bsu.edu>
 # 	Derek Onay <dsonay@bsu.edu>
 # 	Ryan Wiesjahn <rwiesjahn@bsu.edu>
-# LobLob, LobForce, ForceForce
+# LobForce
 
 import somber as somber_engine
 from bullet import *
@@ -142,8 +142,12 @@ class Weapon:
 			FireLobBullet(self.somber)
 		elif self.type == WeaponType.FireForce:
 			FireForceBullet(self.somber)
+		elif self.type == WeaponType.LobLob:
+			LobLobBullet(self.somber)
 		elif self.type == WeaponType.LobForce:
 			LobForceBullet(self.somber)
+		elif self.type == WeaponType.ForceForce:
+			ForceForceBullet(self.somber)
 		else:
 			DefaultBullet(self.somber)
 

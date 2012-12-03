@@ -37,6 +37,7 @@ class Entity(somber_engine.Active):
 			self.pos[0] = self.level.ground_size * (self.level.level_size - 1)
 					
 		if self.collides_with_group(self.level.get_sprite_group('ground')):
+			self.pos[1] = self.somber.win_size[1] - 96 - 150 + 1
 			if self.vspeed > 0:
 				self.vspeed = 0
 			self.gravity = 0
