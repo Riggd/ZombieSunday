@@ -11,6 +11,7 @@ import ui
 import os
 from entity import *
 from items import *
+from weapon import *
 
 class Title_Screen(somber_engine.Level):
 	def __init__(self, somber):
@@ -137,10 +138,7 @@ class Endless_Level(somber_engine.Level):
 					sprite.hspeed = -(random.randint(2, 6) * 8)
 					
 		self.spawn_ammo()
-		self.spawn_fire()
-		self.spawn_speed()
-		self.spawn_force()
-		self.spawn_lob()
+		self.spawn_attachments()
 	
 	def on_change_to(self):
 		self.somber.camera_follow(self.player)
@@ -170,39 +168,12 @@ class Endless_Level(somber_engine.Level):
 			else:
 				break
 			
-	def spawn_fire(self):
+	def spawn_attachments(self):
 		distance = 0
 		while True:
 			distance += random.randint(12, 20) * 100
 			if distance < self.level_size * self.ground_size:
-				AttachmentFire(self.somber, self.level, x=distance, y=self.somber.win_size[1] - 150)
-			else:
-				break
-			
-	def spawn_speed(self):
-		distance = 0
-		while True:
-			distance += random.randint(12, 20) * 100
-			if distance < self.level_size * self.ground_size:
-				AttachmentSpeed(self.somber, self.level, x=distance, y=self.somber.win_size[1] - 150)
-			else:
-				break
-			
-	def spawn_lob(self):
-		distance = 0
-		while True:
-			distance += random.randint(12, 20) * 100
-			if distance < self.level_size * self.ground_size:
-				AttachmentLob(self.somber, self.level, x=distance, y=self.somber.win_size[1] - 150)
-			else:
-				break
-			
-	def spawn_force(self):
-		distance = 0
-		while True:
-			distance += random.randint(12, 20) * 100
-			if distance < self.level_size * self.ground_size:
-				AttachmentForce(self.somber, self.level, x=distance, y=self.somber.win_size[1] - 150)
+				AttachmentItem(self.somber, self, random.randint(0, 3), x=distance, y=self.somber.win_size[1] - 150)
 			else:
 				break
 		

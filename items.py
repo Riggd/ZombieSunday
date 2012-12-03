@@ -6,7 +6,7 @@
 # 	Ryan Wiesjahn <rwiesjahn@bsu.edu>
 
 import somber as somber_engine
-import weapon
+from weapon import *
 from entity import *
 
 class Item(somber_engine.Active):
@@ -62,6 +62,40 @@ class Ammo(Item):
 			
 		else:
 			self.weapon.ammo[0] += self.add_ammo
+			
+class AttachmentItem(Item):
+	def __init__(self, somber, level, attachment, x=0, y=0):
+		if attachment == Attachment.Speed:
+			self.sprite = 'sprites/items/item_speed.png'
+		elif attachment == Attachment.Fire:
+			self.sprite = 'sprites/items/item_fire.png'
+		elif attachment == Attachment.Force:
+			self.sprite = 'sprites/items/item_force.png'
+		elif attachment == Attachment.Lob:
+			self.sprite = 'sprites/items/item_lob.png'
+			
+		Item.__init__(self, somber, level, x, y, sprite=self.sprite)
+		self.attachment = attachment
+		self.weapon = self.player.weapon
+		
+	def update(self):
+		Item.update(self)
+		
+	def collect(self):
+		if self.collides_with(self.player):
+			self.set_attachment()
+			self.kill()
+			
+	def set_attachment(self):
+		if self.weapon.attachments[0] == None:
+			 self.weapon.attachments[0] = self.attachment
+		elif self.weapon.attachments[1] == None:
+			self.weapon.attachments[1] = self.attachment
+		else:
+			self.weapon.attachments[0] = self.weapon.attachments[1]
+			self.weapon.attachments[1] = self.attachment
+				
+		self.weapon.set_weapon_type()
 
 class AttachmentSpeed(Item):
 	def __init__(self, somber, level, x=0, y=0):
