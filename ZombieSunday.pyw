@@ -30,22 +30,26 @@ def debug():
 		color=(0, 0, 0))
 
 	somber.write(config.FONT,
-		(0, 10),
+		(0, 15),
 		'Camera: X=%s, Y=%s' % (somber.camera_pos[0], somber.camera_pos[1]),
 		color=(0, 0, 0))
 	
 	if ENDLESS_LEVEL == somber.current_level:
 		for player in somber.current_level.get_sprite_group('player'):
 			somber.write(config.FONT,
-				(0, 20),
+				(0, 30),
 				'Player: X=%s, Y=%s' % (int(player.pos[0]), int(player.pos[1])),
 				color=(0, 0, 0))
 			somber.write(config.FONT,
-				(0, 30),
+				(0, 45),
+				'Health: %s / %s' % (int(player.health[0]), int(player.health[1])),
+				color=(0, 0, 0))
+			somber.write(config.FONT,
+				(0, 60),
 				'Weapon: %s, %s' % (str(player.weapon.attachments[0]), str(player.weapon.attachments[1])),
 				color=(0, 0, 0))
 			somber.write(config.FONT,
-				(0, 40),
+				(0, 75),
 				'Ammo: %s, %s' % (str(player.weapon.ammo[0]), str(player.weapon.ammo[1])),
 				color=(0, 0, 0))
 

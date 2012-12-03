@@ -16,6 +16,7 @@ class Entity(somber_engine.Active):
 		self.somber = somber
 		self.level = level
 		self.sprite_group = sprite_group
+		self.attacking = False
 		self.hspeed_max = 200
 		self.vspeed_max = 200
 		self.gravity = config.ENTITY_GRAVITY
@@ -54,11 +55,19 @@ class Entity(somber_engine.Active):
 					self.set_animation('move_left')
 		else:
 			if self.direction == 1:
-				if not self.get_animation() == 'idle_right':
-					self.set_animation('idle_right')
+				if not self.attacking:
+					if not self.get_animation() == 'idle_right':
+						self.set_animation('idle_right')
+				else:
+					if not self.get_animation() == 'attack_right':
+						self.set_animation('attack_right')
 			else:
-				if not self.get_animation() == 'idle_left':
-					self.set_animation('idle_left')
+				if not self.attacking:
+					if not self.get_animation() == 'idle_left':
+						self.set_animation('idle_left')
+				else:
+					if not self.get_animation() == 'attack_left':
+						self.set_animation('attack_left')
 
 class Character(Entity):
 	def __init__(self, somber, level, sprite_group, x=0, y=0):
@@ -117,42 +126,59 @@ class Character(Entity):
 class Zombie(Entity):
 	def __init__(self, somber, level, sprite_group, x=0, y=0):
 		Entity.__init__(self, somber, level, sprite_group, x, y, sprite='sprites/zombie/zombie_right_0.png')
+		for player in self.level.get_sprite_group('player'):
+			self.player = player
+		self.attack_rate = 1
+		self.attack_timer = 0
 		self.hspeed = self.hspeed_max
+		self.damage = 10
 		
 		self.add_animation('idle_right', 15, ['sprites/zombie/zombie_right_0.png'])
 		self.add_animation('idle_left', 15, ['sprites/zombie/zombie_left_0.png'])
 		self.add_animation('move_right', 15, ['sprites/zombie/zombie_right_0.png', 'sprites/zombie/zombie_right_1.png'])
 		self.add_animation('move_left', 15, ['sprites/zombie/zombie_left_0.png', 'sprites/zombie/zombie_left_1.png'])
+		self.add_animation('attack_right', 15, ['sprites/zombie/zombie_right_0.png', 'sprites/zombie/zombie_right_2.png'])
+		self.add_animation('attack_left', 20, ['sprites/zombie/zombie_left_0.png', 'sprites/zombie/zombie_left_2.png'])
 		self.set_animation('idle_right')
 		
 	def update(self):	
+		self.timer()
 		Entity.collision(self)
-		self.change_direction()
+		self.ai()
 		Entity.animate(self)
 		self.die()
 		self.effects()
 		Entity.update(self)
 		
-	def change_direction(self):
-		for player in self.level.get_sprite_group('player'):
-			if self.pos[0] > player.pos[0]:
-				if self.pos[0] < player.pos[0] + player.sprite.get_width():
-					self.direction = 0
-				else:
-					self.direction = -1
-			else:
-				if self.pos[0] + self.sprite.get_width() > player.pos[0]:
-					self.direction = 0
-				self.direction = 1
-
-		self.hspeed = self.direction * self.hspeed_max		
-					
+	def ai(self):
+		padding = 20
+		self.attacking = False
+		if self.pos[0] + self.sprite.get_width() < self.player.pos[0] + padding:
+			self.hspeed = self.hspeed_max
+			self.direction = 1
+		elif self.pos[0] > self.player.pos[0] + self.player.sprite.get_width() - padding:
+			self.hspeed = -self.hspeed_max
+			self.direction = -1
+		else:
+			self.hspeed = 0
+			self.attack()
+			self.attacking = True
+	
+	def timer(self):
+		if self.attack_timer < self.attack_rate:
+			self.attack_timer += self.delta_speed
+			
+	def attack(self):
+		if self.attack_timer >= self.attack_rate:
+			self.player.health[0] -= self.damage
+			self.attack_timer = 0
+			
 	def effects(self):
 		if self.push_speed != 0:
 			if not self.collides_with_group(self.level.get_sprite_group('ground')):
 				self.hspeed = self.push_speed
 			else:
-				self.push_speed = 0			
+				self.push_speed = 0					
 				
 	def die(self):
 		if self.health[0] <= 0:
