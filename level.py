@@ -28,17 +28,17 @@ class Title_Screen(somber_engine.Level):
 		self.create_sprite_group('ui', group=somber_engine.StaticGroup)
 		
 		Static_Background(self.somber, self, 'sprites/background/sky.png', 'background_0')
-		Sun(self.somber, self, 'sprites/background/sun.png', 'sun', x=self.somber.win_size[0] - 250, y=20)
-		Background(self.somber, self, 'sprites/background/trees_back.png', 'background_1', y=self.somber.win_size[1] - 245)
-		Background(self.somber, self, 'sprites/background/trees_fore.png', 'background_2', y=self.somber.win_size[1] - 192)
-		Cloud(self.somber, self, 'sprites/background/cloud_1.png', 'clouds', x=self.somber.win_size[0] - 100, y=10)
-		Cloud(self.somber, self, 'sprites/background/cloud_2.png', 'clouds', x=self.somber.win_size[0] / 2, y=200)
-		Cloud(self.somber, self, 'sprites/background/cloud_3.png', 'clouds', y=100)
-		Background(self.somber, self, 'sprites/foreground/ground.png', 'ground', y=self.somber.win_size[1] - 96)
+		Sun(self.somber, self, 'sprites/background/sun.png', 'sun', x=config.SUN_POS[0], y=config.SUN_POS[1])
+		Background(self.somber, self, 'sprites/background/trees_back.png', 'background_1', x=config.BACKGROUND_1_POS[0], y=config.BACKGROUND_1_POS[1])
+		Background(self.somber, self, 'sprites/background/trees_fore.png', 'background_2', x=config.BACKGROUND_2_POS[0], y=config.BACKGROUND_2_POS[1])
+		Cloud(self.somber, self, 'sprites/background/cloud_1.png', 'clouds', x=config.CLOUD_1_POS[0], y=config.CLOUD_1_POS[1])
+		Cloud(self.somber, self, 'sprites/background/cloud_2.png', 'clouds', x=config.CLOUD_2_POS[0], y=config.CLOUD_2_POS[1])
+		Cloud(self.somber, self, 'sprites/background/cloud_3.png', 'clouds', x=config.CLOUD_3_POS[0], y=config.CLOUD_3_POS[1])
+		Background(self.somber, self, 'sprites/foreground/ground.png', 'ground', x=config.GROUND_POS[0], y=config.GROUND_POS[1])
 		
 		self.main_ui = ui.UI_Group(self.somber, self, 'ui')
-		self.main_ui.create_element('sprites/ui/logo_zombie_sunday.png', 'logo', x=(self.somber.win_size[0] / 2) - 338, y=30)
-		self.main_ui.create_element('sprites/ui/ui_start_game.png', 'start', x=(self.somber.win_size[0] / 2) - 165, y=220)
+		self.main_ui.create_element('sprites/ui/logo_zombie_sunday.png', 'logo', x=config.LOGO_POS[0], y=config.LOGO_POS[1])
+		self.main_ui.create_element('sprites/ui/ui_start_game.png', 'start', x=config.BUTTON_START_POS[0], y=config.BUTTON_START_POS[1])
 		
 		self.level = self
 		
@@ -51,7 +51,7 @@ class Title_Screen(somber_engine.Level):
 		self.somber.bind_key('\r', self.start_game)
 		
 		self.dummy = Dummy(self.somber, self, 'sprites/foreground/dummy.png', 'dummy', x=self.somber.win_size[0] / 2, y=400)
-		self.dummy.hspeed = 100
+		self.dummy.hspeed = config.TITLE_SCROLL_SPEED
 		
 		for group in self.level.sprite_groups:
 			_speed = -(self.level.sprite_groups.index(group) * 8)
@@ -71,15 +71,10 @@ class Title_Screen(somber_engine.Level):
 	def start_game(self):
 		ENDLESS_LEVEL = Endless_Level(self.somber).create_level()
 		self.somber.change_level('Endless Level')
-	
-	def update(self, delta):
-		self.somber.camera_pos[0] = self.somber.camera_pos[0] + 1
 
 class Endless_Level(somber_engine.Level):
-	def __init__(self, somber):
+	def __init__(self, somber, level=1):
 		somber_engine.Level.__init__(self, somber, 'Endless Level')
-		self.level_size = 10
-		self.ground_size = 1600
 		self.zombie_timer = 0
 
 	def create_level(self):
@@ -98,26 +93,22 @@ class Endless_Level(somber_engine.Level):
 		self.create_sprite_group('ui')
 		
 		Static_Background(self.somber, self, 'sprites/background/sky.png', 'background_0')
+		Sun(self.somber, self, 'sprites/background/sun.png', 'sun', x=config.SUN_POS[0], y=config.SUN_POS[1])
+		Background(self.somber, self, 'sprites/background/trees_back.png', 'background_1', x=config.BACKGROUND_1_POS[0], y=config.BACKGROUND_1_POS[1])
+		Background(self.somber, self, 'sprites/background/trees_fore.png', 'background_2', x=config.BACKGROUND_2_POS[0], y=config.BACKGROUND_2_POS[1])
+		Cloud(self.somber, self, 'sprites/background/cloud_1.png', 'clouds', x=config.CLOUD_1_POS[0], y=config.CLOUD_1_POS[1])
+		Cloud(self.somber, self, 'sprites/background/cloud_2.png', 'clouds', x=config.CLOUD_2_POS[0], y=config.CLOUD_2_POS[1])
+		Cloud(self.somber, self, 'sprites/background/cloud_3.png', 'clouds', x=config.CLOUD_3_POS[0], y=config.CLOUD_3_POS[1])
 		
-		Background(self.somber, self, 'sprites/background/trees_back.png', 'background_1', y=self.somber.win_size[1] - 245)
-		Background(self.somber, self, 'sprites/background/trees_fore.png', 'background_2', y=self.somber.win_size[1] - 192)
+		House(self.somber, self, 'sprites/foreground/home.png', 'buildings', x=config.HOME_POS[0], y=config.HOME_POS[1])
 		
-		Sun(self.somber, self, 'sprites/background/sun.png', 'sun', x=self.somber.win_size[0] - 250, y=20)
-		
-		Cloud(self.somber, self, 'sprites/background/cloud_1.png', 'clouds', x=self.somber.win_size[0] - 100, y=10)
-		Cloud(self.somber, self, 'sprites/background/cloud_2.png', 'clouds', x=self.somber.win_size[0] / 2, y=200)
-		Cloud(self.somber, self, 'sprites/background/cloud_3.png', 'clouds', y=100)
-		
-		
-		for tile in range(0, self.level_size):
-			Platform(self.somber, self, 'sprites/foreground/ground.png', 'ground', x=tile * self.ground_size, y=self.somber.win_size[1] - 96)
-		
-		House(self.somber, self, 'sprites/foreground/home.png', 'buildings', x=5, y=self.somber.win_size[1] - 525)
+		for tile in range(0, config.LEVEL_SIZE):
+			Platform(self.somber, self, 'sprites/foreground/ground.png', 'ground', x=tile * config.GROUND_WIDTH, y=config.GROUND_POS[1])
 		
 		distance = 0
 		while True:
 			distance += random.randint(12, 20) * 100
-			if distance < self.level_size * self.ground_size:
+			if distance < config.LEVEL_SIZE * config.GROUND_WIDTH:
 				House(self.somber, self, 'sprites/foreground/house.png', 'buildings', x=distance, y=self.somber.win_size[1] - 572)
 			else:
 				break
@@ -164,7 +155,7 @@ class Endless_Level(somber_engine.Level):
 		distance = 0
 		while True:
 			distance += random.randint(12, 20) * 100
-			if distance < self.level_size * self.ground_size:
+			if distance < config.LEVEL_SIZE * config.GROUND_WIDTH:
 				Ammo(self.somber, self.level, x=distance, y=self.somber.win_size[1] - 150)
 			else:
 				break
@@ -173,7 +164,7 @@ class Endless_Level(somber_engine.Level):
 		distance = 0
 		while True:
 			distance += random.randint(12, 20) * 100
-			if distance < self.level_size * self.ground_size:
+			if distance < config.LEVEL_SIZE * config.GROUND_WIDTH:
 				AttachmentItem(self.somber, self, random.randint(0, 3), x=distance, y=self.somber.win_size[1] - 150)
 			else:
 				break
