@@ -39,12 +39,27 @@ class DefaultItem(Item):
 class Ammo(Item):
 	def __init__(self, somber, level, x=0, y=0):
 		Item.__init__(self, somber, level, x, y, sprite='sprites/items/item_default.png')
+		self.weapon = self.player.weapon
 		
 	def update(self):
 		Item.update(self)
 		
 	def collect(self):
 		if self.collides_with(self.player):
-			self.player.weapon.ammo[0] += 1000
+			self.add_ammo()			
 			self.kill()
+			
+	def add_ammo(self):
+		self.add_ammo = 0
+		
+		if self.weapon.ammo[0] < self.weapon.ammo[1]:
+			self.add_ammo = 50
+		
+		if (self.add_ammo + self.weapon.ammo[0]) > self.weapon.ammo[1]:
+			self.add_ammo = 0
+			self.weapon.ammo[0] = self.weapon.ammo[1]
+			
+		else:
+			self.weapon.ammo[0] += self.add_ammo
+	
 			

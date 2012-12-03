@@ -58,7 +58,7 @@ somber.set_background_color((150, 150, 150))
 somber.add_font(config.FONT, 16)
 TITLE_SCREEN = level.Title_Screen(somber).create_level()
 ENDLESS_LEVEL = level.Endless_Level(somber).create_level()
-somber.play_music(os.path.join('res','sounds','squired.xm'))
+#somber.play_music(os.path.join('res','sounds','squired.xm'))
 
 if '-testlevel' in sys.argv:
 	somber.change_level('Endless Level')
