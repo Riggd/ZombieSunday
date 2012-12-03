@@ -17,11 +17,11 @@ class Entity(somber_engine.Active):
 		self.level = level
 		self.sprite_group = sprite_group
 		self.attacking = False
-		self.hspeed_max = 200
-		self.vspeed_max = 200
+		self.hspeed_max = config.ENTITY_HSPEED_MAX
+		self.vspeed_max = config.ENTITY_VSPEED_MAX
 		self.gravity = config.ENTITY_GRAVITY
 		self.direction = 1
-		self.health = [1, 100]
+		self.health = [1, config.ENTITY_HEALTH]
 		self.health[0] = self.health[1]
 		
 		# Effects
@@ -38,7 +38,7 @@ class Entity(somber_engine.Active):
 			self.pos[0] = config.GROUND_WIDTH * (config.LEVEL_SIZE - 1)
 					
 		if self.collides_with_group(self.level.get_sprite_group('ground')):
-			self.pos[1] = self.somber.win_size[1] - 96 - 150 + 1
+			self.pos[1] = config.GROUND_POS[1] - 150 + 1
 			if self.vspeed > 0:
 				self.vspeed = 0
 			self.gravity = 0
@@ -73,7 +73,8 @@ class Character(Entity):
 	def __init__(self, somber, level, sprite_group, x=0, y=0):
 		Entity.__init__(self, somber, level, sprite_group, x, y)
 		self.weapon = Weapon(somber, self, [None, None])
-		self.hspeed_max = 400
+		self.hspeed_max = config.PLAYER_HSPEED_MAX
+		self.health = config.PLAYER_HEALTH
 		self.score = 0
 		self.zombies_killed = 0
 		
@@ -131,10 +132,12 @@ class Zombie(Entity):
 		Entity.__init__(self, somber, level, sprite_group, x, y, sprite='sprites/zombie/zombie_right_0.png')
 		for player in self.level.get_sprite_group('player'):
 			self.player = player
-		self.attack_rate = 1
 		self.attack_timer = 0
+		self.health = config.ZOMBIE_HEALTH
+		self.damage = config.ZOMBIE_DAMAGE
+		self.attack_rate = config.ZOMBIE_ATTACK_RATE
+		self.hspeed_max = config.ZOMBIE_HSPEED_MAX
 		self.hspeed = self.hspeed_max
-		self.damage = 10
 		
 		self.add_animation('idle_right', 15, ['sprites/zombie/zombie_right_0.png'])
 		self.add_animation('idle_left', 15, ['sprites/zombie/zombie_left_0.png'])
@@ -188,6 +191,9 @@ class Zombie(Entity):
 			self.kill()
 			if self.fire_object != None:
 				self.fire_object.kill()
-			self.player.score += 100
-			self.player.zombies_killed += 1
+			self.add_scores()
+	
+	def add_scores(self):
+		self.player.score += config.ZOMBIE_SCORE
+		self.player.zombies_killed += 1
 			

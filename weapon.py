@@ -16,7 +16,7 @@ class Weapon:
 		self.type = WeaponType.Default
 		self.character = character
 		self.firefire_check = False
-		self.ammo = [0, 5000]
+		self.ammo = [0, config.PLAYER_AMMO]
 		self.ammo[0] = self.ammo[1]
 		self.ammo_consumption = 1
 		self.rate = 0
