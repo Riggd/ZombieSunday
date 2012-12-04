@@ -19,8 +19,8 @@ class Weapon:
 		self.firefire_check = False
 		self.ammo = [0, config.PLAYER_AMMO]
 		self.ammo[0] = self.ammo[1]
-		self.ammo_consumption = 1
-		self.rate = 0
+		self.ammo_consumption = config.DEFAULT_AMMO_CONSUMPTION
+		self.rate = config.DEFAULT_RATE
 		self.timer = self.rate
 		
 		self.set_weapon_type()
@@ -29,74 +29,74 @@ class Weapon:
 		if self.attachments.count(Attachment.Speed) == 1:
 			if self.attachments.count(Attachment.Fire) == 1:
 				self.type = WeaponType.SpeedFire
-				self.rate = 1
-				self.ammo_consumption = 1
+				self.rate = config.SPEEDFIRE_RATE
+				self.ammo_consumption = config.SPEEDFIRE_AMMO_CONSUMPTION
 			elif self.attachments.count(Attachment.Lob) == 1:
 				self.type = WeaponType.SpeedLob
-				self.rate = 2
-				self.ammo_consumption = 1
+				self.rate = config.SPEEDLOB_RATE
+				self.ammo_consumption = config.SPEEDLOB_AMMO_CONSUMPTION
 			elif self.attachments.count(Attachment.Force) == 1:
 				self.type = WeaponType.SpeedForce
-				self.rate = 2
-				self.ammo_consumption = 1
+				self.rate = config.SPEEDFORCE_RATE
+				self.ammo_consumption = config.SPEEDFORCE_AMMO_CONSUMPTION
 			else:
 				self.type = WeaponType.Speed
-				self.rate = .2
-				self.ammo_consumption = 1
+				self.rate = config.SPEED_RATE
+				self.ammo_consumption = config.SPEED_AMMO_CONSUMPTION
 	
 		elif self.attachments.count(Attachment.Fire) == 1:
 			if self.attachments.count(Attachment.Lob) == 1:
 				self.type = WeaponType.FireLob
-				self.rate = 2.5
-				self.ammo_consumption = 1
+				self.rate = config.FIRELOB_RATE
+				self.ammo_consumption = config.FIRELOB_AMMO_CONSUMPTION
 			elif self.attachments.count(Attachment.Force) == 1:
 				self.type = WeaponType.FireForce
-				self.rate = 2
-				self.ammo_consumption = 1
+				self.rate = config.FIREFORCE_RATE
+				self.ammo_consumption = config.FIREFORCE_AMMO_CONSUMPTION
 			else:
 				self.type = WeaponType.Fire
-				self.rate = 2
-				self.ammo_consumption = 5
+				self.rate = config.FIRE_RATE
+				self.ammo_consumption = config.FIRE_AMMO_CONSUMPTION
 		
 		elif self.attachments.count(Attachment.Lob) == 1:
 			if self.attachments.count(Attachment.Force) == 1:
 				self.type = WeaponType.LobForce
-				self.rate = 2
-				self.ammo_consumption = 1
+				self.rate = config.LOBFORCE_RATE
+				self.ammo_consumption = config.LOBFORCE_AMMO_CONSUMPTION
 			else:
 				self.type = WeaponType.Lob
-				self.rate = 2
-				self.ammo_consumption = 1
+				self.rate = config.LOB_RATE
+				self.ammo_consumption = config.LOB_AMMO_CONSUMPTION
 				
 		elif self.attachments.count(Attachment.Force) == 1:
 				self.type = WeaponType.Force
-				self.rate = 1.5
-				self.ammo_consumption = 1
+				self.rate = config.FORCE_RATE
+				self.ammo_consumption = config.FORCE_AMMO_CONSUMPTION
 		
 		elif self.attachments.count(Attachment.Speed) == 2:
 			self.type = WeaponType.SpeedSpeed
-			self.rate = .1
-			self.ammo_consumption = 1
+			self.rate = config.SPEEDSPEED_RATE
+			self.ammo_consumption = config.SPEEDSPEED_AMMO_CONSUMPTION
 		
 		elif self.attachments.count(Attachment.Fire) == 2:
 			self.type = WeaponType.FireFire
-			self.rate = -1
-			self.ammo_consumption = 1
+			self.rate = config.FIREFIRE_RATE
+			self.ammo_consumption = config.FIREFIRE_AMMO_CONSUMPTION
 		
 		elif self.attachments.count(Attachment.Lob) == 2:
 			self.type = WeaponType.LobLob
-			self.rate = 3
-			self.ammo_consumption = 1
+			self.rate = config.LOBLOB_RATE
+			self.ammo_consumption = config.LOBLOB_AMMO_CONSUMPTION
 		
 		elif self.attachments.count(Attachment.Force) == 2:
 			self.type = WeaponType.ForceForce
-			self.rate = 2
-			self.ammo_consumption = 1
+			self.rate = config.FORCEFORCE_RATE
+			self.ammo_consumption = config.FORCEFORCE_AMMO_CONSUMPTION
 			
 		elif self.attachments.count(None) == 2:
 			self.type = WeaponType.Default
-			self.rate = .5
-			self.ammo_consumption = 1
+			self.rate = config.DEFAULT_RATE
+			self.ammo_consumption = config.DEFAULT_AMMO_CONSUMPTION
 		
 		self.timer = self.rate
 			
@@ -109,11 +109,10 @@ class Weapon:
 		
 	def fire(self):
 		if self.ammo[0] - self.ammo_consumption >= 0:
-			if self.rate > -5:
-				if self.timer >= self.rate:
-					self.create_bullet()
-					self.ammo[0] -= self.ammo_consumption
-					self.timer = 0
+			if self.timer >= self.rate:
+				self.create_bullet()
+				self.ammo[0] -= self.ammo_consumption
+				self.timer = 0
 	
 	def create_bullet(self):
 		#self.somber.play_sound(os.path.join('sounds','revolver-1.wav'))
