@@ -19,7 +19,6 @@ class Item(somber_engine.Active):
 		self.level.add_object(self, 'items')
 		
 	def update(self):
-		self.collect()
 		somber_engine.Active.update(self)
 		
 	def collect(self):
@@ -44,6 +43,7 @@ class Ammo(Item):
 		self.rounds = 50
 		
 	def update(self):
+		self.collect()
 		Item.update(self)
 		
 	def collect(self):
@@ -83,9 +83,8 @@ class AttachmentItem(Item):
 		Item.update(self)
 		
 	def collect(self):
-		if self.collides_with(self.player):
-			self.set_attachment()
-			self.kill()
+		self.set_attachment()
+		self.kill()
 			
 	def set_attachment(self):
 		if self.weapon.attachments[0] == None:

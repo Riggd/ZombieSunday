@@ -100,6 +100,12 @@ class Character(Entity):
 			self.direction = 1
 		if self.hspeed < 0:
 			self.direction = -1
+	
+	def collect_item(self):
+		for item in self.somber.current_level.get_sprite_group('items'):
+			if self.collides_with(item):
+				item.collect()
+				break
 					
 	def change_attachment_1(self):
 		attachment = self.weapon.attachments[0]

@@ -179,6 +179,7 @@ class Endless_Level(somber_engine.Level):
 		self.somber.camera_follow(self.player)
 		
 		self.somber.bind_key(' ', self.player.weapon.fire, repeat=True)
+		self.somber.bind_key('e', self.player.collect_item)
 		self.somber.bind_key('-', self.player.change_attachment_1)
 		self.somber.bind_key('=', self.player.change_attachment_2)
 	
