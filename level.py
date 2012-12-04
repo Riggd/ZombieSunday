@@ -82,6 +82,7 @@ class Endless_Level(somber_engine.Level):
 		self.zombie_timer = 0
 
 	def create_level(self):
+		print "hi"
 		self.create_sprite_group('background_0', scroll_speed=0)
 		self.create_sprite_group('background_1', scroll_speed=0.2, group=somber_engine.BackgroundParallaxGroup)
 		self.create_sprite_group('background_2', scroll_speed=0.3, group=somber_engine.BackgroundParallaxGroup)

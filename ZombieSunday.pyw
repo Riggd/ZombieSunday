@@ -39,26 +39,31 @@ def debug():
 		for player in somber.current_level.get_sprite_group('player'):
 			somber.write(config.FONT,
 				(0, 30),
+				'Level: %s' % somber.current_level.stage,
+				color=(0, 0, 0))
+			
+			somber.write(config.FONT,
+				(0, 45),
 				'Player: X=%s, Y=%s' % (int(player.pos[0]), int(player.pos[1])),
 				color=(0, 0, 0))
 			somber.write(config.FONT,
-				(0, 45),
+				(0, 60),
 				'Health: %s / %s' % (int(player.health[0]), int(player.health[1])),
 				color=(0, 0, 0))
 			somber.write(config.FONT,
-				(0, 60),
+				(0, 75),
 				'Weapon: %s, %s' % (str(player.weapon.attachments[0]), str(player.weapon.attachments[1])),
 				color=(0, 0, 0))
 			somber.write(config.FONT,
-				(0, 75),
+				(0, 90),
 				'Ammo: %s, %s' % (str(player.weapon.ammo[0]), str(player.weapon.ammo[1])),
 				color=(0, 0, 0))
 			somber.write(config.FONT,
-				(0, 90),
+				(0, 105),
 				'Score: %s' % int(player.score), 
 				color=(0, 0, 0))
 			somber.write(config.FONT,
-				(80, 90),
+				(80, 105),
 				'Heads Taken: %s' % int(player.zombies_killed), 
 				color=(0, 0, 0))
 
