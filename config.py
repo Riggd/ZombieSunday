@@ -41,8 +41,10 @@ LEVEL_SIZE = 10
 GROUND_WIDTH = 1600
 GROUND_HEIGHT = 96
 TITLE_SCROLL_SPEED = 100
+SCAVANGE_DURATION = 4 # Amount of time you are in a building scavaging
 
-BUILDING_RANGE = [15, 25, 100] # [Min, max, multiplier]. randint(min, max) * multiplier
+BUILDING_RANGE = [15, 25, 100] # [min, max, multiplier]. randint(min, max) * multiplier
+SUPPLY_RANGE = [5,10] # [min, max].  Random amount of supplies (between min and max) you get from scavaging buildings / picking up.
 ZOMBIE_MAX = 10
 ZOMBIE_SPAWN_RATE = 2
 

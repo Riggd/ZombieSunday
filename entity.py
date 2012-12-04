@@ -8,6 +8,7 @@
 import somber as somber_engine
 from weapon import *
 import config
+import random
 
 class Entity(somber_engine.Active):
 	def __init__(self, somber, level, sprite_group, x=0, y=0, sprite='sprites/player/player_right_0.png'):
@@ -78,6 +79,10 @@ class Character(Entity):
 		self.health[0] = self.health[1]
 		self.score = 0
 		self.zombies_killed = 0
+		self.supplies = 0
+		
+		self.scavanging = False
+		self.scavanging_timer = 0
 		
 		self.add_animation('idle_right', 15, ['sprites/player/player_right_0.png'])
 		self.add_animation('idle_left', 15, ['sprites/player/player_left_0.png'])
@@ -90,6 +95,7 @@ class Character(Entity):
 		Entity.collision(self)
 		self.change_direction()
 		Entity.animate(self)
+		self.scavange_timer()
 		Entity.update(self)
 		
 	def collision(self):
@@ -106,6 +112,31 @@ class Character(Entity):
 			if self.collides_with(item):
 				item.collect()
 				break
+	
+	def scavange_building(self):
+		for building in self.somber.current_level.get_sprite_group('buildings'):
+			if self.collides_with(building.door):
+				if not building.scavanged and not self.scavanging:
+					building.scavanged = True
+					self.scavanging = True
+	
+	def scavange_timer(self):
+		if self.scavanging:
+			self.scavanging_timer += self.delta_speed
+			self.pos[1] = -400
+			self.set_movement(None)
+			self.gravity = 0
+			self.hspeed = 0
+			self.vspeed = 0
+			if self.scavanging_timer >= config.SCAVANGE_DURATION:
+				self.scavanging = False
+				self.add_supplies()
+				self.scavanging_timer = 0
+				self.pos[1] = config.PLAYER_POS[1]
+				self.set_movement('horizontal')
+	
+	def add_supplies(self):
+		self.supplies += random.randint(config.SUPPLY_RANGE[0], config.SUPPLY_RANGE[1])
 					
 	def change_attachment_1(self):
 		attachment = self.weapon.attachments[0]
@@ -172,8 +203,9 @@ class Zombie(Entity):
 			self.direction = -1
 		else:
 			self.hspeed = 0
-			self.attack()
-			self.attacking = True
+			if self.collides_with(self.player):
+				self.attack()
+				self.attacking = True
 	
 	def timer(self):
 		if self.attack_timer < self.attack_rate:

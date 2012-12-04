@@ -60,10 +60,14 @@ def debug():
 				color=(0, 0, 0))
 			somber.write(config.FONT,
 				(0, 105),
+				'Supplies: %s' % int(player.supplies), 
+				color=(0, 0, 0))
+			somber.write(config.FONT,
+				(0, 120),
 				'Score: %s' % int(player.score), 
 				color=(0, 0, 0))
 			somber.write(config.FONT,
-				(80, 105),
+				(80, 120),
 				'Heads Taken: %s' % int(player.zombies_killed), 
 				color=(0, 0, 0))
 

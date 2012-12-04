@@ -180,6 +180,7 @@ class Endless_Level(somber_engine.Level):
 		
 		self.somber.bind_key(' ', self.player.weapon.fire, repeat=True)
 		self.somber.bind_key('e', self.player.collect_item)
+		self.somber.bind_key('f', self.player.scavange_building)
 		self.somber.bind_key('-', self.player.change_attachment_1)
 		self.somber.bind_key('=', self.player.change_attachment_2)
 	
@@ -223,15 +224,14 @@ class Platform(somber_engine.Active):
 		
 class Building(somber_engine.Active):
 	def __init__(self, somber, level, sprite, sprite_group, x=0, y=0):
-		somber_engine.Active.__init__(self, sprite, somber=somber, pos=(x, y))
+		somber_engine.Active.__init__(self, sprite, somber=somber, pos=(x, y))		
+		level.add_object(self, sprite_group)
 		
 		self.level = level
 		self.sprite_group = sprite_group
 		self.set_pos((x, y))
-		
-		level.add_object(self, sprite_group)
-		
-		Door(somber, self.level, 'sprites/foreground/door.png', 'doors', self, x=x + config.DOOR_POS[0], y=config.DOOR_POS[1])
+		self.scavanged = False
+		self.door = Door(somber, self.level, 'sprites/foreground/door.png', 'doors', self, x=x + config.DOOR_POS[0], y=config.DOOR_POS[1])
 		
 class Door(somber_engine.Active):
 	def __init__(self, somber, level, sprite, sprite_group, building, x=0, y=0):
