@@ -25,50 +25,54 @@ def callback():
 	debug()
 
 def debug():
+	text_padding = 180
 	somber.write(config.FONT,
 		(0, 0),
 		'FPS: %s' % int(somber.current_fps),
 		color=(0, 0, 0))
 
 	somber.write(config.FONT,
-		(0, 15),
+		(text_padding, 0),
 		'Camera: X=%s, Y=%s' % (somber.camera_pos[0], somber.camera_pos[1]),
 		color=(0, 0, 0))
 	
 	if TITLE_SCREEN != somber.current_level:
 		for player in somber.current_level.get_sprite_group('player'):
 			somber.write(config.FONT,
-				(0, 30),
-				'Level: %s' % somber.current_level.stage,
-				color=(0, 0, 0))
-			
-			somber.write(config.FONT,
-				(0, 45),
+				(0, 15),
 				'Player: X=%s, Y=%s' % (int(player.pos[0]), int(player.pos[1])),
 				color=(0, 0, 0))
 			somber.write(config.FONT,
-				(0, 60),
+				(text_padding, 15),
 				'Health: %s / %s' % (int(player.health[0]), int(player.health[1])),
 				color=(0, 0, 0))
 			somber.write(config.FONT,
-				(0, 75),
+				(0, 30),
 				'Supplies: %s / %s' % (int(player.supplies[0]), int(player.supplies[1])),
 				color=(0, 0, 0))
 			somber.write(config.FONT,
-				(0, 90),
+				(text_padding, 30),
+				'Total Supplies: %s / %s' % (int(player.total_supplies[0]), int(player.total_supplies[1])),
+				color=(0, 0, 0))
+			somber.write(config.FONT,
+				(0, 45),
 				'Weapon: %s, %s' % (str(player.weapon.attachments[0]), str(player.weapon.attachments[1])),
 				color=(0, 0, 0))
 			somber.write(config.FONT,
-				(0, 105),
+				(text_padding, 45),
 				'Ammo: %s, %s' % (int(player.weapon.ammo[0]), int(player.weapon.ammo[1])),
 				color=(0, 0, 0))
 			somber.write(config.FONT,
-				(0, 120),
+				(0, 60),
 				'Score: %s' % int(player.score), 
 				color=(0, 0, 0))
 			somber.write(config.FONT,
-				(80, 120),
+				(text_padding, 60),
 				'Heads Taken: %s' % int(player.zombies_killed), 
+				color=(0, 0, 0))
+			somber.write(config.FONT,
+				(0, 75),
+				'Level: %s' % somber.current_level.stage,
 				color=(0, 0, 0))
 
 # Level setup

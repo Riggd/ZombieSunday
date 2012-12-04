@@ -80,6 +80,7 @@ class Character(Entity):
 		self.score = 0
 		self.zombies_killed = 0
 		self.supplies = [0, config.PLAYER_SUPPLY_MAX]
+		self.total_supplies = [0, config.SUPPLY_GOAL + (config.SUPPLY_GOAL_MOD * self.level.stage)]
 		
 		self.scavanging = False
 		self.scavanging_timer = 0
