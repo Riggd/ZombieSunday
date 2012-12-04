@@ -89,8 +89,8 @@ class Endless_Level(somber_engine.Level):
 		self.create_sprite_group('sun', group=somber_engine.StaticBackgroundGroup)
 		self.create_sprite_group('clouds', group=somber_engine.StaticBackgroundGroup)
 		self.create_sprite_group('ground')
-		self.create_sprite_group('ladders')
 		self.create_sprite_group('buildings')
+		self.create_sprite_group('doors')
 		self.create_sprite_group('bullets')
 		self.create_sprite_group('items')
 		self.create_sprite_group('player')
@@ -220,6 +220,18 @@ class Platform(somber_engine.Active):
 		
 class Building(somber_engine.Active):
 	def __init__(self, somber, level, sprite, sprite_group, x=0, y=0):
+		somber_engine.Active.__init__(self, sprite, somber=somber, pos=(x, y))
+		
+		self.level = level
+		self.sprite_group = sprite_group
+		self.set_pos((x, y))
+		
+		level.add_object(self, sprite_group)
+		
+		Door(somber, self.level, 'sprites/foreground/door.png', 'doors', self, x=x + config.DOOR_POS[0], y=config.DOOR_POS[1])
+		
+class Door(somber_engine.Active):
+	def __init__(self, somber, level, sprite, sprite_group, building, x=0, y=0):
 		somber_engine.Active.__init__(self, sprite, somber=somber, pos=(x, y))
 		
 		self.level = level
