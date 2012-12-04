@@ -83,6 +83,7 @@ class Character(Entity):
 		self.total_supplies = [0, config.SUPPLY_GOAL + (config.SUPPLY_GOAL_MOD * self.level.stage)]
 		
 		self.scavanging = False
+		self.dropping_off = False
 		self.scavanging_timer = 0
 		
 		self.add_animation('idle_right', 15, ['sprites/player/player_right_0.png'])
@@ -97,8 +98,13 @@ class Character(Entity):
 		self.change_direction()
 		Entity.animate(self)
 		self.scavange_timer()
+		self.drop_off_timer()
 		Entity.update(self)
-		
+	
+	def action(self):
+		self.scavange_building()
+		self.collect_item()
+	
 	def collision(self):
 		Entity.collision(self)
 			
@@ -115,13 +121,16 @@ class Character(Entity):
 				break
 	
 	def scavange_building(self):
-		if self.supplies[0] != self.supplies[1]:
-			for building in self.somber.current_level.get_sprite_group('buildings'):
+		for building in self.somber.current_level.get_sprite_group('buildings'):
+			if self.collides_with(building.door):
 				if not building.home:
-					if self.collides_with(building.door):
-						if not building.scavanged and not self.scavanging:
-							building.scavanged = True
-							self.scavanging = True
+					if not building.scavanged and not self.scavanging and self.supplies[0] != self.supplies[1]:
+						building.scavanged = True
+						self.scavanging = True
+				else:
+					if not self.scavanging and self.supplies[0] > 0:
+						self.dropping_off = True
+					
 	
 	def scavange_timer(self):
 		if self.scavanging:
@@ -138,6 +147,28 @@ class Character(Entity):
 				self.scavanging_timer = 0
 				self.pos[1] = config.PLAYER_POS[1]
 				self.set_movement('horizontal')
+				
+	def drop_off_timer(self):
+		if self.dropping_off:
+			self.scavanging_timer += self.delta_speed
+			self.pos[1] = -400
+			self.set_movement(None)
+			self.gravity = 0
+			self.hspeed = 0
+			self.vspeed = 0
+			if self.scavanging_timer >= config.SCAVANGE_DURATION:
+				self.dropping_off = False
+				self.add_total_supplies()
+				self.scavanging_timer = 0
+				self.pos[1] = config.PLAYER_POS[1]
+				self.set_movement('horizontal')
+	
+	def add_total_supplies(self):
+		if (self.supplies[0] + self.total_supplies[0]) > self.total_supplies[1]:
+			self.total_supplies[0] = self.total_supplies[1]
+		else:
+			self.total_supplies[0] +=self.supplies[0]
+			self.supplies[0] = 0
 	
 	def add_supplies(self):
 		supply_amount = random.randint(config.SUPPLY_RANGE[0], config.SUPPLY_RANGE[1])
