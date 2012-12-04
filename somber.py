@@ -191,6 +191,7 @@ class Somber:
 		for level in self.levels:
 			if level['name'] == name:
 				self.current_level = level['level']
+				self.keybinds = []
 				level['level'].on_change_to()
 				
 				return True

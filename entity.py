@@ -84,10 +84,6 @@ class Character(Entity):
 		self.add_animation('move_right', 15, ['sprites/player/player_right_0.png', 'sprites/player/player_right_1.png'])
 		self.add_animation('move_left', 15, ['sprites/player/player_left_0.png', 'sprites/player/player_left_1.png'])
 		self.set_animation('idle_right')
-		
-		self.somber.bind_key(' ', self.weapon.fire, repeat=True)
-		self.somber.bind_key('-', self.change_attachment_1)
-		self.somber.bind_key('=', self.change_attachment_2)
 	
 	def update(self):
 		self.weapon.update(self.delta_speed)

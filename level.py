@@ -47,9 +47,6 @@ class Title_Screen(somber_engine.Level):
 		return self.level
 	
 	def setup(self):
-		self.somber.bind_key('m1', self.mouse_down)
-		self.somber.bind_key('\r', self.start_game)
-		
 		self.dummy = Dummy(self.somber, self, 'sprites/foreground/dummy.png', 'dummy', x=self.somber.win_size[0] / 2, y=400)
 		self.dummy.hspeed = config.TITLE_SCROLL_SPEED
 		
@@ -65,6 +62,8 @@ class Title_Screen(somber_engine.Level):
 	
 	def on_change_to(self):
 		self.somber.camera_follow(self.dummy)
+		self.somber.bind_key('m1', self.mouse_down)
+		self.somber.bind_key('\r', self.start_game)
 					
 	def mouse_down(self, button):
 		for element in self.main_ui.get_clicked_elements():
@@ -82,7 +81,6 @@ class Endless_Level(somber_engine.Level):
 		self.zombie_timer = 0
 
 	def create_level(self):
-		print "hi"
 		self.create_sprite_group('background_0', scroll_speed=0)
 		self.create_sprite_group('background_1', scroll_speed=0.2, group=somber_engine.BackgroundParallaxGroup)
 		self.create_sprite_group('background_2', scroll_speed=0.3, group=somber_engine.BackgroundParallaxGroup)
@@ -179,6 +177,10 @@ class Endless_Level(somber_engine.Level):
 	
 	def on_change_to(self):
 		self.somber.camera_follow(self.player)
+		
+		self.somber.bind_key(' ', self.player.weapon.fire, repeat=True)
+		self.somber.bind_key('-', self.player.change_attachment_1)
+		self.somber.bind_key('=', self.player.change_attachment_2)
 	
 	def update(self, delta):
 		self._spawn_zombies(delta)
