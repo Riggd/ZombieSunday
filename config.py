@@ -42,6 +42,8 @@ GROUND_WIDTH = 1600
 GROUND_HEIGHT = 96
 TITLE_SCROLL_SPEED = 100
 SCAVANGE_DURATION = 4 # Amount of time you are in a building scavaging
+SCAVANGE_SCORE = 100
+TIME_SCORE = 3 # Score to add per second left when you complete a stage
 
 BUILDING_RANGE = [15, 25, 100] # [min, max, multiplier]. randint(min, max) * multiplier
 SUPPLY_RANGE = [5,10] # [min, max].  Random amount of supplies (between min and max) you get from scavaging buildings / picking up.
@@ -56,6 +58,8 @@ ZOMBIE_HEALTH_MOD = 10 # ZOMBIE_HEALTH += ZOMBIE_HEALTH_MOD * level.stage
 ZOMBIE_ATTACK_RATE_MOD = .5 # ZOMBIE_ATTACK_RATE -= ZOMBIE_ATTACK_RATE_MOD * level.stage
 ZOMBIE_SCORE_MOD = 10 # ZOMBIE_SCORE += ZOMBIE_SCORE_MOD * level.stage
 BUILDING_DISTANCE_MOD = 20 # BUILDING_RANGE += BUILDING_DISTANCE_MOD * level.stage
+SCAVANGE_SCORE_MOD = 10 # SCAVANGE_SCORE += SCAVANGE_SCORE_MOD * level.stage
+TIME_SCORE_MOD = 1 # TIME_SCORE += TIME_SCORE_MOD * level.stage
 
 # ENTITY CONFIG
 ENTITY_GRAVITY = 20

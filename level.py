@@ -104,7 +104,7 @@ class Endless_Level(somber_engine.Level):
 		Cloud(self.somber, self, 'sprites/background/cloud_2.png', 'clouds', x=config.CLOUD_2_POS[0], y=config.CLOUD_2_POS[1])
 		Cloud(self.somber, self, 'sprites/background/cloud_3.png', 'clouds', x=config.CLOUD_3_POS[0], y=config.CLOUD_3_POS[1])
 		
-		Building(self.somber, self, 'sprites/foreground/home.png', 'buildings', x=config.HOME_POS[0], y=config.HOME_POS[1])
+		Building(self.somber, self, 'sprites/foreground/home.png', 'buildings', home=True, x=config.HOME_POS[0], y=config.HOME_POS[1])
 		
 		self._init_ground()
 		self._init_clouds()
@@ -223,7 +223,7 @@ class Platform(somber_engine.Active):
 		somber_engine.Active.update(self)
 		
 class Building(somber_engine.Active):
-	def __init__(self, somber, level, sprite, sprite_group, x=0, y=0):
+	def __init__(self, somber, level, sprite, sprite_group, home=False, x=0, y=0):
 		somber_engine.Active.__init__(self, sprite, somber=somber, pos=(x, y))		
 		level.add_object(self, sprite_group)
 		
@@ -231,6 +231,7 @@ class Building(somber_engine.Active):
 		self.sprite_group = sprite_group
 		self.set_pos((x, y))
 		self.scavanged = False
+		self.home = home
 		self.door = Door(somber, self.level, 'sprites/foreground/door.png', 'doors', self, x=x + config.DOOR_POS[0], y=config.DOOR_POS[1])
 		
 class Door(somber_engine.Active):

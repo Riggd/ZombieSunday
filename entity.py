@@ -115,10 +115,11 @@ class Character(Entity):
 	
 	def scavange_building(self):
 		for building in self.somber.current_level.get_sprite_group('buildings'):
-			if self.collides_with(building.door):
-				if not building.scavanged and not self.scavanging:
-					building.scavanged = True
-					self.scavanging = True
+			if not building.home:
+				if self.collides_with(building.door):
+					if not building.scavanged and not self.scavanging:
+						building.scavanged = True
+						self.scavanging = True
 	
 	def scavange_timer(self):
 		if self.scavanging:
@@ -131,6 +132,7 @@ class Character(Entity):
 			if self.scavanging_timer >= config.SCAVANGE_DURATION:
 				self.scavanging = False
 				self.add_supplies()
+				self.score += config.SCAVANGE_SCORE + (config.SCAVANGE_SCORE_MOD * self.level.stage)
 				self.scavanging_timer = 0
 				self.pos[1] = config.PLAYER_POS[1]
 				self.set_movement('horizontal')
