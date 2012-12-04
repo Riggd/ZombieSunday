@@ -79,7 +79,7 @@ class Character(Entity):
 		self.health[0] = self.health[1]
 		self.score = 0
 		self.zombies_killed = 0
-		self.supplies = 0
+		self.supplies = [0, config.PLAYER_SUPPLY_MAX]
 		
 		self.scavanging = False
 		self.scavanging_timer = 0
@@ -114,12 +114,13 @@ class Character(Entity):
 				break
 	
 	def scavange_building(self):
-		for building in self.somber.current_level.get_sprite_group('buildings'):
-			if not building.home:
-				if self.collides_with(building.door):
-					if not building.scavanged and not self.scavanging:
-						building.scavanged = True
-						self.scavanging = True
+		if self.supplies[0] != self.supplies[1]:
+			for building in self.somber.current_level.get_sprite_group('buildings'):
+				if not building.home:
+					if self.collides_with(building.door):
+						if not building.scavanged and not self.scavanging:
+							building.scavanged = True
+							self.scavanging = True
 	
 	def scavange_timer(self):
 		if self.scavanging:
@@ -138,7 +139,11 @@ class Character(Entity):
 				self.set_movement('horizontal')
 	
 	def add_supplies(self):
-		self.supplies += random.randint(config.SUPPLY_RANGE[0], config.SUPPLY_RANGE[1])
+		supply_amount = random.randint(config.SUPPLY_RANGE[0], config.SUPPLY_RANGE[1])
+		if (self.supplies[0] + supply_amount) > self.supplies[1]:
+			self.supplies[0] = self.supplies[1]
+		else:
+			self.supplies[0] += supply_amount
 					
 	def change_attachment_1(self):
 		attachment = self.weapon.attachments[0]

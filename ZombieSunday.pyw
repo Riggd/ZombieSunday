@@ -52,15 +52,15 @@ def debug():
 				color=(0, 0, 0))
 			somber.write(config.FONT,
 				(0, 75),
-				'Weapon: %s, %s' % (str(player.weapon.attachments[0]), str(player.weapon.attachments[1])),
+				'Supplies: %s / %s' % (int(player.supplies[0]), int(player.supplies[1])),
 				color=(0, 0, 0))
 			somber.write(config.FONT,
 				(0, 90),
-				'Ammo: %s, %s' % (str(player.weapon.ammo[0]), str(player.weapon.ammo[1])),
+				'Weapon: %s, %s' % (str(player.weapon.attachments[0]), str(player.weapon.attachments[1])),
 				color=(0, 0, 0))
 			somber.write(config.FONT,
 				(0, 105),
-				'Supplies: %s' % int(player.supplies), 
+				'Ammo: %s, %s' % (int(player.weapon.ammo[0]), int(player.weapon.ammo[1])),
 				color=(0, 0, 0))
 			somber.write(config.FONT,
 				(0, 120),
