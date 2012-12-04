@@ -74,6 +74,10 @@ def debug():
 				(0, 75),
 				'Level: %s' % somber.current_level.stage,
 				color=(0, 0, 0))
+			somber.write(config.FONT,
+				(text_padding, 75),
+				'Clock: %s' % somber.current_level.clock(),
+				color=(0, 0, 0))
 
 # Level setup
 somber.set_background_color((150, 150, 150))

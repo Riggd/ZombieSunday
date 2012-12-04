@@ -79,6 +79,8 @@ class Endless_Level(somber_engine.Level):
 		somber_engine.Level.__init__(self, somber, 'Endless Level')
 		self.stage = stage
 		self.zombie_timer = 0
+		self.level_clock = config.LEVEL_TIME
+		self.level_timer = 0
 
 	def create_level(self):
 		self.create_sprite_group('background_0', scroll_speed=0)
@@ -157,6 +159,20 @@ class Endless_Level(somber_engine.Level):
 						extra = -extra
 				Zombie(self.somber, self, 'zombies', x=self.somber.camera_pos[0] + (config.WINDOW_SIZE[0] * side) + extra, y=config.ZOMBIE_POS[1])
 	
+	def clock_timer(self, delta):
+		self.level_timer += delta
+		if self.level_timer >= 1:
+			self.level_timer -= 1
+			self.level_clock -= 1
+	
+	def clock(self):
+		string = str(int(self.level_clock / 60)) + ':'
+		seconds = str(self.level_clock % 60)
+		if int(seconds) < 10:
+			seconds =  '0' + seconds
+		string += seconds
+		return string
+	
 	def spawn_ammo(self): # TEMPORARY
 		distance = 0
 		while True:
@@ -184,6 +200,7 @@ class Endless_Level(somber_engine.Level):
 		self.somber.bind_key('=', self.player.change_attachment_2)
 	
 	def update(self, delta):
+		self.clock_timer(delta)
 		self._spawn_zombies(delta)
 		
 class Static_Background(somber_engine.Active):

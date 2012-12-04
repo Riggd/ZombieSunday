@@ -5,7 +5,7 @@
 #     Ryan Wiesjahn <rwiesjahn@bsu.edu>
 
 # NOTES:
-# All TIME , RATE and DURATION are in seconds.
+# TIME, RATE, DURATION, etc. are all in seconds.
 # The formulas the modifiers are used in are shown behind the modifier so you can tell how it is used.
 # For weapons: ADD_PLAYER_SPEED is if the players speed should be added to the bullet speed.
 # For weapons with _FORCE_HSPEED: The zombie's hspeed is set to: bullet's HSPEED + _FORCE_HSPEED
@@ -42,6 +42,7 @@ GROUND_WIDTH = 1600
 GROUND_HEIGHT = 96
 TITLE_SCROLL_SPEED = 100
 
+LEVEL_TIME = 134
 BUILDING_RANGE = [15, 25, 100] # [min, max, multiplier]. randint(min, max) * multiplier
 SUPPLY_RANGE = [5,10] # [min, max].  Random amount of supplies (between min and max) you get from scavaging buildings / picking up.
 SUPPLY_GOAL = 40
