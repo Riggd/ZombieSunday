@@ -27,42 +27,42 @@ def callback():
 def print_ui():
 	if TITLE_SCREEN != somber.current_level:
 		for player in somber.current_level.get_sprite_group('player'):
-			somber.write('Lombriz',
+			somber.write('Lombriz_24',
 				(config.WEAPON_STR_POS[0], config.WEAPON_STR_POS[1]),
 				'%s /  %s' % (int(player.weapon.ammo[0]), int(player.weapon.ammo[1])),
 				color=(65, 65, 65))
 			
-			somber.write('Lombriz',
+			somber.write('Lombriz_24',
 				(config.HEALTH_STR_POS[0], config.HEALTH_STR_POS[1]),
 				'%s /  %s' % (int(player.health[0]), int(player.health[1])),
 				color=(233, 32, 20))
 			
-			somber.write('Lombriz',
+			somber.write('Lombriz_24',
 				(config.SUPPLY_STR_POS[0], config.SUPPLY_STR_POS[1]),
 				'%s /  %s' % (int(player.supplies[0]), int(player.supplies[1])),
 				color=(16, 164, 156))
 			
-			somber.write('Lombriz',
+			somber.write('Lombriz_60',
 				(config.CLOCK_STR_POS[0], config.CLOCK_STR_POS[1]),
 				'%s' % somber.current_level.clock(),
 				color=(231, 95, 46))
 			
-			somber.write('Lombriz',
+			somber.write('Lombriz_24',
 				(config.TOTAL_SUPPLY_STR_POS[0], config.TOTAL_SUPPLY_STR_POS[1]),
 				'%s /  %s' % (int(player.total_supplies[0]), int(player.total_supplies[1])),
 				color=(16, 164, 156))
 			
-			somber.write('Lombriz',
+			somber.write('Lombriz_24',
 				(config.LEVEL_STR_POS[0], config.LEVEL_STR_POS[1]),
 				'Level:  %s' % int(somber.current_level.stage + 1),
 				color=(233, 32, 20))
 			
-			somber.write('Lombriz',
+			somber.write('Lombriz_24',
 				(config.SCORE_STR_POS[0], config.SCORE_STR_POS[1]),
 				'Score: %s' % int(player.score),
 				color=(233, 32, 20))
 			
-			somber.write('Lombriz',
+			somber.write('Lombriz_24',
 				(config.KILLS_STR_POS[0], config.KILLS_STR_POS[1]),
 				'Kills: %s' % int(player.zombies_killed),
 				color=(233, 32, 20))
@@ -125,7 +125,8 @@ def debug():
 # Level setup
 somber.set_background_color((150, 150, 150))
 somber.add_font('Proggy', config.FONT_PROGGY, 16)
-somber.add_font('Lombriz', config.FONT_LOMBRIZ, 24)
+somber.add_font('Lombriz_24', config.FONT_LOMBRIZ, 24)
+somber.add_font('Lombriz_60', config.FONT_LOMBRIZ, 60)
 TITLE_SCREEN = level.Title_Screen(somber).create_level()
 #somber.play_music(os.path.join('res','sounds','squired.xm'))
 
