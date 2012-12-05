@@ -30,7 +30,7 @@ def print_ui():
 			somber.write('Lombriz_24',
 				(config.WEAPON_STR_POS[0], config.WEAPON_STR_POS[1]),
 				'%s /  %s' % (int(player.weapon.ammo[0]), int(player.weapon.ammo[1])),
-				color=(65, 65, 65))
+				color=(233, 32, 20))
 			
 			somber.write('Lombriz_24',
 				(config.HEALTH_STR_POS[0], config.HEALTH_STR_POS[1]),
@@ -66,6 +66,22 @@ def print_ui():
 				(config.KILLS_STR_POS[0], config.KILLS_STR_POS[1]),
 				'Kills: %s' % int(player.zombies_killed),
 				color=(233, 32, 20))
+			
+			if somber.current_level.complete:
+				somber.write('Lombriz_36',
+					(config.LVL_COMPLETE_TITLE_POS[0], config.LVL_COMPLETE_TITLE_POS[1]),
+					'Level %s Complete' % int(somber.current_level.stage + 1),
+					color=(231, 95, 46))
+				
+				somber.write('Lombriz_36',
+					(config.LVL_COMPLETE_SCORE_POS[0], config.LVL_COMPLETE_SCORE_POS[1]),
+					'Score: %s' % int(player.score),
+					color=(65,65,65))
+				
+				somber.write('Lombriz_36',
+					(config.LVL_COMPLETE_KILLS_POS[0], config.LVL_COMPLETE_KILLS_POS[1]),
+					'Kills: %s' % int(player.zombies_killed),
+					color=(65,65,65))
 
 def debug():
 	text_padding = 180
@@ -126,6 +142,7 @@ def debug():
 somber.set_background_color((150, 150, 150))
 somber.add_font('Proggy', config.FONT_PROGGY, 16)
 somber.add_font('Lombriz_24', config.FONT_LOMBRIZ, 24)
+somber.add_font('Lombriz_36', config.FONT_LOMBRIZ, 36)
 somber.add_font('Lombriz_60', config.FONT_LOMBRIZ, 60)
 TITLE_SCREEN = level.Title_Screen(somber).create_level()
 #somber.play_music(os.path.join('res','sounds','squired.xm'))

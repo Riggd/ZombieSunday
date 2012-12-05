@@ -41,9 +41,9 @@ class Title_Screen(somber_engine.Level):
 		
 		self.main_ui = ui.UI_Group(self.somber, self, 'ui')
 		self.main_ui.create_element('sprites/ui/logo_zombie_sunday.png', 'logo', x=config.LOGO_POS[0], y=config.LOGO_POS[1])
-		self.main_ui.create_element('sprites/ui/ui_start_game.png', 'start', x=config.BUTTON_START_POS[0], y=config.BUTTON_START_POS[1])
-		self.main_ui.create_element('sprites/ui/ui_how_to.png', 'howto', x=config.BUTTON_HOWTO_POS[0], y=config.BUTTON_HOWTO_POS[1])
-		self.main_ui.create_element('sprites/ui/ui_quit_game.png', 'quit', x=config.BUTTON_QUIT_POS[0], y=config.BUTTON_QUIT_POS[1])
+		self.main_ui.create_element('sprites/ui/button_start_game.png', 'button_start', x=config.BUTTON_START_POS[0], y=config.BUTTON_START_POS[1])
+		self.main_ui.create_element('sprites/ui/button_how_to.png', 'button_how_to', x=config.BUTTON_HOWTO_POS[0], y=config.BUTTON_HOWTO_POS[1])
+		self.main_ui.create_element('sprites/ui/button_quit_game.png', 'button_quit', x=config.BUTTON_QUIT_POS[0], y=config.BUTTON_QUIT_POS[1])
 		
 		
 		self.level = self
@@ -73,9 +73,9 @@ class Title_Screen(somber_engine.Level):
 					
 	def mouse_down(self, button):
 		for element in self.main_ui.get_clicked_elements():
-			if element.name == 'start':
+			if element.name == 'button_start':
 				self.start_game()
-			elif element.name == 'quit':
+			elif element.name == 'button_quit':
 				pygame.quit()
 	
 	def start_game(self):
@@ -131,6 +131,8 @@ class Endless_Level(somber_engine.Level):
 		
 		self.attachment_1 = self.main_ui_fore.create_element('sprites/ui/attachment_fire.png', 'attachment_1', x=config.ATTACHMENT_1_POS[0], y=config.ATTACHMENT_1_POS[1])
 		self.attachment_2 = self.main_ui_fore.create_element('sprites/ui/attachment_force.png', 'attachment_2', x=config.ATTACHMENT_2_POS[0], y=config.ATTACHMENT_2_POS[1])
+		
+		self.box_bg = self.button_next_level = None
 		
 		self._init_ground()
 		self._init_clouds()
@@ -233,18 +235,33 @@ class Endless_Level(somber_engine.Level):
 		self.somber.camera_follow(self.player)
 		
 		self.somber.bind_key(' ', self.player.weapon.fire, repeat=True)
+		self.somber.bind_key('m1', self.mouse_down)
 		self.somber.bind_key('e', self.player.action)
 		self.somber.bind_key('-', self.player.change_attachment_1)
 		self.somber.bind_key('=', self.player.change_attachment_2)
 		self.somber.bind_key(']', self.change_stage)
+		
+	def mouse_down(self, button):
+		for element in self.main_ui_fore.get_clicked_elements():
+			if element.name == 'button_next_level':
+				self.change_stage()
 	
 	def change_stage(self):
+		self.complete = False
+		self.clear_level()
 		ENDLESS_LEVEL = Endless_Level(self.somber, self.stage + 1).create_level()
+		ENDLESS_LEVEL.player.score = self.player.score
+		ENDLESS_LEVEL.player.zombies_killed = self.player.zombies_killed
 		self.somber.change_level(ENDLESS_LEVEL)
 	
 	def complete_level(self):
 		if self.player.total_supplies[0] == self.player.total_supplies[1]:
 			self.complete = True
+			self.create_level_complete_ui()
+	
+	def create_level_complete_ui(self):
+		self.box_bg = self.main_ui_back.create_element('sprites/ui/box_bg.png', 'box_bg', x=config.BOX_BG_POS[0], y=config.BOX_BG_POS[1])
+		self.button_next_level = self.main_ui_fore.create_element('sprites/ui/button_next_level.png', 'button_next_level', x=config.BUTTON_NEXT_LEVEL_POS[0], y=config.BUTTON_NEXT_LEVEL_POS[1])
 	
 	def update(self, delta):
 		if not self.complete:
@@ -252,6 +269,11 @@ class Endless_Level(somber_engine.Level):
 			self.clock_timer(delta)
 			self._spawn_zombies(delta)
 			self.complete_level()
+	
+	def clear_level(self):
+		for group in self.sprite_groups:
+			for sprite in group['group']:
+				sprite.kill()
 		
 class Static_Background(somber_engine.Active):
 	def __init__(self, somber, level, sprite, sprite_group, x=0, y=0):

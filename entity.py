@@ -212,7 +212,7 @@ class Zombie(Entity):
 		self.health = [1, config.ZOMBIE_HEALTH + (config.ZOMBIE_HEALTH_MOD * self.level.stage)]
 		self.health[0] = self.health[1]
 		self.damage = config.ZOMBIE_DAMAGE + (config.ZOMBIE_DAMAGE_MOD * self.level.stage)
-		self.attack_rate = config.ZOMBIE_ATTACK_RATE - (config.ZOMBIE_ATTACK_RATE_MOD * self.level.stage)
+		self.attack_rate = config.ZOMBIE_ATTACK_RATE * pow(config.ZOMBIE_ATTACK_RATE_MOD, self.level.stage)
 		self.hspeed_max = config.ZOMBIE_HSPEED + (config.ZOMBIE_HSPEED_MOD * self.level.stage)
 		self.hspeed = self.hspeed_max
 		self.score = config.ZOMBIE_SCORE + (config.ZOMBIE_SCORE_MOD * self.level.stage)
