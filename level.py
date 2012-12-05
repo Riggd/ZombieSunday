@@ -9,6 +9,7 @@ import somber as somber_engine
 import random
 import ui
 import os
+import pygame
 from entity import *
 from items import *
 from weapon import *
@@ -73,7 +74,6 @@ class Title_Screen(somber_engine.Level):
 				self.start_game()
 			elif element.name == 'quit':
 				pygame.quit()
-				sys.exit()
 	
 	def start_game(self):
 		ENDLESS_LEVEL = Endless_Level(self.somber).create_level()
@@ -228,6 +228,11 @@ class Endless_Level(somber_engine.Level):
 		self.somber.bind_key('e', self.player.action)
 		self.somber.bind_key('-', self.player.change_attachment_1)
 		self.somber.bind_key('=', self.player.change_attachment_2)
+		self.somber.bind_key(']', self.change_stage)
+	
+	def change_stage(self):
+		Endless_Level(self.somber, self.stage + 1).create_level()
+		self.somber.change_level('Endless Level')
 	
 	def update(self, delta):
 		self.update_ui()

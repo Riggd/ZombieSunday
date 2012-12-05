@@ -54,17 +54,17 @@ def print_ui():
 			
 			somber.write(config.FONT_LOMBRIZ,
 				(config.LEVEL_STR_POS[0], config.LEVEL_STR_POS[1]),
-				'Level  %s' % int(somber.current_level.stage + 1),
+				'Level:  %s' % int(somber.current_level.stage + 1),
 				color=(233, 32, 20))
 			
 			somber.write(config.FONT_LOMBRIZ,
 				(config.SCORE_STR_POS[0], config.SCORE_STR_POS[1]),
-				'%s  Score' % int(player.score),
+				'Score: %s' % int(player.score),
 				color=(233, 32, 20))
 			
 			somber.write(config.FONT_LOMBRIZ,
 				(config.KILLS_STR_POS[0], config.KILLS_STR_POS[1]),
-				'%s  Kills' % int(player.zombies_killed),
+				'Kills: %s' % int(player.zombies_killed),
 				color=(233, 32, 20))
 
 def debug():

@@ -163,7 +163,7 @@ FIRE_FIRE_DAMAGE = 10
 FIRE_FIRE_DURATION = 3
 FIRE_FIRE_RATE = .5
 
-FIREFIRE_RATE = 1 # Determines how often ammo is consumed (since it is a flamethower)
+FIREFIRE_RATE = .3 # Determines how often ammo is consumed (since it is a flamethower)
 FIREFIRE_AMMO_CONSUMPTION = 1
 FIREFIRE_DAMAGE = 1
 FIREFIRE_FIRE_DAMAGE = 10
