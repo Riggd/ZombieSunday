@@ -109,12 +109,12 @@ class Endless_Level(somber_engine.Level):
 		Building(self.somber, self, 'sprites/foreground/home.png', 'buildings', home=True, x=config.HOME_POS[0], y=config.HOME_POS[1])
 		
 		self.main_ui = ui.UI_Group(self.somber, self, 'ui')
-		self.main_ui.create_element('sprites/ui/weapon_bg.png', 'weapon_bar', x=config.WEAPON_BG_POS[0], y=config.WEAPON_BG_POS[1])
+		self.main_ui.create_element('sprites/ui/weapon_bg.png', 'weapon_bg', x=config.WEAPON_BG_POS[0], y=config.WEAPON_BG_POS[1])
 		self.main_ui.create_element('sprites/ui/health_bg.png', 'health_bg', x=config.HEALTH_BG_POS[0], y=config.HEALTH_BG_POS[1])
-		self.main_ui.create_element('sprites/ui/health_bar.png', 'health_bar', x=config.HEALTH_BAR_POS[0], y=config.HEALTH_BAR_POS[1])
 		self.main_ui.create_element('sprites/ui/supply_bg.png', 'supply_bg', x=config.SUPPLY_BG_POS[0], y=config.SUPPLY_BG_POS[1])
-		self.main_ui.create_element('sprites/ui/supply_bar.png', 'supply_bar', x=config.SUPPLY_BAR_POS[0], y=config.SUPPLY_BAR_POS[1])
 		self.main_ui.create_element('sprites/ui/supply_bg.png', 'total_supply_bg', x=config.TOTAL_SUPPLY_BG_POS[0], y=config.TOTAL_SUPPLY_BG_POS[1])
+		self.main_ui.create_element('sprites/ui/health_bar.png', 'health_bar', x=config.HEALTH_BAR_POS[0], y=config.HEALTH_BAR_POS[1])
+		self.main_ui.create_element('sprites/ui/supply_bar.png', 'supply_bar', x=config.SUPPLY_BAR_POS[0], y=config.SUPPLY_BAR_POS[1])
 		self.main_ui.create_element('sprites/ui/supply_bar.png', 'total_supply_bar', x=config.TOTAL_SUPPLY_BAR_POS[0], y=config.TOTAL_SUPPLY_BAR_POS[1])
 		
 		self._init_ground()
