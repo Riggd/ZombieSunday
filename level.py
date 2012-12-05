@@ -96,7 +96,8 @@ class Endless_Level(somber_engine.Level):
 		self.create_sprite_group('player')
 		self.create_sprite_group('zombies')
 		self.create_sprite_group('explosions')
-		self.create_sprite_group('ui', group=somber_engine.StaticGroup)
+		self.create_sprite_group('ui_back', group=somber_engine.StaticGroup)
+		self.create_sprite_group('ui_fore', group=somber_engine.StaticGroup)
 		
 		Static_Background(self.somber, self, 'sprites/background/sky.png', 'background_0')
 		Sun(self.somber, self, 'sprites/background/sun.png', 'sun', x=config.SUN_POS[0], y=config.SUN_POS[1])
@@ -108,14 +109,15 @@ class Endless_Level(somber_engine.Level):
 		
 		Building(self.somber, self, 'sprites/foreground/home.png', 'buildings', home=True, x=config.HOME_POS[0], y=config.HOME_POS[1])
 		
-		self.main_ui = ui.UI_Group(self.somber, self, 'ui')
-		self.main_ui.create_element('sprites/ui/weapon_bg.png', 'weapon_bg', x=config.WEAPON_BG_POS[0], y=config.WEAPON_BG_POS[1])
-		self.main_ui.create_element('sprites/ui/health_bg.png', 'health_bg', x=config.HEALTH_BG_POS[0], y=config.HEALTH_BG_POS[1])
-		self.main_ui.create_element('sprites/ui/supply_bg.png', 'supply_bg', x=config.SUPPLY_BG_POS[0], y=config.SUPPLY_BG_POS[1])
-		self.main_ui.create_element('sprites/ui/supply_bg.png', 'total_supply_bg', x=config.TOTAL_SUPPLY_BG_POS[0], y=config.TOTAL_SUPPLY_BG_POS[1])
-		self.main_ui.create_element('sprites/ui/health_bar.png', 'health_bar', x=config.HEALTH_BAR_POS[0], y=config.HEALTH_BAR_POS[1])
-		self.main_ui.create_element('sprites/ui/supply_bar.png', 'supply_bar', x=config.SUPPLY_BAR_POS[0], y=config.SUPPLY_BAR_POS[1])
-		self.main_ui.create_element('sprites/ui/supply_bar.png', 'total_supply_bar', x=config.TOTAL_SUPPLY_BAR_POS[0], y=config.TOTAL_SUPPLY_BAR_POS[1])
+		self.main_ui_back = ui.UI_Group(self.somber, self, 'ui_back')
+		self.main_ui_back.create_element('sprites/ui/weapon_bg.png', 'weapon_bg', x=config.WEAPON_BG_POS[0], y=config.WEAPON_BG_POS[1])
+		self.main_ui_back.create_element('sprites/ui/health_bg.png', 'health_bg', x=config.HEALTH_BG_POS[0], y=config.HEALTH_BG_POS[1])
+		self.main_ui_back.create_element('sprites/ui/supply_bg.png', 'supply_bg', x=config.SUPPLY_BG_POS[0], y=config.SUPPLY_BG_POS[1])
+		self.main_ui_back.create_element('sprites/ui/supply_bg.png', 'total_supply_bg', x=config.TOTAL_SUPPLY_BG_POS[0], y=config.TOTAL_SUPPLY_BG_POS[1])
+		self.main_ui_fore = ui.UI_Group(self.somber, self, 'ui_fore')
+		self.main_ui_fore.create_element('sprites/ui/health_bar.png', 'health_bar', x=config.HEALTH_BAR_POS[0], y=config.HEALTH_BAR_POS[1])
+		self.main_ui_fore.create_element('sprites/ui/supply_bar.png', 'supply_bar', x=config.SUPPLY_BAR_POS[0], y=config.SUPPLY_BAR_POS[1])
+		self.main_ui_fore.create_element('sprites/ui/supply_bar.png', 'total_supply_bar', x=config.TOTAL_SUPPLY_BAR_POS[0], y=config.TOTAL_SUPPLY_BAR_POS[1])
 		
 		self._init_ground()
 		self._init_clouds()
