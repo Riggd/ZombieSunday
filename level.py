@@ -140,8 +140,6 @@ class Endless_Level(somber_engine.Level):
 	def setup(self):
 		self._setup_player()
 		self._setup_buildings()
-		
-		Zombie(self.somber, self, 'zombies', x=300, y=config.ZOMBIE_POS[1])
 					
 		self.spawn_ammo()
 		self.spawn_attachments()
@@ -188,6 +186,14 @@ class Endless_Level(somber_engine.Level):
 		health_value = round(float(self.player.health[0]) / float(self.player.health[1]), 2) * self.health_bar.sprite.get_width()
 		supply_value = round(float(self.player.supplies[0]) / float(self.player.supplies[1]), 2) * self.supply_bar.sprite.get_width()
 		total_supply_value = round(float(self.player.total_supplies[0]) / float(self.player.total_supplies[1]), 2) * self.total_supply_bar.sprite.get_width()
+		
+		if health_value < 0:
+			health_value = 0
+		if supply_value < 0:
+			supply_value = 0
+		if total_supply_value < 0:
+			total_supply_value = 0
+		
 		self.health_bar.set_value(health_value)
 		self.supply_bar.set_value(supply_value)
 		self.total_supply_bar.set_value(total_supply_value)
