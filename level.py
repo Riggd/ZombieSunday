@@ -39,6 +39,8 @@ class Title_Screen(somber_engine.Level):
 		self.main_ui = ui.UI_Group(self.somber, self, 'ui')
 		self.main_ui.create_element('sprites/ui/logo_zombie_sunday.png', 'logo', x=config.LOGO_POS[0], y=config.LOGO_POS[1])
 		self.main_ui.create_element('sprites/ui/ui_start_game.png', 'start', x=config.BUTTON_START_POS[0], y=config.BUTTON_START_POS[1])
+		self.main_ui.create_element('sprites/ui/ui_how_to.png', 'howto', x=config.BUTTON_HOWTO_POS[0], y=config.BUTTON_HOWTO_POS[1])
+		self.main_ui.create_element('sprites/ui/ui_quit_game.png', 'quit', x=config.BUTTON_QUIT_POS[0], y=config.BUTTON_QUIT_POS[1])
 		
 		self.level = self
 		
@@ -69,6 +71,9 @@ class Title_Screen(somber_engine.Level):
 		for element in self.main_ui.get_clicked_elements():
 			if element.name == 'start':
 				self.start_game()
+			elif element.name == 'quit':
+				pygame.quit()
+				sys.exit()
 	
 	def start_game(self):
 		ENDLESS_LEVEL = Endless_Level(self.somber).create_level()
