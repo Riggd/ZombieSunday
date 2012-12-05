@@ -249,12 +249,12 @@ class Somber:
 		
 		return self.add_sprite(name)
 	
-	def add_font(self,font,size):
+	def add_font(self,name,font,size):
 		for _font in self.fonts:
-			if _font['name'] == font:
+			if _font['name'] == name:
 				raise Exception('Font \'%s\' already exists.' % font)
 		
-		self.fonts.append({'name':font,'size':size,'font':pygame.font.Font(font,size)})
+		self.fonts.append({'name':name,'size':size,'font':pygame.font.Font(font,size)})
 		logging.debug('[Somber] Added font \'%s\'.' % font)
 	
 	def get_font(self,name):
