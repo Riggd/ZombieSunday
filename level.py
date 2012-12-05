@@ -6,7 +6,9 @@
 # 	Ryan Wiesjahn <rwiesjahn@bsu.edu>
 
 import somber as somber_engine
+import pygame
 import random
+import sys
 import ui
 import os
 import pygame
