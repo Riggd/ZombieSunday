@@ -116,8 +116,8 @@ class Endless_Level(somber_engine.Level):
 		self.main_ui_back.create_element('sprites/ui/supply_bg.png', 'total_supply_bg', x=config.TOTAL_SUPPLY_BG_POS[0], y=config.TOTAL_SUPPLY_BG_POS[1])
 		self.main_ui_fore = ui.UI_Group(self.somber, self, 'ui_fore')
 		self.health_bar = self.main_ui_fore.create_element('sprites/ui/health_bar.png', 'health_bar', x=config.HEALTH_BAR_POS[0], y=config.HEALTH_BAR_POS[1])
-		self.main_ui_fore.create_element('sprites/ui/supply_bar.png', 'supply_bar', x=config.SUPPLY_BAR_POS[0], y=config.SUPPLY_BAR_POS[1])
-		self.main_ui_fore.create_element('sprites/ui/supply_bar.png', 'total_supply_bar', x=config.TOTAL_SUPPLY_BAR_POS[0], y=config.TOTAL_SUPPLY_BAR_POS[1])
+		self.supply_bar = self.main_ui_fore.create_element('sprites/ui/supply_bar.png', 'supply_bar', x=config.SUPPLY_BAR_POS[0], y=config.SUPPLY_BAR_POS[1])
+		self.total_supply_bar = self.main_ui_fore.create_element('sprites/ui/supply_bar.png', 'total_supply_bar', x=config.TOTAL_SUPPLY_BAR_POS[0], y=config.TOTAL_SUPPLY_BAR_POS[1])
 		
 		self._init_ground()
 		self._init_clouds()
@@ -184,6 +184,14 @@ class Endless_Level(somber_engine.Level):
 		string += seconds
 		return string
 	
+	def update_ui(self):
+		health_value = round(float(self.player.health[0]) / float(self.player.health[1]), 2) * self.health_bar.sprite.get_width()
+		supply_value = round(float(self.player.supplies[0]) / float(self.player.supplies[1]), 2) * self.supply_bar.sprite.get_width()
+		total_supply_value = round(float(self.player.total_supplies[0]) / float(self.player.total_supplies[1]), 2) * self.total_supply_bar.sprite.get_width()
+		self.health_bar.set_value(health_value)
+		self.supply_bar.set_value(supply_value)
+		self.total_supply_bar.set_value(total_supply_value)
+	
 	def spawn_ammo(self): # TEMPORARY
 		distance = 0
 		while True:
@@ -211,7 +219,7 @@ class Endless_Level(somber_engine.Level):
 		self.somber.bind_key('=', self.player.change_attachment_2)
 	
 	def update(self, delta):
-		self.health_bar.set_value(random.randint(50,200))
+		self.update_ui()
 		self.clock_timer(delta)
 		self._spawn_zombies(delta)
 		
