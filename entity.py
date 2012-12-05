@@ -93,13 +93,16 @@ class Character(Entity):
 		self.set_animation('idle_right')
 	
 	def update(self):
-		self.weapon.update(self.delta_speed)
-		Entity.collision(self)
-		self.change_direction()
-		Entity.animate(self)
-		self.scavange_timer()
-		self.drop_off_timer()
-		Entity.update(self)
+		if not self.level.complete:
+			self.weapon.update(self.delta_speed)
+			Entity.collision(self)
+			self.change_direction()
+			Entity.animate(self)
+			self.scavange_timer()
+			self.drop_off_timer()
+			Entity.update(self)
+		else:
+			self.set_movement(None)
 	
 	def action(self):
 		self.scavange_building()
@@ -222,14 +225,15 @@ class Zombie(Entity):
 		self.add_animation('attack_left', 20, ['sprites/zombie/zombie_left_0.png', 'sprites/zombie/zombie_left_2.png'])
 		self.set_animation('idle_right')
 		
-	def update(self):	
-		self.timer()
-		Entity.collision(self)
-		self.ai()
-		Entity.animate(self)
-		self.die()
-		self.effects()
-		Entity.update(self)
+	def update(self):
+		if not self.level.complete:
+			self.timer()
+			Entity.collision(self)
+			self.ai()
+			Entity.animate(self)
+			self.die()
+			self.effects()
+			Entity.update(self)
 		
 	def ai(self):
 		padding = 20

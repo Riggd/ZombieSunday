@@ -185,18 +185,15 @@ class Somber:
 		
 		return True
 	
-	def change_level(self,name):
+	def change_level(self,level):
 		self.set_background_color((50,50,50))
 		
-		for level in self.levels:
-			if level['name'] == name:
-				self.current_level = level['level']
-				self.keybinds = []
-				level['level'].on_change_to()
-				
-				return True
+		self.current_level =level
+		self.keybinds = []
+		level.on_change_to()
+		return True
 		
-		raise Exception('Level \'%s\' does not exist.' % name)
+		#raise Exception('Level \'%s\' does not exist.' % name)
 	
 	def camera_follow(self,object):
 		self.camera_follows = object
@@ -600,6 +597,10 @@ class Static_UI(General):
 		self.max_value = 100
 		
 		General.__init__(self,sprite=self.sprite,pos=pos)
+	
+	def set_sprite(self, sprite):
+		self.sprite = self.somber.get_sprite(sprite)
+		self.sprite_name = sprite
 	
 	def set_value(self,value):
 		self.rect.width = value

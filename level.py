@@ -45,6 +45,7 @@ class Title_Screen(somber_engine.Level):
 		self.main_ui.create_element('sprites/ui/ui_how_to.png', 'howto', x=config.BUTTON_HOWTO_POS[0], y=config.BUTTON_HOWTO_POS[1])
 		self.main_ui.create_element('sprites/ui/ui_quit_game.png', 'quit', x=config.BUTTON_QUIT_POS[0], y=config.BUTTON_QUIT_POS[1])
 		
+		
 		self.level = self
 		
 		self.setup()
@@ -79,7 +80,7 @@ class Title_Screen(somber_engine.Level):
 	
 	def start_game(self):
 		ENDLESS_LEVEL = Endless_Level(self.somber).create_level()
-		self.somber.change_level('Endless Level')
+		self.somber.change_level(ENDLESS_LEVEL)
 
 class Endless_Level(somber_engine.Level):
 	def __init__(self, somber, stage=0):
@@ -88,6 +89,7 @@ class Endless_Level(somber_engine.Level):
 		self.zombie_timer = 0
 		self.level_clock = config.LEVEL_TIME
 		self.level_timer = 0
+		self.complete = False
 
 	def create_level(self):
 		self.create_sprite_group('background_0', scroll_speed=0)
@@ -121,10 +123,14 @@ class Endless_Level(somber_engine.Level):
 		self.main_ui_back.create_element('sprites/ui/health_bg.png', 'health_bg', x=config.HEALTH_BG_POS[0], y=config.HEALTH_BG_POS[1])
 		self.main_ui_back.create_element('sprites/ui/supply_bg.png', 'supply_bg', x=config.SUPPLY_BG_POS[0], y=config.SUPPLY_BG_POS[1])
 		self.main_ui_back.create_element('sprites/ui/supply_bg.png', 'total_supply_bg', x=config.TOTAL_SUPPLY_BG_POS[0], y=config.TOTAL_SUPPLY_BG_POS[1])
+		
 		self.main_ui_fore = ui.UI_Group(self.somber, self, 'ui_fore')
 		self.health_bar = self.main_ui_fore.create_element('sprites/ui/health_bar.png', 'health_bar', x=config.HEALTH_BAR_POS[0], y=config.HEALTH_BAR_POS[1])
 		self.supply_bar = self.main_ui_fore.create_element('sprites/ui/supply_bar.png', 'supply_bar', x=config.SUPPLY_BAR_POS[0], y=config.SUPPLY_BAR_POS[1])
 		self.total_supply_bar = self.main_ui_fore.create_element('sprites/ui/supply_bar.png', 'total_supply_bar', x=config.TOTAL_SUPPLY_BAR_POS[0], y=config.TOTAL_SUPPLY_BAR_POS[1])
+		
+		self.attachment_1 = self.main_ui_fore.create_element('sprites/ui/attachment_fire.png', 'attachment_1', x=config.ATTACHMENT_1_POS[0], y=config.ATTACHMENT_1_POS[1])
+		self.attachment_2 = self.main_ui_fore.create_element('sprites/ui/attachment_force.png', 'attachment_2', x=config.ATTACHMENT_2_POS[0], y=config.ATTACHMENT_2_POS[1])
 		
 		self._init_ground()
 		self._init_clouds()
@@ -233,13 +239,19 @@ class Endless_Level(somber_engine.Level):
 		self.somber.bind_key(']', self.change_stage)
 	
 	def change_stage(self):
-		Endless_Level(self.somber, self.stage + 1).create_level()
-		self.somber.change_level('Endless Level')
+		ENDLESS_LEVEL = Endless_Level(self.somber, self.stage + 1).create_level()
+		self.somber.change_level(ENDLESS_LEVEL)
+	
+	def complete_level(self):
+		if self.player.total_supplies[0] == self.player.total_supplies[1]:
+			self.complete = True
 	
 	def update(self, delta):
-		self.update_ui()
-		self.clock_timer(delta)
-		self._spawn_zombies(delta)
+		if not self.complete:
+			self.update_ui()
+			self.clock_timer(delta)
+			self._spawn_zombies(delta)
+			self.complete_level()
 		
 class Static_Background(somber_engine.Active):
 	def __init__(self, somber, level, sprite, sprite_group, x=0, y=0):

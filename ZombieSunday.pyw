@@ -129,6 +129,6 @@ somber.add_font(config.FONT_LOMBRIZ, 24)
 TITLE_SCREEN = level.Title_Screen(somber).create_level()
 #somber.play_music(os.path.join('res','sounds','squired.xm'))
 
-somber.change_level('Title Screen')
+somber.change_level(TITLE_SCREEN)
 
 somber.run(callback)
