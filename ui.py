@@ -19,6 +19,8 @@ class UI_Group:
 		_element = UI_Element(self.somber,self.level,sprite,self.sprite_group,name,x=x,y=y)
 		
 		self.elements.append(_element)
+		
+		return _element
 	
 	def get_element(self,name):
 		for element in self.elements:
@@ -35,9 +37,9 @@ class UI_Group:
 		
 		return _clicked_elements
 
-class UI_Element(somber_engine.Static):
+class UI_Element(somber_engine.Static_UI):
 	def __init__(self,somber,level,sprite,group,name,x=0,y=0):
-		somber_engine.Static.__init__(self,sprite,somber=somber,pos=(x,y))
+		somber_engine.Static_UI.__init__(self,sprite,somber=somber,pos=(x,y))
 		
 		self.name = name
 		

@@ -115,7 +115,7 @@ class Endless_Level(somber_engine.Level):
 		self.main_ui_back.create_element('sprites/ui/supply_bg.png', 'supply_bg', x=config.SUPPLY_BG_POS[0], y=config.SUPPLY_BG_POS[1])
 		self.main_ui_back.create_element('sprites/ui/supply_bg.png', 'total_supply_bg', x=config.TOTAL_SUPPLY_BG_POS[0], y=config.TOTAL_SUPPLY_BG_POS[1])
 		self.main_ui_fore = ui.UI_Group(self.somber, self, 'ui_fore')
-		self.main_ui_fore.create_element('sprites/ui/health_bar.png', 'health_bar', x=config.HEALTH_BAR_POS[0], y=config.HEALTH_BAR_POS[1])
+		self.health_bar = self.main_ui_fore.create_element('sprites/ui/health_bar.png', 'health_bar', x=config.HEALTH_BAR_POS[0], y=config.HEALTH_BAR_POS[1])
 		self.main_ui_fore.create_element('sprites/ui/supply_bar.png', 'supply_bar', x=config.SUPPLY_BAR_POS[0], y=config.SUPPLY_BAR_POS[1])
 		self.main_ui_fore.create_element('sprites/ui/supply_bar.png', 'total_supply_bar', x=config.TOTAL_SUPPLY_BAR_POS[0], y=config.TOTAL_SUPPLY_BAR_POS[1])
 		
@@ -211,6 +211,7 @@ class Endless_Level(somber_engine.Level):
 		self.somber.bind_key('=', self.player.change_attachment_2)
 	
 	def update(self, delta):
+		self.health_bar.set_value(random.randint(50,200))
 		self.clock_timer(delta)
 		self._spawn_zombies(delta)
 		
