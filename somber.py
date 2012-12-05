@@ -587,6 +587,31 @@ class Static(General):
 		
 		General.__init__(self,sprite=self.sprite,pos=pos)
 
+class Static_UI(General):
+	def __init__(self,sprite=None,pos=(0,0),somber=None):
+		if not somber:
+			raise Exception('No somber callback set!')
+		
+		self.somber = somber
+		self.sprite = somber.get_sprite(sprite)
+		self.sprite_name = sprite
+		self.static = True
+		self.value = 0
+		self.max_value = 100
+		
+		General.__init__(self,sprite=self.sprite,pos=pos)
+	
+	def set_value(self,value):
+		self.rect.width = value
+		self.sprite = self.somber.get_sprite(self.sprite_name)
+		self.image = pygame.Surface((self.rect.width, self.rect.height))
+		self.image.blit(self.sprite,(0,0))
+		#self.image.fill((255,0,255,255))
+		#self.image.blit(self.image,(0,0))
+		#self._image = self.sprite
+		#self.rect.width = 30
+		#self.image.blit(self._image,(0,0))
+
 class Background(General):
 	def __init__(self,sprite=None,pos=(0,0),somber=None):
 		if not somber:
