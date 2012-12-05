@@ -198,7 +198,7 @@ class Endless_Level(somber_engine.Level):
 		while True:
 			distance += random.randint(12, 20) * 100
 			if distance < config.LEVEL_SIZE * config.GROUND_WIDTH:
-				AttachmentItem(self.somber, self, random.randint(0, 3), x=distance, y=self.somber.win_size[1] - 150)
+				AttachmentItem(self.somber, self, random.randint(0, 3), x=distance, y=config.ATTACHMENT_POS[1])
 			else:
 				break
 	

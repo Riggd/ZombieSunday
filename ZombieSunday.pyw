@@ -30,7 +30,7 @@ def print_ui():
 			somber.write(config.FONT_LOMBRIZ,
 				(config.WEAPON_STR_POS[0], config.WEAPON_STR_POS[1]),
 				'%s /  %s' % (int(player.weapon.ammo[0]), int(player.weapon.ammo[1])),
-				color=(113, 156, 94))
+				color=(65, 65, 65))
 			
 			somber.write(config.FONT_LOMBRIZ,
 				(config.HEALTH_STR_POS[0], config.HEALTH_STR_POS[1]),
