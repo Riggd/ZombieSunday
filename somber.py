@@ -296,7 +296,7 @@ class Somber:
 	def play_music(self,song,loops=0):
 		song = pygame.mixer.music.load(song)
 		#pygame.mixer.music.set_volume(var.music_volume)
-		pygame.mixer.music.play(loops=loops)
+		pygame.mixer.music.play(loops)
 	
 	def pause_music(self):
 		pygame.mixer.music.pause()

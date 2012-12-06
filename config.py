@@ -18,6 +18,7 @@ FPS = 60
 RES_DIR = 'res'
 FONT_PROGGY = 'res/fonts/ProggySquare.ttf'
 FONT_LOMBRIZ = 'res/fonts/lombriz.tff'
+HIGHSCORES = []
 
 # SOUNDS
 SOUND_MUSIC = 'sounds/squired.xm'
