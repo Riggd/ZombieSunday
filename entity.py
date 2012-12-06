@@ -30,7 +30,8 @@ class Entity(somber_engine.Active):
 		self.fire_object = None
 	
 	def update(self):
-		somber_engine.Active.update(self)
+		if not self.level.complete and not self.level.dead and not self.level.out_of_time:
+			somber_engine.Active.update(self)
 	
 	def collision(self):
 		if self.pos[0] < 0:
@@ -93,7 +94,7 @@ class Character(Entity):
 		self.set_animation('idle_right')
 	
 	def update(self):
-		if not self.level.complete:
+		if not self.level.complete and not self.level.dead and not self.level.out_of_time:
 			self.weapon.update(self.delta_speed)
 			Entity.collision(self)
 			self.change_direction()
@@ -230,7 +231,7 @@ class Zombie(Entity):
 		self.set_animation('idle_right')
 		
 	def update(self):
-		if not self.level.complete:
+		if not self.level.complete and not self.level.dead and not self.level.out_of_time:
 			self.timer()
 			Entity.collision(self)
 			self.ai()
@@ -260,7 +261,10 @@ class Zombie(Entity):
 			
 	def attack(self):
 		if self.attack_timer >= self.attack_rate:
-			self.player.health[0] -= self.damage
+			if self.player.health[0] - self.damage < 0:
+				self.player.health[0] = 0
+			else:
+				self.player.health[0] -= self.damage
 			self.attack_timer = 0
 			
 	def effects(self):

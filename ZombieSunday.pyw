@@ -25,7 +25,7 @@ def callback():
 	print_ui()
 
 def print_ui():
-	if TITLE_SCREEN != somber.current_level:
+	if somber.current_level.name == 'Endless Level':
 		for player in somber.current_level.get_sprite_group('player'):
 			somber.write('Lombriz_24',
 				(config.WEAPON_STR_POS[0], config.WEAPON_STR_POS[1]),
@@ -74,14 +74,58 @@ def print_ui():
 					color=(231, 95, 46))
 				
 				somber.write('Lombriz_36',
-					(config.LVL_COMPLETE_SCORE_POS[0], config.LVL_COMPLETE_SCORE_POS[1]),
-					'Score: %s' % int(player.score),
+					(config.LVL_COMPLETE_GAME_SCORE_POS[0], config.LVL_COMPLETE_GAME_SCORE_POS[1]),
+					'Game Score: %s' % int(player.score),
+					color=(65,65,65))
+				
+				somber.write('Lombriz_36',
+					(config.LVL_COMPLETE_TIME_SCORE_POS[0], config.LVL_COMPLETE_TIME_SCORE_POS[1]),
+					'Time Score: %s' % int(somber.current_level.level_clock * config.TIME_SCORE),
+					color=(65,65,65))
+				
+				somber.write('Lombriz_36',
+					(config.LVL_COMPLETE_TOTAL_SCORE_POS[0], config.LVL_COMPLETE_TOTAL_SCORE_POS[1]),
+					'Total Score: %s' % int(player.score + (somber.current_level.level_clock * config.TIME_SCORE)),
 					color=(65,65,65))
 				
 				somber.write('Lombriz_36',
 					(config.LVL_COMPLETE_KILLS_POS[0], config.LVL_COMPLETE_KILLS_POS[1]),
 					'Kills: %s' % int(player.zombies_killed),
 					color=(65,65,65))
+				
+			if somber.current_level.dead or somber.current_level.out_of_time:
+				scores_padding = 35
+				somber.write('Lombriz_36',
+					(config.LVL_FAIL_TITLE_POS[0], config.LVL_FAIL_TITLE_POS[1]),
+					'High Scores:',
+					color=(231, 95, 46))
+				
+				scores = ['1. 45000pts', '2. 34651pts', '3. 2304pts', '4. 1092pts', '5. 975pts']
+				index = 0
+				for score in scores:
+					somber.write('Lombriz_24',
+						(config.LVL_FAIL_SCORES_POS[0], config.LVL_FAIL_SCORES_POS[1] + scores_padding*index),
+						score,
+						color=(65,65,65))
+					index += 1
+				
+				kills = ['60 kills', '55 kills', '37 kills', '32 kills', '10 kills']
+				index = 0
+				for kill in kills:
+					somber.write('Lombriz_24',
+						(config.LVL_FAIL_KILLS_POS[0], config.LVL_FAIL_KILLS_POS[1] + scores_padding*index),
+						kill,
+						color=(65,65,65))
+					index += 1
+				
+				dates = ['12/06/2012', '12/04/2012', '12/04/2012', '11/26/2012', '12/06/2012']
+				index = 0
+				for date in dates:
+					somber.write('Lombriz_24',
+						(config.LVL_FAIL_DATE_POS[0], config.LVL_FAIL_DATE_POS[1] + scores_padding*index),
+						date,
+						color=(65,65,65))
+					index += 1
 
 def debug():
 	text_padding = 180
@@ -95,7 +139,7 @@ def debug():
 		'Camera: X=%s, Y=%s' % (somber.camera_pos[0], somber.camera_pos[1]),
 		color=(0, 0, 0))
 	
-	if TITLE_SCREEN != somber.current_level:
+	if somber.current_level.name == 'Endless Level':
 		for player in somber.current_level.get_sprite_group('player'):
 			somber.write('Proggy',
 				(0, 15),
