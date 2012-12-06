@@ -47,7 +47,6 @@ class Title_Screen(somber_engine.Level):
 		self.main_ui.create_element('sprites/ui/button_how_to.png', 'button_how_to', x=config.BUTTON_HOWTO_POS[0], y=config.BUTTON_HOWTO_POS[1])
 		self.main_ui.create_element('sprites/ui/button_quit_game.png', 'button_quit', x=config.BUTTON_QUIT_POS[0], y=config.BUTTON_QUIT_POS[1])
 		
-		
 		self.level = self
 		
 		self.setup()
@@ -94,6 +93,8 @@ class Endless_Level(somber_engine.Level):
 		self.zombie_timer = 0
 		self.level_clock = config.LEVEL_TIME
 		self.level_timer = 0
+		self.attachment_1_sprite = None
+		self.attachment_2_sprite = None
 		self.complete = False
 		self.dead = False
 		self.out_of_time = False
@@ -137,9 +138,7 @@ class Endless_Level(somber_engine.Level):
 		self.supply_bar = self.main_ui_fore.create_element('sprites/ui/supply_bar.png', 'supply_bar', x=config.SUPPLY_BAR_POS[0], y=config.SUPPLY_BAR_POS[1])
 		self.total_supply_bar = self.main_ui_fore.create_element('sprites/ui/supply_bar.png', 'total_supply_bar', x=config.TOTAL_SUPPLY_BAR_POS[0], y=config.TOTAL_SUPPLY_BAR_POS[1])
 		
-		self.attachment_1 = self.main_ui_fore.create_element('sprites/ui/attachment_fire.png', 'attachment_1', x=config.ATTACHMENT_1_POS[0], y=config.ATTACHMENT_1_POS[1])
-		self.attachment_2 = self.main_ui_fore.create_element('sprites/ui/attachment_force.png', 'attachment_2', x=config.ATTACHMENT_2_POS[0], y=config.ATTACHMENT_2_POS[1])
-		
+		self.attachment_1 = self.attachment_2 = None
 		self.box_bg = self.button_next_level = None
 		
 		self._init_ground()
@@ -225,6 +224,54 @@ class Endless_Level(somber_engine.Level):
 		self.health_bar.set_value(health_value)
 		self.supply_bar.set_value(supply_value)
 		self.total_supply_bar.set_value(total_supply_value)
+		
+		if self.player.weapon.attachments[0] == Attachment.Speed and self.attachment_1_sprite != Attachment.Speed:
+			self.attachment_1_sprite = Attachment.Speed
+			if self.attachment_1 != None:
+				self.attachment_1.kill()
+			self.attachment_1 = self.main_ui_fore.create_element('sprites/ui/attachment_speed.png', 'attachment_1', x=config.ATTACHMENT_1_POS[0], y=config.ATTACHMENT_1_POS[1])
+		elif self.player.weapon.attachments[0] == Attachment.Fire and self.attachment_1_sprite != Attachment.Fire:
+			self.attachment_1_sprite = Attachment.Fire
+			if self.attachment_1 != None:
+				self.attachment_1.kill()
+			self.attachment_1 = self.main_ui_fore.create_element('sprites/ui/attachment_fire.png', 'attachment_1', x=config.ATTACHMENT_1_POS[0], y=config.ATTACHMENT_1_POS[1])
+		elif self.player.weapon.attachments[0] == Attachment.Lob and self.attachment_1_sprite != Attachment.Lob:
+			self.attachment_1_sprite = Attachment.Lob
+			if self.attachment_1 != None:
+				self.attachment_1.kill()
+			self.attachment_1 = self.main_ui_fore.create_element('sprites/ui/attachment_lob.png', 'attachment_1', x=config.ATTACHMENT_1_POS[0], y=config.ATTACHMENT_1_POS[1])
+		elif self.player.weapon.attachments[0] == Attachment.Force and self.attachment_1_sprite != Attachment.Force:
+			self.attachment_1_sprite = Attachment.Force
+			if self.attachment_1 != None:
+				self.attachment_1.kill()
+			self.attachment_1 = self.main_ui_fore.create_element('sprites/ui/attachment_force.png', 'attachment_1', x=config.ATTACHMENT_1_POS[0], y=config.ATTACHMENT_1_POS[1])
+		elif self.player.weapon.attachments[0] == None and self.attachment_1_sprite != None:
+			self.attachment_1_sprite = None
+			self.attachment_1.kill()
+		
+		if self.player.weapon.attachments[1] == Attachment.Speed and self.attachment_2_sprite != Attachment.Speed:
+			self.attachment_2_sprite = Attachment.Speed
+			if self.attachment_2 != None:
+				self.attachment_2.kill()
+			self.attachment_2 = self.main_ui_fore.create_element('sprites/ui/attachment_speed.png', 'attachment_2', x=config.ATTACHMENT_2_POS[0], y=config.ATTACHMENT_2_POS[1])
+		elif self.player.weapon.attachments[1] == Attachment.Fire and self.attachment_2_sprite != Attachment.Fire:
+			self.attachment_2_sprite = Attachment.Fire
+			if self.attachment_2 != None:
+				self.attachment_2.kill()
+			self.attachment_2 = self.main_ui_fore.create_element('sprites/ui/attachment_fire.png', 'attachment_2', x=config.ATTACHMENT_2_POS[0], y=config.ATTACHMENT_2_POS[1])
+		elif self.player.weapon.attachments[1] == Attachment.Lob and self.attachment_2_sprite != Attachment.Lob:
+			self.attachment_2_sprite = Attachment.Lob
+			if self.attachment_2 != None:
+				self.attachment_2.kill()
+			self.attachment_2 = self.main_ui_fore.create_element('sprites/ui/attachment_lob.png', 'attachment_2', x=config.ATTACHMENT_2_POS[0], y=config.ATTACHMENT_2_POS[1])
+		elif self.player.weapon.attachments[1] == Attachment.Force and self.attachment_2_sprite != Attachment.Force:
+			self.attachment_2_sprite = Attachment.Force
+			if self.attachment_2 != None:
+				self.attachment_2.kill()
+			self.attachment_2 = self.main_ui_fore.create_element('sprites/ui/attachment_force.png', 'attachment_2', x=config.ATTACHMENT_2_POS[0], y=config.ATTACHMENT_2_POS[1])
+		elif self.player.weapon.attachments[1] == None and self.attachment_2_sprite != None:
+			self.attachment_2_sprite = None
+			self.attachment_2.kill()
 	
 	def spawn_ammo(self): # TEMPORARY
 		distance = 0
