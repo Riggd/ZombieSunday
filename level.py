@@ -95,6 +95,8 @@ class Endless_Level(somber_engine.Level):
 		self.level_clock = config.LEVEL_TIME
 		self.level_timer = 0
 		self.complete = False
+		self.dead = False
+		self.out_of_time = False
 
 	def create_level(self):
 		self.create_sprite_group('background_0', scroll_speed=0)
@@ -257,12 +259,15 @@ class Endless_Level(somber_engine.Level):
 			if element.name == 'button_next_level':
 				self.somber.play_sound(config.SOUND_BUTTON)
 				self.change_stage()
+			if element.name == 'button_exit_to_title':
+				TITLE_SCREEN = Title_Screen(self.somber).create_level()
+				self.somber.change_level(TITLE_SCREEN)
 	
 	def change_stage(self):
 		self.complete = False
 		self.clear_level()
 		ENDLESS_LEVEL = Endless_Level(self.somber, self.stage + 1).create_level()
-		ENDLESS_LEVEL.player.score = self.player.score
+		ENDLESS_LEVEL.player.score = self.player.score + (self.level_clock * config.TIME_SCORE)
 		ENDLESS_LEVEL.player.zombies_killed = self.player.zombies_killed
 		self.somber.change_level(ENDLESS_LEVEL)
 	
@@ -271,16 +276,34 @@ class Endless_Level(somber_engine.Level):
 			self.complete = True
 			self.create_level_complete_ui()
 	
+	def fail_level(self):
+		if self.player.health[0] == 0:
+			self.dead = True
+			self.create_level_fail_ui()
+		if self.level_clock <= 0:
+			self.level_clock = 0
+			self.out_of_time = True
+			self.create_level_fail_ui()
+	
 	def create_level_complete_ui(self):
 		self.box_bg = self.main_ui_back.create_element('sprites/ui/box_bg.png', 'box_bg', x=config.BOX_BG_POS[0], y=config.BOX_BG_POS[1])
 		self.button_next_level = self.main_ui_fore.create_element('sprites/ui/button_next_level.png', 'button_next_level', x=config.BUTTON_NEXT_LEVEL_POS[0], y=config.BUTTON_NEXT_LEVEL_POS[1])
 	
+	def create_level_fail_ui(self):
+		self.box_bg = self.main_ui_back.create_element('sprites/ui/box_2_bg.png', 'box_bg', x=config.BOX_2_BG_POS[0], y=config.BOX_2_BG_POS[1])
+		if self.out_of_time:
+			self.fail_title = self.main_ui_fore.create_element('sprites/ui/title_out_of_time.png', 'fail_title', x=config.LVL_FAIL_OUT_OF_TIME_POS[0], y=config.LVL_FAIL_OUT_OF_TIME_POS[1])
+		else:
+			self.fail_title = self.main_ui_fore.create_element('sprites/ui/title_you_died.png', 'fail_title', x=config.LVL_FAIL_YOU_DIED_POS[0], y=config.LVL_FAIL_YOU_DIED_POS[1])
+		self.button_exit_to_title = self.main_ui_fore.create_element('sprites/ui/button_exit_to_title.png', 'button_exit_to_title', x=config.BUTTON_EXIT_TO_TITLE_POS[0], y=config.BUTTON_EXIT_TO_TITLE_POS[1])
+	
 	def update(self, delta):
-		if not self.complete:
+		if not self.complete and not self.dead and not self.out_of_time:
 			self.update_ui()
 			self.clock_timer(delta)
 			self._spawn_zombies(delta)
 			self.complete_level()
+			self.fail_level()
 	
 	def clear_level(self):
 		for group in self.sprite_groups:
