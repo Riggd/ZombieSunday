@@ -128,10 +128,12 @@ class Character(Entity):
 			if self.collides_with(building.door):
 				if not building.home:
 					if not building.scavanged and not self.scavanging and self.supplies[0] != self.supplies[1]:
+						self.somber.play_sound(config.SOUND_DOOR)
 						building.scavanged = True
 						self.scavanging = True
 				else:
 					if not self.scavanging and self.supplies[0] > 0:
+						self.somber.play_sound(config.SOUND_DOOR)
 						self.dropping_off = True
 					
 	
@@ -150,6 +152,7 @@ class Character(Entity):
 				self.scavanging_timer = 0
 				self.pos[1] = config.PLAYER_POS[1]
 				self.set_movement('horizontal')
+				self.somber.play_sound(config.SOUND_DOOR)
 				
 	def drop_off_timer(self):
 		if self.dropping_off:
@@ -165,6 +168,7 @@ class Character(Entity):
 				self.scavanging_timer = 0
 				self.pos[1] = config.PLAYER_POS[1]
 				self.set_movement('horizontal')
+				self.somber.play_sound(config.SOUND_DOOR)
 	
 	def add_total_supplies(self):
 		if (self.supplies[0] + self.total_supplies[0]) > self.total_supplies[1]:
@@ -272,6 +276,7 @@ class Zombie(Entity):
 			if self.fire_object != None:
 				self.fire_object.kill()
 			self.add_scores()
+			self.somber.play_sound(config.SOUND_ZOMBIE_YELL)
 	
 	def add_scores(self):
 		self.player.score += self.score

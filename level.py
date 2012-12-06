@@ -74,7 +74,10 @@ class Title_Screen(somber_engine.Level):
 	def mouse_down(self, button):
 		for element in self.main_ui.get_clicked_elements():
 			if element.name == 'button_start':
+				self.somber.play_sound(config.SOUND_BUTTON)
 				self.start_game()
+			elif element.name == 'button_how_to':
+				self.somber.play_sound(config.SOUND_BUTTON)
 			elif element.name == 'button_quit':
 				pygame.quit()
 	
@@ -181,6 +184,10 @@ class Endless_Level(somber_engine.Level):
 					side = random.randint(0, 1)
 					if side == 0:
 						extra = -extra
+				if random.randint(0,1) == 0:
+					self.somber.play_sound(config.SOUND_ZOMBIE_GROAN)
+				#else:
+				#	self.somber.play_sound(config.SOUND_ZOMBIE_GROAN_2)
 				Zombie(self.somber, self, 'zombies', x=self.somber.camera_pos[0] + (config.WINDOW_SIZE[0] * side) + extra, y=config.ZOMBIE_POS[1])
 	
 	def clock_timer(self, delta):
@@ -244,6 +251,7 @@ class Endless_Level(somber_engine.Level):
 	def mouse_down(self, button):
 		for element in self.main_ui_fore.get_clicked_elements():
 			if element.name == 'button_next_level':
+				self.somber.play_sound(config.SOUND_BUTTON)
 				self.change_stage()
 	
 	def change_stage(self):

@@ -19,6 +19,16 @@ RES_DIR = 'res'
 FONT_PROGGY = 'res/fonts/ProggySquare.ttf'
 FONT_LOMBRIZ = 'res/fonts/lombriz.tff'
 
+# SOUNDS
+SOUND_MUSIC = 'sounds/squired.xm'
+SOUND_BUTTON = 'sounds/button_chime.wav'
+SOUND_DOOR = 'sounds/door_open.wav'
+SOUND_GUN_GENERIC = 'sounds/gun_generic.wav'
+SOUND_GUN_BEAM = 'sounds/gun_beam.wav'
+SOUND_ZOMBIE_GROAN = 'sounds/zombie_groan.wav'
+SOUND_ZOMBIE_GROAN_2 = 'sounds/zombie_groan_2.wav'
+SOUND_ZOMBIE_YELL = 'sounds/zombie_yell.wav'
+
 # UI POSITIONS
 LOGO_POS = ((WINDOW_SIZE[0] / 2) - 338, 30)
 BUTTON_START_POS = ((WINDOW_SIZE[0] / 2) - 165, 200)
