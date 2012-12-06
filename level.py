@@ -138,7 +138,8 @@ class Endless_Level(somber_engine.Level):
 		self.supply_bar = self.main_ui_fore.create_element('sprites/ui/supply_bar.png', 'supply_bar', x=config.SUPPLY_BAR_POS[0], y=config.SUPPLY_BAR_POS[1])
 		self.total_supply_bar = self.main_ui_fore.create_element('sprites/ui/supply_bar.png', 'total_supply_bar', x=config.TOTAL_SUPPLY_BAR_POS[0], y=config.TOTAL_SUPPLY_BAR_POS[1])
 		
-		self.attachment_1 = self.attachment_2 = None
+		self.attachment_1 = self.main_ui_fore.create_element('sprites/ui/attachment_speed.png', 'attachment_1', x=config.ATTACHMENT_1_POS[0], y=config.ATTACHMENT_1_POS[1])
+		self.attachment_1.kill()
 		self.box_bg = self.button_next_level = None
 		
 		self._init_ground()
@@ -225,6 +226,7 @@ class Endless_Level(somber_engine.Level):
 		self.supply_bar.set_value(supply_value)
 		self.total_supply_bar.set_value(total_supply_value)
 		
+		"""
 		if self.player.weapon.attachments[0] == Attachment.Speed and self.attachment_1_sprite != Attachment.Speed:
 			self.attachment_1_sprite = Attachment.Speed
 			if self.attachment_1 != None:
@@ -272,6 +274,7 @@ class Endless_Level(somber_engine.Level):
 		elif self.player.weapon.attachments[1] == None and self.attachment_2_sprite != None:
 			self.attachment_2_sprite = None
 			self.attachment_2.kill()
+		"""
 	
 	def spawn_ammo(self): # TEMPORARY
 		distance = 0
