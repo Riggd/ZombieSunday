@@ -294,9 +294,9 @@ class Somber:
 		self.dirty_rects.append(self.window.blit(_square,(pos[0],pos[1])))
 	
 	def play_music(self,song,loops=0):
-		song = pygame.mixer.music.load(song,loops=loops)
+		song = pygame.mixer.music.load(song)
 		#pygame.mixer.music.set_volume(var.music_volume)
-		pygame.mixer.music.play()
+		pygame.mixer.music.play(loops=loops)
 	
 	def pause_music(self):
 		pygame.mixer.music.pause()
