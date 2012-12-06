@@ -24,6 +24,7 @@ class Title_Screen(somber_engine.Level):
 		self.create_sprite_group('background_0', scroll_speed=0)
 		self.create_sprite_group('background_1', scroll_speed=0.2, group=somber_engine.BackgroundParallaxGroup)
 		self.create_sprite_group('background_2', scroll_speed=0.3, group=somber_engine.BackgroundParallaxGroup)
+		self.create_sprite_group('background_3', scroll_speed=1, group=somber_engine.BackgroundParallaxGroup)
 		self.create_sprite_group('sun', group=somber_engine.StaticBackgroundGroup)
 		self.create_sprite_group('clouds', group=somber_engine.StaticBackgroundGroup)
 		self.create_sprite_group('ground', scroll_speed=1, group=somber_engine.BackgroundParallaxGroup)
@@ -38,6 +39,7 @@ class Title_Screen(somber_engine.Level):
 		Cloud(self.somber, self, 'sprites/background/cloud_2.png', 'clouds', x=config.CLOUD_2_POS[0], y=config.CLOUD_2_POS[1])
 		Cloud(self.somber, self, 'sprites/background/cloud_3.png', 'clouds', x=config.CLOUD_3_POS[0], y=config.CLOUD_3_POS[1])
 		Background(self.somber, self, 'sprites/foreground/ground.png', 'ground', x=config.GROUND_POS[0], y=config.GROUND_POS[1])
+		Background(self.somber, self, 'sprites/foreground/ground_top.png', 'background_3', x=config.GROUND_TOP_POS[0], y=config.GROUND_TOP_POS[1])
 		
 		self.main_ui = ui.UI_Group(self.somber, self, 'ui')
 		self.main_ui.create_element('sprites/ui/logo_zombie_sunday.png', 'logo', x=config.LOGO_POS[0], y=config.LOGO_POS[1])
@@ -101,6 +103,7 @@ class Endless_Level(somber_engine.Level):
 		self.create_sprite_group('sun', group=somber_engine.StaticBackgroundGroup)
 		self.create_sprite_group('clouds', group=somber_engine.StaticBackgroundGroup)
 		self.create_sprite_group('ground')
+		self.create_sprite_group('ground_top')
 		self.create_sprite_group('buildings')
 		self.create_sprite_group('doors')
 		self.create_sprite_group('bullets')
@@ -148,6 +151,7 @@ class Endless_Level(somber_engine.Level):
 	def _init_ground(self):
 		for tile in range(0, config.LEVEL_SIZE):
 			Platform(self.somber, self, 'sprites/foreground/ground.png', 'ground', x=tile * config.GROUND_WIDTH, y=config.GROUND_POS[1])
+			Platform(self.somber, self, 'sprites/foreground/ground_top.png', 'ground_top', x=tile * config.GROUND_WIDTH, y=config.GROUND_TOP_POS[1])
 	
 	def _init_clouds(self):
 		for group in self.sprite_groups:
