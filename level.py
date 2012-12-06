@@ -336,7 +336,7 @@ class Endless_Level(somber_engine.Level):
 			self.create_level_fail_ui()
 	
 	def create_level_complete_ui(self):
-		self.box_bg = self.main_ui_back.create_element('sprites/ui/box_bg.png', 'box_bg', x=config.BOX_BG_POS[0], y=config.BOX_BG_POS[1])
+		self.box_bg = self.main_ui_back.create_element('sprites/ui/box_2_bg.png', 'box_bg', x=config.BOX_2_BG_POS[0], y=config.BOX_2_BG_POS[1])
 		self.button_next_level = self.main_ui_fore.create_element('sprites/ui/button_next_level.png', 'button_next_level', x=config.BUTTON_NEXT_LEVEL_POS[0], y=config.BUTTON_NEXT_LEVEL_POS[1])
 	
 	def create_level_fail_ui(self):

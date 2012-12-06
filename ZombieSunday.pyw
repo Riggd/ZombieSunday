@@ -69,7 +69,7 @@ def print_ui():
 				color=(233, 32, 20))
 			
 			if somber.current_level.complete:
-				somber.write('Lombriz_36',
+				somber.write('Lombriz_60',
 					(config.LVL_COMPLETE_TITLE_POS[0], config.LVL_COMPLETE_TITLE_POS[1]),
 					'Level %s Complete' % int(somber.current_level.stage + 1),
 					color=(231, 95, 46))
