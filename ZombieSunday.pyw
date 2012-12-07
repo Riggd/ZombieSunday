@@ -107,12 +107,12 @@ def print_ui():
 				for entry in config.HIGHSCORES:
 					somber.write('Lombriz_24',
 						(config.LVL_FAIL_SCORES_POS[0], config.LVL_FAIL_SCORES_POS[1] + scores_padding*index),
-						str(entry['score']),
+						str(index + 1) + ". " + str(entry['score']) + "pts",
 						color=(65,65,65))
 					
 					somber.write('Lombriz_24',
 						(config.LVL_FAIL_KILLS_POS[0], config.LVL_FAIL_KILLS_POS[1] + scores_padding*index),
-						str(entry['kills']),
+						str(entry['kills']) + " kills",
 						color=(65,65,65))
 					
 					somber.write('Lombriz_24',
