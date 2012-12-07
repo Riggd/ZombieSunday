@@ -436,7 +436,6 @@ class Fire(Bullet):
 		if self.hit_timer >= self.hit_rate:
 			self.entity.health[0] -= self.damage
 			self.hit_timer -= self.hit_rate
-			print "FIRE!"
 		self.hit_timer += self.delta_speed
 		
 	def remove(self):
