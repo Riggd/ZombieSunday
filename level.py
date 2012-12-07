@@ -107,9 +107,9 @@ class Title_Screen(somber_engine.Level):
 				pygame.quit()
 	
 	def clear_ui(self):
-		for sprite in self.main_ui.elements:
+		for sprite in self.main_ui.elements[:]:
 			sprite.kill()
-		for sprite in self.how_to_ui.elements:
+		for sprite in self.how_to_ui.elements[:]:
 			sprite.kill()
 	
 	def start_game(self):
