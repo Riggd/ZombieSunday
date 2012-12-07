@@ -22,6 +22,8 @@ somber = somber_engine.Somber(name=config.TITLE,
 	fps=config.FPS)
 somber.set_resource_directory(config.RES_DIR)
 
+ui.load_highscores()
+
 def callback():
 	print_ui()
 
@@ -205,3 +207,4 @@ somber.play_music(os.path.join('res','sounds','squired.xm'), loops=-1)
 somber.change_level(TITLE_SCREEN)
 
 somber.run(callback)
+ui.save_highscores()

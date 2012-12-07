@@ -104,7 +104,7 @@ class Title_Screen(somber_engine.Level):
 				self.create_main_ui()
 			elif element.name == 'button_quit':
 				self.somber.play_sound(config.SOUND_BUTTON)
-				pygame.quit()
+				self.somber.quit()
 	
 	def clear_ui(self):
 		for sprite in self.main_ui.elements[:]:
