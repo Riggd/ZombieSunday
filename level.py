@@ -30,6 +30,7 @@ class Title_Screen(somber_engine.Level):
 		self.create_sprite_group('ground', scroll_speed=1, group=somber_engine.BackgroundParallaxGroup)
 		self.create_sprite_group('dummy')
 		self.create_sprite_group('ui', group=somber_engine.StaticGroup)
+		self.create_sprite_group('how_to_ui', group=somber_engine.StaticGroup)
 		
 		Static_Background(self.somber, self, 'sprites/background/sky.png', 'background_0')
 		Sun(self.somber, self, 'sprites/background/sun.png', 'sun', x=config.SUN_POS[0], y=config.SUN_POS[1])
@@ -42,11 +43,17 @@ class Title_Screen(somber_engine.Level):
 		Background(self.somber, self, 'sprites/foreground/ground_top.png', 'background_3', x=config.GROUND_TOP_POS[0], y=config.GROUND_TOP_POS[1])
 		
 		self.main_ui = ui.UI_Group(self.somber, self, 'ui')
-		self.main_ui.create_element('sprites/ui/logo_zombie_sunday.png', 'logo', x=config.LOGO_POS[0], y=config.LOGO_POS[1])
-		self.main_ui.create_element('sprites/ui/button_start_game.png', 'button_start', x=config.BUTTON_START_POS[0], y=config.BUTTON_START_POS[1])
-		self.main_ui.create_element('sprites/ui/button_how_to.png', 'button_how_to', x=config.BUTTON_HOWTO_POS[0], y=config.BUTTON_HOWTO_POS[1])
-		self.main_ui.create_element('sprites/ui/button_quit_game.png', 'button_quit', x=config.BUTTON_QUIT_POS[0], y=config.BUTTON_QUIT_POS[1])
+		self.how_to_ui = ui.UI_Group(self.somber, self, 'how_to_ui')
 		
+		self.logo = None
+		self.button_start = None
+		self.button_how_to = None
+		self.button_quit = None
+		self.how_to_screen = None
+		self.button_back_to_title = None
+		
+		self.create_main_ui()
+				
 		self.level = self
 		
 		self.setup()
@@ -71,6 +78,16 @@ class Title_Screen(somber_engine.Level):
 		self.somber.camera_follow(self.dummy)
 		self.somber.bind_key('m1', self.mouse_down)
 		self.somber.bind_key('\r', self.start_game)
+	
+	def create_main_ui(self):
+		self.logo = self.main_ui.create_element('sprites/ui/logo_zombie_sunday.png', 'logo', x=config.LOGO_POS[0], y=config.LOGO_POS[1])
+		self.button_start = self.main_ui.create_element('sprites/ui/button_start_game.png', 'button_start', x=config.BUTTON_START_POS[0], y=config.BUTTON_START_POS[1])
+		self.button_how_to = self.main_ui.create_element('sprites/ui/button_how_to.png', 'button_how_to', x=config.BUTTON_HOWTO_POS[0], y=config.BUTTON_HOWTO_POS[1])
+		self.button_quit = self.main_ui.create_element('sprites/ui/button_quit_game.png', 'button_quit', x=config.BUTTON_QUIT_POS[0], y=config.BUTTON_QUIT_POS[1])
+		
+	def create_how_to_ui(self):
+		self.how_to_screen = self.main_ui.create_element('sprites/ui/how_to_play_screen.png', 'how_to_screen', x=config.HOW_TO_SCREEN_POS[0], y=config.HOW_TO_SCREEN_POS[1])
+		self.button_back_to_title = self.main_ui.create_element('sprites/ui/button_back_to_title.png', 'button_back_to_title', x=config.BUTTON_BACK_TO_TITLE_POS[0], y=config.BUTTON_BACK_TO_TITLE_POS[1])
 					
 	def mouse_down(self, button):
 		for element in self.main_ui.get_clicked_elements():
@@ -79,8 +96,21 @@ class Title_Screen(somber_engine.Level):
 				self.start_game()
 			elif element.name == 'button_how_to':
 				self.somber.play_sound(config.SOUND_BUTTON)
+				self.clear_ui()
+				self.create_how_to_ui()
+			elif element.name == 'button_back_to_title':
+				self.somber.play_sound(config.SOUND_BUTTON)
+				self.clear_ui()
+				self.create_main_ui()
 			elif element.name == 'button_quit':
+				self.somber.play_sound(config.SOUND_BUTTON)
 				pygame.quit()
+	
+	def clear_ui(self):
+		for sprite in self.main_ui.elements:
+			sprite.kill()
+		for sprite in self.how_to_ui.elements:
+			sprite.kill()
 	
 	def start_game(self):
 		ENDLESS_LEVEL = Endless_Level(self.somber).create_level()
