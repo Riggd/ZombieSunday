@@ -104,7 +104,7 @@ def print_ui():
 					color=(231, 95, 46))
 				
 				index = 0
-				for entry in config.HIGHSCORES:
+				for entry in config.HIGHSCORES[:5]:
 					somber.write('Lombriz_24',
 						(config.LVL_FAIL_SCORES_POS[0], config.LVL_FAIL_SCORES_POS[1] + scores_padding*index),
 						str(index + 1) + ". " + str(entry['score']) + "pts",
