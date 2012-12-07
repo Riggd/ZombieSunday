@@ -459,7 +459,7 @@ class General(pygame.sprite.Sprite):
 		self.animation_index = 0
 		self.animation_horz_flip = False
 		
-		self.image = self.sprite
+		self.image = self.sprite.copy()
 		self.rect = self.image.get_bounding_rect()
 		self.image.blit(self.image,(0,0))
 		self.rect.topleft = self.pos
