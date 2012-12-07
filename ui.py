@@ -9,6 +9,7 @@ import somber as somber_engine
 import logging
 import config
 import json
+import time
 
 class UI_Group:
 	def __init__(self,somber,level,sprite_group):
@@ -71,7 +72,8 @@ def save_highscores():
 		e.write(json.dumps(config.HIGHSCORES))
 		logging.info('[Somber] Saved highscores!')
 
-def add_highscore(score,kills,date):
+def add_highscore(score,kills):
+	date = time.strftime('%m/%d/%y')
 	_added = False
 	
 	if not len(config.HIGHSCORES):
@@ -86,9 +88,10 @@ def add_highscore(score,kills,date):
 				_added = True
 				break
 	
-	if len(config.HIGHSCORES)<5:
-		if not _added:
-			config.HIGHSCORES.append({'score': score,'kills': kills,'date': date})
-	else:
+	#if len(config.HIGHSCORES)<5:
+		#if not _added:
+		config.HIGHSCORES.append({'score': score,'kills': kills,'date': date})
+	#lse:
+	if len(config.HIGHSCORES)>=5:
 		config.HIGHSCORES.pop()
 	
