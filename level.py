@@ -368,6 +368,7 @@ class Endless_Level(somber_engine.Level):
 	def create_level_complete_ui(self):
 		self.box_bg = self.main_ui_back.create_element('sprites/ui/box_2_bg.png', 'box_bg', x=config.BOX_2_BG_POS[0], y=config.BOX_2_BG_POS[1])
 		self.button_next_level = self.main_ui_fore.create_element('sprites/ui/button_next_level.png', 'button_next_level', x=config.BUTTON_NEXT_LEVEL_POS[0], y=config.BUTTON_NEXT_LEVEL_POS[1])
+		ui.add_highscore(self.player.score,self.player.zombies_killed,'derp')
 	
 	def create_level_fail_ui(self):
 		self.box_bg = self.main_ui_back.create_element('sprites/ui/box_2_bg.png', 'box_bg', x=config.BOX_2_BG_POS[0], y=config.BOX_2_BG_POS[1])
@@ -376,6 +377,7 @@ class Endless_Level(somber_engine.Level):
 		else:
 			self.fail_title = self.main_ui_fore.create_element('sprites/ui/title_you_died.png', 'fail_title', x=config.LVL_FAIL_YOU_DIED_POS[0], y=config.LVL_FAIL_YOU_DIED_POS[1])
 		self.button_exit_to_title = self.main_ui_fore.create_element('sprites/ui/button_exit_to_title.png', 'button_exit_to_title', x=config.BUTTON_EXIT_TO_TITLE_POS[0], y=config.BUTTON_EXIT_TO_TITLE_POS[1])
+		ui.add_highscore(self.player.score,self.player.zombies_killed,'derp')
 	
 	def update(self, delta):
 		if not self.complete and not self.dead and not self.out_of_time:

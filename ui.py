@@ -7,6 +7,7 @@
 
 import somber as somber_engine
 import logging
+import config
 
 class UI_Group:
 	def __init__(self,somber,level,sprite_group):
@@ -56,3 +57,23 @@ class UI_Element(somber_engine.Static_UI):
 		self.parent.remove_element(self)
 		
 		somber_engine.Static_UI.kill(self)
+
+#ui.add_highscore(self.player.score,self.player.zombies_killed,'derp')
+def add_highscore(score,kills,date):
+	if not len(config.HIGHSCORES):
+		config.HIGHSCORES.append({'score': score,'kills': kills,'date': date})
+		logging.info('[Somber] New highscore!')
+	else:
+		_added = False
+		for entry in config.HIGHSCORES:
+			if score>entry['score']:
+				config.HIGHSCORES.insert(config.HIGHSCORES.index(entry),{'score': score,'kills': kills,'date': date})
+				logging.info('[Somber] New highscore!')
+				_added = True
+				break
+	
+	if len(config.HIGHSCORES)<5:
+		config.HIGHSCORES.append({'score': score,'kills': kills,'date': date})
+	elif _added:
+		config.HIGHSCORES.pop()
+	
