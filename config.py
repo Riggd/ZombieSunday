@@ -100,7 +100,7 @@ SUPPLY_RANGE = [5,8] # [min, max].  Random amount of supplies (between min and m
 SUPPLY_GOAL = 25
 SCAVANGE_DURATION = 3 # Amount of time you are in a building scavaging
 SCAVANGE_SCORE = 100
-TIME_SCORE = 3 # Score to add per second left when you complete a stage
+TIME_SCORE = 4 # Score to add per second left when you complete a stage
 ZOMBIE_MAX = 8
 ZOMBIE_SPAWN_RATE = 4
 
