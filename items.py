@@ -40,7 +40,7 @@ class Ammo(Item):
 	def __init__(self, somber, level, x=0, y=0):
 		Item.__init__(self, somber, level, x, y, sprite='sprites/items/item_ammo.png')
 		self.weapon = self.player.weapon
-		self.rounds = 50
+		self.rounds = config.ITEM_AMMO_ROUNDS
 		
 	def update(self):
 		self.collect()
