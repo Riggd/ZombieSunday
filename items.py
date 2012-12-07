@@ -38,7 +38,7 @@ class DefaultItem(Item):
 
 class Ammo(Item):
 	def __init__(self, somber, level, x=0, y=0):
-		Item.__init__(self, somber, level, x, y, sprite='sprites/items/item_default.png')
+		Item.__init__(self, somber, level, x, y, sprite='sprites/items/item_ammo.png')
 		self.weapon = self.player.weapon
 		self.rounds = 50
 		
@@ -99,7 +99,7 @@ class AttachmentItem(Item):
 		
 class SalvagedGoods(Item):
 	def __init__(self, somber, level, x, y):
-		self.sprite = 'sprites/items/item_slavaged.png'
+		self.sprite = 'sprites/items/item_salvaged.png'
 		Item.__init__(self, somber, level, x, y, sprite=self.sprite)
 		
 	def update(self):
