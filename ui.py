@@ -64,7 +64,7 @@ def load_highscores():
 		config.HIGHSCORES = json.loads(open('highscores.txt','r').readline())
 		logging.info('[Somber] Loaded highscores')
 	except IOError:
-		save_high_scores()
+		save_highscores()
 
 def save_highscores():
 	with open('highscores.txt','w') as e:
