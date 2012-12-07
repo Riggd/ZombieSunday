@@ -7,6 +7,7 @@
 
 import somber as somber_engine
 from weapon import *
+from items import *
 import config
 import random
 
@@ -276,11 +277,17 @@ class Zombie(Entity):
 				
 	def die(self):
 		if self.health[0] <= 0:
+			self.drop_attachment()
 			self.kill()
 			if self.fire_object != None:
 				self.fire_object.kill()
 			self.add_scores()
 			self.somber.play_sound(config.SOUND_ZOMBIE_YELL)
+	
+	def drop_attachment(self):
+		chance = config.ZOMBIE_ATTACHMENT_DROP_CHANCE * 10
+		if random.randint(1, 10) <= chance:
+			AttachmentItem(self.somber, self.level, random.randint(0, 3), x=self.pos[0], y=config.ATTACHMENT_POS[1])
 	
 	def add_scores(self):
 		self.player.score += self.score

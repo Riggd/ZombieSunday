@@ -308,19 +308,19 @@ class Endless_Level(somber_engine.Level):
 				self.attachment_2.kill()
 			self.attachment_2 = self.main_ui_fore.create_element('sprites/foreground/dummy.png', 'attachment_2', x=config.ATTACHMENT_2_POS[0], y=config.ATTACHMENT_2_POS[1])		
 	
-	def spawn_ammo(self): # TEMPORARY
+	def spawn_ammo(self):
 		distance = 0
 		while True:
-			distance += random.randint(12, 20) * 100
+			distance += random.randint(config.ITEM_AMMO_RANGE[0], config.ITEM_AMMO_RANGE[1]) * config.ITEM_AMMO_RANGE[2]
 			if distance < config.LEVEL_SIZE * config.GROUND_WIDTH:
 				Ammo(self.somber, self.level, x=distance, y=self.somber.win_size[1] - 150)
 			else:
 				break
 			
-	def spawn_attachments(self): # TEMPORARY
+	def spawn_attachments(self):
 		distance = 0
 		while True:
-			distance += random.randint(12, 20) * 100
+			distance += random.randint(config.ITEM_ATTACHMENT_RANGE[0], config.ITEM_ATTACHMENT_RANGE[1]) * config.ITEM_ATTACHMENT_RANGE[2]
 			if distance < config.LEVEL_SIZE * config.GROUND_WIDTH:
 				AttachmentItem(self.somber, self, random.randint(0, 3), x=distance, y=config.ATTACHMENT_POS[1])
 			else:
