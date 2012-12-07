@@ -329,9 +329,9 @@ class Somber:
 	
 	def get_input(self):
 		for event in pygame.event.get():
-			if event.type == QUIT or event.type == KEYDOWN and event.key in [K_ESCAPE,K_q]:
-				pygame.quit()
-				sys.exit()
+			if event.type == QUIT or event.type == KEYDOWN and event.key in [K_ESCAPE]:
+				self.quit()
+				return False
 			
 			elif event.type == KEYDOWN:
 				if event.key == K_UP or event.key == K_KP8 or event.key == K_w:
@@ -439,6 +439,10 @@ class Somber:
 		#Draw all groups
 		for group in self.current_level.sprite_groups:
 			self.dirty_rects.extend(group['group'].draw(self.window))
+	
+	def quit(self):
+		logging.info('[Somber] Shutting down.')
+		self.state = 'shutdown'
 
 class General(pygame.sprite.Sprite):
 	def __init__(self,sprite,pos=None):

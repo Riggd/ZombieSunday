@@ -22,6 +22,8 @@ somber = somber_engine.Somber(name=config.TITLE,
 	fps=config.FPS)
 somber.set_resource_directory(config.RES_DIR)
 
+ui.load_highscores()
+
 def callback():
 	print_ui()
 
@@ -101,15 +103,16 @@ def print_ui():
 					'High Scores:',
 					color=(231, 95, 46))
 				
+				index = 0
 				for entry in config.HIGHSCORES:
 					somber.write('Lombriz_24',
 						(config.LVL_FAIL_SCORES_POS[0], config.LVL_FAIL_SCORES_POS[1] + scores_padding*index),
-						entry['score'],
+						str(entry['score']),
 						color=(65,65,65))
 					
 					somber.write('Lombriz_24',
 						(config.LVL_FAIL_KILLS_POS[0], config.LVL_FAIL_KILLS_POS[1] + scores_padding*index),
-						entry['kills'],
+						str(entry['kills']),
 						color=(65,65,65))
 					
 					somber.write('Lombriz_24',
@@ -204,3 +207,4 @@ somber.play_music(os.path.join('res','sounds','squired.xm'), loops=-1)
 somber.change_level(TITLE_SCREEN)
 
 somber.run(callback)
+ui.save_highscores()
