@@ -67,11 +67,8 @@ class BackgroundParallaxGroup(pygame.sprite.Group):
 			_posdown = (s.rect.bottomright[0]-_scroll_x,
 				s.rect.bottomright[1]-s.somber.camera_pos[1])
 			
-			#print len(range(0,abs(int(_pos[0])/(s.rect.width/2))+2))
 			_upper = len(range(0,abs(int(_pos[0])/(s.rect.width/2))+2))
 			_lower = (s.rect.width/s.somber.win_size[0])+1
-			
-			print len(range(_lower,_upper+1))
 			
 			for _i in range(_lower,_upper+1):
 				i = _i-_lower
