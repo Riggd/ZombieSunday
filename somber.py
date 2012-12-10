@@ -21,7 +21,7 @@ logger.setLevel(logging.DEBUG)
 __author__  = 'flags'
 __contact__ = 'jetstarforever@gmail.com'
 __license__ = 'WTFPLv2'
-__version__ = '0.2'
+__version__ = '0.3'
 __about__   = '2d game engine using PyGame'
 
 class StaticBackgroundGroup(pygame.sprite.Group):
@@ -67,7 +67,14 @@ class BackgroundParallaxGroup(pygame.sprite.Group):
 			_posdown = (s.rect.bottomright[0]-_scroll_x,
 				s.rect.bottomright[1]-s.somber.camera_pos[1])
 			
-			for i in range(0,abs(int(_pos[0])/(s.rect.width/2))+2):
+			#print len(range(0,abs(int(_pos[0])/(s.rect.width/2))+2))
+			_upper = len(range(0,abs(int(_pos[0])/(s.rect.width/2))+2))
+			_lower = (s.rect.width/s.somber.win_size[0])+1
+			
+			print len(range(_lower,_upper+1))
+			
+			for _i in range(_lower,_upper+1):
+				i = _i-_lower
 				newrect = surface_blit(s.image,(_pos[0]+(s.rect.width*i),_pos[1]))
 				dirty_append(newrect)
 
