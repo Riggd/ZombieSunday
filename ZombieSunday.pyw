@@ -121,24 +121,6 @@ def print_ui():
 						color=(65,65,65))
 					
 					index += 1
-				
-				#kills = ['60 kills', '55 kills', '37 kills', '32 kills', '10 kills']
-				#index = 0
-				#for kill in kills:
-				#	somber.write('Lombriz_24',
-				#		(config.LVL_FAIL_KILLS_POS[0], config.LVL_FAIL_KILLS_POS[1] + scores_padding*index),
-				#		kill,
-				#		color=(65,65,65))
-				#	index += 1
-				
-				#dates = ['12/06/2012', '12/04/2012', '12/04/2012', '11/26/2012', '12/06/2012']
-				#index = 0
-				#for date in dates:
-				#	somber.write('Lombriz_24',
-				#		(config.LVL_FAIL_DATE_POS[0], config.LVL_FAIL_DATE_POS[1] + scores_padding*index),
-				#		date,
-				#		color=(65,65,65))
-				#	index += 1
 
 def debug():
 	text_padding = 180
